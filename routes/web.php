@@ -17,3 +17,15 @@
         return view('backend.dashboard');
     });
 
+    Route::get('/login', function () {
+        return view('backend.auth.login');
+    });
+
+    Route::get('/forget', function () {
+        return view('backend.auth.forget-password');
+    });
+
+    Route::any('/{slug?}', function () {
+        return view('backend.404');
+    });
+

@@ -4,7 +4,7 @@
 <head>
     @include('backend.layout.meta')
 
-    <title>NewsApp | @yield('title')</title>
+    <title>{{ _site_name() }} | @yield('title')</title>
 
     @include('backend.layout.styles')
 </head>
