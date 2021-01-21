@@ -13,19 +13,23 @@
     |
     */
 
-    Route::get('/', function () {
-        return view('backend.dashboard');
-    });
+    Route::group(['middleware' => ['prevent-back-history']], function(){
+        Route::group(['prefix' => 'admin', 'namespace' => 'Backend'], function(){
+            Route::group(['middleware' => ['guest']], function () {
+                Route::get('/', 'AuthController@login')->name('admin.login');
+                Route::post('signin', 'AuthController@signin')->name('admin.signin');
 
-    Route::get('/login', function () {
-        return view('backend.auth.login');
-    });
+                Route::get('forget-password', 'AuthController@forget_password')->name('admin.forget.password');
+                Route::get('recover-password', 'AuthController@recover_password')->name('admin.recover.password');
+            });
 
-    Route::get('/forget', function () {
-        return view('backend.auth.forget-password');
-    });
+            Route::group(['middleware' => ['auth']], function () {
+                Route::get('logout', 'AuthController@logout')->name('admin.logout');
 
-    Route::any('/{slug?}', function () {
-        return view('backend.404');
+                Route::get('dashboard', 'DashboardController@index')->name('admin.dashboard');
+            });
+        });
+
+        Route::any('/{slug?}', function(){ return view('backend.404');});
     });
 

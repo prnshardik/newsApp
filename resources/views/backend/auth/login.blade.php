@@ -18,25 +18,39 @@
         <div class="brand">
             <a class="link" href="javascript:void(0);">{{ _site_name() }}</a>
         </div>
-        <form id="login-form" action="javascript:;" method="post">
+
+        <form id="form" action="{{ route('admin.signin') }}" method="post">
+            @csrf
+            @method('post')
+
             <h2 class="login-title">Log in</h2>
             <div class="form-group">
                 <div class="input-group-icon right">
                     <div class="input-icon"><i class="fa fa-envelope"></i></div>
-                    <input class="form-control" type="email" name="email" placeholder="Email" autocomplete="off">
+                    <input type="email" name="email" class="form-control" placeholder="Email" autocomplete="off">
+                    @error('email')
+                        <div class="invalid-feedback" style="display: block;">
+                            <strong>{{ $message }}</strong>
+                        </div>
+                    @enderror
                 </div>
             </div>
             <div class="form-group">
                 <div class="input-group-icon right">
                     <div class="input-icon"><i class="fa fa-lock font-16"></i></div>
-                    <input class="form-control" type="password" name="password" placeholder="Password">
+                    <input type="password" name="password" class="form-control" placeholder="Password">
+                    @error('password')
+                        <div class="invalid-feedback" style="display: block;">
+                            <strong>{{ $message }}</strong>
+                        </div>
+                    @enderror
                 </div>
             </div>
             <div class="form-group d-flex justify-content-between">
                 <label class="ui-checkbox ui-checkbox-info">
                     <input type="checkbox">
                     {{-- <span class="input-span"></span>Remember me</label> --}}
-                <a href="javascript:void(0);">Forgot password?</a>
+                <a href="{{ route('admin.forget.password') }}">Forgot password?</a>
             </div>
             <div class="form-group">
                 <button class="btn btn-info btn-block" type="submit">Login</button>
@@ -64,7 +78,7 @@
 @section('scripts')
     <script type="text/javascript">
         $(function() {
-            $('#login-form').validate({
+            $('#form').validate({
                 errorClass: "help-block",
                 rules: {
                     email: {

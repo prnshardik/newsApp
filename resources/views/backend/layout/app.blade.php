@@ -11,7 +11,6 @@
 
 <body class="fixed-navbar">
     <div class="page-wrapper">
-        <!-- START HEADER-->
         @include('backend.layout.header')
 
         @include('backend.layout.left-sidebar')

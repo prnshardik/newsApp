@@ -15,6 +15,7 @@
     <link href="{{ asset('backend/vendors/themify-icons/css/themify-icons.css') }}" rel="stylesheet" />
     <link href="{{ asset('backend/css/main.css') }}" rel="stylesheet" />
     <link href="{{ asset('backend/css/pages/auth-light.css') }}" rel="stylesheet" />
+    <link href="{{ asset('backend/css/toastr.css') }}" rel="stylesheet" />
 
     @yield('page-styles')
     @yield('styles')
@@ -33,9 +34,33 @@
     <script src="{{ asset('backend/vendors/bootstrap/dist/js/bootstrap.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('backend/vendors/jquery-validation/dist/jquery.validate.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('backend/js/app.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('backend/js/toastr.js') }}" type="text/javascript"></script>
 
     @yield('page-scripts')
     @yield('scripts')
+
+    <script>
+        @php
+            $success = '';
+            if(\Session::has('success'))
+                $success = \Session::get('success');
+
+            $error = '';
+            if(\Session::has('error'))
+                $error = \Session::get('error');
+        @endphp
+
+        var success = "{{ $success }}";
+        var error = "{{ $error }}";
+
+        if(success != ''){
+            toastr.success(success, 'Success');
+        }
+
+        if(error != ''){
+            toastr.error(error, 'error');
+        }
+    </script>
 
 </body>
 

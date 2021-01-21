@@ -18,7 +18,7 @@
         <div class="brand">
             <a class="link" href="javascript:void(0);">{{ _site_name() }}</a>
         </div>
-        <form id="forgot-form" action="javascript:;" method="post">
+        <form id="forgot-form" action="{{ route('admin.recover.password') }}" method="post">
             <h3 class="m-t-10 m-b-10">Forgot password</h3>
             <p class="m-b-20">Enter your email address below and we'll send you password reset instructions.</p>
             <div class="form-group">
@@ -26,6 +26,8 @@
             </div>
             <div class="form-group">
                 <button class="btn btn-info btn-block" type="submit">Submit</button>
+                <p class="mt-2 mb-3 text-center">- OR -</p>
+                <a href="{{ route('admin.login') }}" class="btn btn-info btn-block">Login</a>
             </div>
         </form>
     </div>

@@ -5,12 +5,12 @@
                 <img src="{{ asset('backend/img/admin-avatar.png') }}" width="45px" />
             </div>
             <div class="admin-info">
-                <div class="font-strong">James Brown</div><small>Administrator</small>
+                <div class="font-strong">{{ auth()->user()->firstname.' '.auth()->user()->lastname }}</div><small>{{ _get_role_name() }}</small>
             </div>
         </div>
         <ul class="side-menu metismenu">
             <li>
-                <a class="active" href="javascript:;"><i class="sidebar-item-icon fa fa-th-large"></i>
+                <a class="active" href="{{ route('admin.dashboard') }}"><i class="sidebar-item-icon fa fa-th-large"></i>
                     <span class="nav-label">Dashboard</span>
                 </a>
             </li>
