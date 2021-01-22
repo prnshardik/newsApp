@@ -36,15 +36,25 @@
                             <input type="hidden" name="id" value="{{ $data->id }}">
 
                             <div class="row">
-                                <div class="form-group col-sm-6">
+                                <div class="form-group col-sm-12">
                                     <label for="name">Name</label>
                                     <input type="text" name="name" id="name" class="form-control" placeholder="Plese enter name" value="{{ $data->name ?? '' }}">
                                     <span class="kt-form__help error name"></span>
                                 </div>
-                                <div class="form-group col-sm-6">
-                                    <label for="guard_name">Guard Name</label>
-                                    <input type="text" name="guard_name" id="guard_name" class="form-control" placeholder="Plese enter guard name" value="{{ $data->guard_name ?? '' }}">
-                                    <span class="kt-form__help error guard_name"></span>
+                            </div>
+                            <div class="form-group col-sm-12">
+                                <div class="form-group">
+                                    <strong>Permissions:</strong>
+                                    <div class="row">
+                                        @foreach($permissions as $value)
+                                            <div class="col-sm-3">
+                                                <label class="ui-checkbox ui-checkbox-success mt-2" for="checkbox-{{ $value->id }}">
+                                                    <input type="checkbox" name="permissions[]" id="checkbox-{{ $value->id }}" value="{{ $value->id }}" <?php if(in_array($value->id, $role_permissions)){ echo 'checked'; } ?>>
+                                                    <span class="input-span"></span>{{ $value->name }}
+                                                </label>
+                                            </div>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
 

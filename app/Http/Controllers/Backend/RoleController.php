@@ -8,6 +8,7 @@
     use App\Http\Requests\RoleRequest;
     use DataTables;
     use Spatie\Permission\Models\Permission;
+    use DB;
 
     class RoleController extends Controller{
         public function index(Request $request){
@@ -46,13 +47,12 @@
 
             $curd = [
                 'name' => $request->name,
-                'guard_name' => $request->guard_name,
+                'guard_name' => 'web',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ];
 
             $role = Role::create($curd);
-
             if($role){
                 $role->syncPermissions($request->permissions);
 
@@ -64,31 +64,42 @@
 
         public function edit(Request $request){
         	$id = base64_decode($request->id);
-        	$data = Role::find($id);
-            return view('backend.role.edit')->with(['data' => $data]);
+            $data = Role::find($id);
+            $permissions = Permission::get();
+            $role_permissions = DB::table("role_has_permissions")
+                                    ->where("role_has_permissions.role_id", $id)
+                                    ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
+                                    ->all();
+
+            return view('backend.role.edit')->with(['data' => $data, 'permissions' => $permissions, 'role_permissions' => $role_permissions]);
         }
 
         public function update(RoleRequest $request){
             if($request->ajax()){ return true ;}
 
-            $curd = [
-                'name' => $request->name,
-                'guard_name' => $request->guard_name,
-                'updated_at' => date('Y-m-d H:i:s'),
-            ];
+            $role = Role::find($request->id);
+            $role->name = $request->name;
+            $role->updated_at = date('Y-m-d H:i:s');
 
-            $update = Role::where(['id' => $request->id])->update($curd);
+            if($role->save()){
+                $role->syncPermissions($request->permissions);
 
-            if($update)
                 return redirect()->route('admin.role')->with('success', 'Role updated successfully.');
-            else
+            }else{
                 return redirect()->back()->with('error', 'Failed to update record.')->withInput();
+            }
         }
 
         public function view(Request $request){
         	$id = base64_decode($request->id);
-        	$data = Role::find($id);
-            return view('backend.role.view')->with(['data' => $data]);
+            $data = Role::find($id);
+            $permissions = Permission::get();
+            $role_permissions = DB::table("role_has_permissions")
+                                    ->where("role_has_permissions.role_id", $id)
+                                    ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
+                                    ->all();
+
+            return view('backend.role.view')->with(['data' => $data, 'permissions' => $permissions, 'role_permissions' => $role_permissions]);
         }
 
         public function delete(Request $request){
