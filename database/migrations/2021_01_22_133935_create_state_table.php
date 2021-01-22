@@ -15,8 +15,8 @@ class CreateStateTable extends Migration
     {
         Schema::create('state', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->string('country_id');
+            $table->string('name');
             $table->enum('status', ['active', 'inactive', 'deleted'])->default('inactive');
             $table->timestamps();
             $table->integer('created_by')->nullable();
@@ -25,8 +25,8 @@ class CreateStateTable extends Migration
 
         DB::table('state')->insert(
             array(
+                'country_id' => 1,
                 'name' => 'Gujarat',
-                'country_id' => 1,
                 'status' => 'active',
                 'created_by' => 1,
                 'updated_by' => 1,
@@ -35,8 +35,8 @@ class CreateStateTable extends Migration
 
         DB::table('state')->insert(
             array(
+                'country_id' => 1,
                 'name' => 'Maharastra',
-                'country_id' => 1,
                 'status' => 'active',
                 'created_by' => 1,
                 'updated_by' => 1,
@@ -45,8 +45,8 @@ class CreateStateTable extends Migration
 
         DB::table('state')->insert(
             array(
+                'country_id' => 2,
                 'name' => 'Queensland',
-                'country_id' => 2,
                 'status' => 'active',
                 'created_by' => 1,
                 'updated_by' => 1,
@@ -55,8 +55,8 @@ class CreateStateTable extends Migration
 
         DB::table('state')->insert(
             array(
-                'name' => 'Victoria',
                 'country_id' => 2,
+                'name' => 'Victoria',
                 'status' => 'active',
                 'created_by' => 1,
                 'updated_by' => 1,
