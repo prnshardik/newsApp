@@ -42,7 +42,8 @@
         }
 
         public function create(Request $request){
-            return view('backend.state.create');
+            $country = Country::all();
+            return view('backend.state.create')->with(['country' => $country]);
         }
 
         public function insert(StateForm $request){

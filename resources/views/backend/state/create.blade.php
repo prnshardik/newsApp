@@ -26,7 +26,10 @@
                             <div class="form-group col-sm-6">
                                 <label for="country_code">Country Name</label>
                                 <select class="form-control" id="country_id" name="country_id">
-                                    <option>Selct Country</option>
+                                    <option value="" hidden>Selct Country</option>
+                                    @foreach($country AS $row)
+                                        <option value="{{$row->id}}">{{$row->name}}</option>
+                                    @endforeach
                                 </select>
                                 <span class="kt-form__help error country_code"></span>
                             </div>
