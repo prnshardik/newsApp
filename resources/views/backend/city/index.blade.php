@@ -4,25 +4,34 @@
 @endsection
 
 @section('title')
-    City
+    Cities
 @endsection
 
 @section('styles')
 @endsection
 
 @section('content')
+    <div class="page-heading mt-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ route('admin.city') }}">Cities</i></a>
+            </li>
+            {{-- <li class="breadcrumb-item">Index</li> --}}
+        </ol>
+    </div>
     <div class="page-content fade-in-up">
         <div class="row">
             <div class="col-lg-12">
                 <div class="ibox">
-
                     <div class="ibox-head">
                         <h1 class="ibox-title">City</h1>
                         <h1 class="pull-right">
                            <a class="btn btn-primary pull-right" style="margin-top: 8px;margin-bottom: 5px" href="{{ route('admin.city.create') }}">Add New</a>
                         </h1>
                     </div>
-
                     <div class="dataTables_wrapper container-fluid dt-bootstrap4">
                         <table class="table table-bordered data-table" id="data-table">
                             <thead>
@@ -32,12 +41,11 @@
                                     <th>State Name</th>
                                     <th>Country Name</th>
                                     <th>Status</th>
-                                    <th width="100px">Action</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                         </table>
                     </div>
-
                     <div class="text-center"></div>
                 </div>
             </div>
@@ -48,74 +56,74 @@
 @section('scripts')
     <script type="text/javascript">
         var datatable;
-            $(document).ready(function() {
-                if($('#data-table').length > 0){
-                    datatable = $('#data-table').DataTable({
-                        processing: true,
-                        serverSide: true,
+        $(document).ready(function() {
+            if($('#data-table').length > 0){
+                datatable = $('#data-table').DataTable({
+                    processing: true,
+                    serverSide: true,
 
-                        // "pageLength": 10,
-                        // "iDisplayLength": 10,
-                        "responsive": true,
-                        "aaSorting": [],
-                        // "order": [], //Initial no order.
-                        //     "aLengthMenu": [
-                        //     [5, 10, 25, 50, 100, -1],
-                        //     [5, 10, 25, 50, 100, "All"]
-                        // ],
+                    // "pageLength": 10,
+                    // "iDisplayLength": 10,
+                    "responsive": true,
+                    "aaSorting": [],
+                    // "order": [], //Initial no order.
+                    //     "aLengthMenu": [
+                    //     [5, 10, 25, 50, 100, -1],
+                    //     [5, 10, 25, 50, 100, "All"]
+                    // ],
 
-                        // "scrollX": true,
-                        // "scrollY": '',
-                        // "scrollCollapse": false,
-                        // scrollCollapse: true,
+                    // "scrollX": true,
+                    // "scrollY": '',
+                    // "scrollCollapse": false,
+                    // scrollCollapse: true,
 
-                        lengthChange: false,
+                    lengthChange: false,
 
-                        "ajax":{
-                            "url": "{{ route('admin.city') }}",
-                            "type": "POST",
-                            "dataType": "json",
-                            "data":{
-                                _token: "{{csrf_token()}}"
-                            }
+                    "ajax":{
+                        "url": "{{ route('admin.city') }}",
+                        "type": "POST",
+                        "dataType": "json",
+                        "data":{
+                            _token: "{{csrf_token()}}"
+                        }
+                    },
+                    "columnDefs": [{
+                            //"targets": [0, 5], //first column / numbering column
+                            "orderable": true, //set not orderable
                         },
-                        "columnDefs": [{
-                                //"targets": [0, 5], //first column / numbering column
-                                "orderable": true, //set not orderable
-                            },
-                        ],
-                        columns: [
-                            {
-                                data: 'DT_RowIndex',
-                                name: 'DT_RowIndex'
-                            },
-                            {
-                                data: 'name',
-                                name: 'name'
-                            },
-                            {
-                                data: 'state_name',
-                                name: 'state_name'
-                            },
-                            {
-                                data: 'country_name',
-                                name: 'country_name'
-                            },
-                            {
-                                data: 'status',
-                                name: 'status'
-                            },
-                            {
-                                data: 'action',
-                                name: 'action',
-                                orderable: false,
-                            },
-                        ]
-                    });
-                }
-            });
+                    ],
+                    columns: [
+                        {
+                            data: 'DT_RowIndex',
+                            name: 'DT_RowIndex'
+                        },
+                        {
+                            data: 'name',
+                            name: 'name'
+                        },
+                        {
+                            data: 'state_name',
+                            name: 'state_name'
+                        },
+                        {
+                            data: 'country_name',
+                            name: 'country_name'
+                        },
+                        {
+                            data: 'status',
+                            name: 'status'
+                        },
+                        {
+                            data: 'action',
+                            name: 'action',
+                            orderable: false,
+                        },
+                    ]
+                });
+            }
+        });
 
-            function change_status(object){
+        function change_status(object){
             var id = $(object).data("id");
             var status = $(object).data("status");
 

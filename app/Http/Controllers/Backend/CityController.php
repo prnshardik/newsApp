@@ -7,18 +7,25 @@
     use App\Models\Country;
     use App\Models\State;
     use App\Models\City;
-    use App\Http\Requests\CityForm;
-    use DataTables , DB;
+    use App\Http\Requests\CityRequest;
+    use DataTables, DB;
 
     class CityController extends Controller{
 
+        // public function __construct(){
+        //     $this->middleware('permission:city-create', ['only' => ['create', 'insert']]);
+        //     $this->middleware('permission:city-edit', ['only' => ['edit', 'update']]);
+        //     $this->middleware('permission:city-view', ['only' => ['index', 'change_status']]);
+        //     $this->middleware('permission:city-delete', ['only' => ['change_status']]);
+        // }
+
         public function index(Request $request){
         	if($request->ajax()){
-                $data = DB::table('city')
-                            ->select('city.name' ,'city.id','city.status' , 'c.name AS country_name' ,'state.name AS state_name')
-                            ->join('country AS c' ,'city.country_id' ,'c.id')
-                            ->join('state' ,'city.state_id' ,'state.id')
-                            ->orderBy('city.id' ,'DESC')
+                $data = DB::table('city as c')
+                            ->select('c.name', 'c.id', 'c.status', 'ct.name as country_name', 's.name as state_name')
+                            ->join('country as ct', 'c.country_id', 'ct.id')
+                            ->join('state as s', 'c.state_id', 's.id')
+                            ->orderBy('c.id', 'DESC')
                             ->get();
 
                 return Datatables::of($data)
@@ -63,53 +70,47 @@
         public function create(Request $request){
             $country = Country::all();
             $state = State::all();
+
             return view('backend.city.create')->with(['country' => $country ,'state' => $state]);
         }
 
-        public function insert(CityForm $request){
+        public function insert(CityRequest $request){
             if($request->ajax()){ return true; }
 
-            $data = new City();
-            $data->name = ucfirst($request->name);
-            $data->country_id = $request->country_id;
-            $data->state_id = $request->state_id;
-            $data->created_at = date('Y-m-d H:i:s');
-            $data->created_by = auth()->user()->id;
-            $data->updated_at = date('Y-m-d H:i:s');
+            $crud = [
+                'name' => ucfirst($request->name),
+                'country_id' => $request->country_id,
+                'state_id' => $request->state_id,
+                'status' => 'active',
+                'created_at' => date('Y-m-d H:i:s'),
+                'created_by' => auth()->user()->id,
+                'updated_at' => date('Y-m-d H:i:s'),
+                'updated_by' => auth()->user()->id
+            ];
 
-            if($data->save()){
-                return redirect()->route('admin.city')->with('success', 'City Inserted Successfully.');
-            }else{
+            $last_id = City::insertGetId($crud);
+
+            if($last_id > 0)
+                return redirect()->route('admin.city')->with('success', 'City inserted successfully.');
+            else
                 return redirect()->back()->with('error', 'Failed to insert record.')->withInput();
-            }
-        }
-
-
-        public function view(Request $request){
-        	$id = base64_decode($request->id);
-        	$city = DB::table('city')
-                            ->select('city.name' ,'city.id' , 'c.name AS country_name' ,'state.name AS state_name')
-                            ->join('country AS c' ,'city.country_id' ,'c.id')
-                            ->join('state' ,'city.state_id' ,'state.id')
-                            ->where('city.id' ,$id)
-                            ->first();
-
-            return view('backend.city.view')->with(['city' => $city]);
         }
 
         public function edit(Request $request){
         	$id = base64_decode($request->id);
-        	$city = DB::table('city')
-                    ->select('city.*' ,'state.id AS state_id' ,'state.name AS state_name' ,'.country.name AS country_name' ,'country.id AS country_id')
-                    ->join('country' ,'city.country_id' ,'country.id')
-                    ->join('state' ,'city.state_id' ,'state.id')
-                    ->where(['city.id' => $id])
-                    ->first();
+        	$data = DB::table('city as c')
+                        ->select('c.*', 's.id as state_id', 's.name as state_name', 'ct.name as country_name', 'ct.id as country_id')
+                        ->join('country as ct', 'c.country_id', 'ct.id')
+                        ->join('state as s', 'c.state_id', 's.id')
+                        ->where(['c.id' => $id])
+                        ->first();
+
             $country = Country::all();
-            return view('backend.city.edit')->with(['city' => $city ,'country' => $country]);
+
+            return view('backend.city.edit')->with(['data' => $data ,'country' => $country]);
         }
 
-        public function update(CityForm $request){
+        public function update(CityRequest $request){
         	if($request->ajax()){ return true ;}
 
             $id = $request->id;
@@ -118,31 +119,43 @@
                     'name' => ucfirst($request->name),
                     'country_id' => $request->country_id,
                     'state_id' => $request->state_id,
-                    'updated_at' => date('Y-m-d H:i:s')
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'updated_by' => auth()->user()->id
                 );
 
-            $update = DB::table('city')->where('id', $id)->limit(1)->update($crud);
+            $update = City::where(['id' => $id])->update($crud);
 
-            if($update){
-                return redirect()->route('admin.city')->with('success', 'Country updated successfully.');
-            }else{
+            if($update)
+                return redirect()->route('admin.city')->with('success', 'City updated successfully.');
+            else
                 return redirect()->back()->with('error', 'Failed to updated record.')->withInput();
-            }
         }
 
-        public function delete(Request $request){
+        public function view(Request $request){
+        	$id = base64_decode($request->id);
+        	$data = DB::table('city as c')
+                            ->select('c.id', 'c.name', 'ct.name as country_name', 's.name as state_name')
+                            ->join('country as ct' ,'c.country_id', 'ct.id')
+                            ->join('state as s', 'c.state_id', 's.id')
+                            ->where(['c.id' => $id])
+                            ->first();
+
+            return view('backend.city.view')->with(['data' => $data]);
+        }
+
+        public function change_status(Request $request){
             if(!$request->ajax()){ exit('No direct script access allowed'); }
 
             if(!empty($request->all())){
-                $id = $request->id;
+                $id = base64_decode($request->id);
+                $status = $request->status;
 
-                $delete = City::where('id', $id)->delete();
+                $update = City::where(['id' => $id])->update(['status' => $status, 'updated_by' => auth()->user()->id]);
 
-                if($delete){
+                if($update)
                     return response()->json(['code' => 200]);
-                }else{
+                else
                     return response()->json(['code' => 201]);
-                }
             }else{
                 return response()->json(['code' => 201]);
             }
@@ -159,24 +172,6 @@
                     $html .= "<option value='".$row->id."'>".$row->name."</option>";
                 }
                 return response()->json(['code' => 200, 'data' => $html]);
-            }else{
-                return response()->json(['code' => 201]);
-            }
-        }
-
-        public function change_status(Request $request){
-            if(!$request->ajax()){ exit('No direct script access allowed'); }
-
-            if(!empty($request->all())){
-                $id = base64_decode($request->id);
-                $status = $request->status;
-
-                $update = City::where(['id' => $id])->update(['status' => $status, 'updated_by' => auth()->user()->id]);
-
-                if($update)
-                    return response()->json(['code' => 200]);
-                else
-                    return response()->json(['code' => 201]);
             }else{
                 return response()->json(['code' => 201]);
             }
