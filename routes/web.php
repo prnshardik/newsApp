@@ -51,6 +51,7 @@
                 /** City */
                     Route::any('city', 'CityController@index')->name('admin.city');
                     Route::get('city/create', 'CityController@create')->name('admin.city.create');
+                    Route::post('city/get-state', 'CityController@get_state')->name('admin.city.get_state');
                     Route::post('city/insert', 'CityController@insert')->name('admin.city.insert');
                     Route::get('city/view', 'CityController@view')->name('admin.city.view');
                     Route::get('city/edit', 'CityController@edit')->name('admin.city.edit');

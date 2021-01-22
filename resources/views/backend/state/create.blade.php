@@ -4,7 +4,7 @@
 @endsection
 
 @section('title')
-    Create Country
+    Create State
 @endsection
 
 @section('styles')
@@ -16,10 +16,10 @@
         <div class="col-md-12">
             <div class="ibox">
                 <div class="ibox-head">
-                    <div class="ibox-title">Create Country</div>
+                    <div class="ibox-title">Create State</div>
                 </div>
                 <div class="ibox-body">
-                    <form action="{{ route('admin.country.insert') }}" name="form" id="form" method="post">
+                    <form action="{{ route('admin.state.insert') }}" name="form" id="form" method="post">
                         @csrf
                         @method('POST')
                         <div class="row">
@@ -31,7 +31,7 @@
                                         <option value="{{$row->id}}">{{$row->name}}</option>
                                     @endforeach
                                 </select>
-                                <span class="kt-form__help error country_code"></span>
+                                <span class="kt-form__help error country_id"></span>
                             </div>
                         </div>
 
@@ -44,7 +44,7 @@
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Submit</button>
-                            <a href="{{ route('admin.country') }}">
+                            <a href="{{ route('admin.state') }}">
                                 <button type="button" class="btn btn-secondary">Cancel</button>
                             </a>
                         </div>
@@ -57,13 +57,9 @@
 @endsection
 
 @section('scripts')
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $('#country_code').keypress(function(e){
-                if (/\D/g.test(this.value)){
-                    this.value = this.value.replace(/\D/g, '');
-                }
-            });
+    <script>
+        $('#country_id').select2({
+            multiple: false,
         });
     </script>
     <script>

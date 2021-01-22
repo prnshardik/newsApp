@@ -6,13 +6,13 @@
     use Illuminate\Http\Request;
     use App\Models\Country;
     use App\Http\Requests\CountryForm;
-    use DataTables;
+    use DataTables ,DB;
 
     class CountryController extends Controller{
 
         public function index(Request $request){
         	if($request->ajax()){
-                $data = Country::select('id', 'name', 'country_code')->get();
+                $data = Country::select('id', 'name', 'country_code')->orderBy('id' ,'DESC')->get();
 
                 return Datatables::of($data)
                         ->addIndexColumn()
@@ -51,7 +51,7 @@
             $data->updated_at = date('Y-m-d H:i:s');
 
             if($data->save()){
-                return redirect()->route('country')->with('success', 'Country Inserted Successfully.');
+                return redirect()->route('admin.country')->with('success', 'Country Inserted Successfully.');
             }else{
                 return redirect()->back()->with('error', 'Failed to insert record.')->withInput();
             }
@@ -72,6 +72,21 @@
 
         public function update(CountryForm $request){
         	if($request->ajax()){ return true ;}
+            $id = $request->id;
+
+            $crud = array(
+                    'name' => ucfirst($request->name),
+                    'country_code' => $request->country_code,
+                    'updated_at' => date('Y-m-d H:i:s')
+                );
+
+            $update = DB::table('country')->where('id', $id)->limit(1)->update($crud);
+
+            if($update){
+                return redirect()->route('admin.country')->with('success', 'Country updated successfully.');
+            }else{
+                return redirect()->back()->with('error', 'Failed to updated record.')->withInput();
+            }
         }
 
         public function delete(Request $request){

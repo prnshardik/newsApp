@@ -4,32 +4,33 @@
 @endsection
 
 @section('title')
-    Country
+    City
 @endsection
 
 @section('styles')
 @endsection
 
 @section('content')
-<div class="page-content fade-in-up">
+    <div class="page-content fade-in-up">
         <div class="row">
             <div class="col-lg-12">
                 <div class="ibox">
-                    
+
                     <div class="ibox-head">
-                        <h1 class="ibox-title">Country</h1>
+                        <h1 class="ibox-title">City</h1>
                         <h1 class="pull-right">
-                           <a class="btn btn-primary pull-right" style="margin-top: 8px;margin-bottom: 5px" href="{{ route('admin.country.create') }}">Add New</a>
+                           <a class="btn btn-primary pull-right" style="margin-top: 8px;margin-bottom: 5px" href="{{ route('admin.city.create') }}">Add New</a>
                         </h1>
-                    </div>            
-                       
+                    </div>
+
                     <div class="dataTables_wrapper container-fluid dt-bootstrap4">
                         <table class="table table-bordered data-table" id="data-table">
                             <thead>
                                 <tr>
                                     <th>No</th>
                                     <th>Name</th>
-                                    <th>Country Code</th>
+                                    <th>State Name</th>
+                                    <th>Country Name</th>
                                     <th width="100px">Action</th>
                                 </tr>
                             </thead>
@@ -37,12 +38,10 @@
                     </div>
 
                     <div class="text-center"></div>
-
                 </div>
             </div>
         </div>
-</div>
-
+    </div>
 @endsection
 
 @section('scripts')
@@ -72,7 +71,7 @@
                         lengthChange: false,
 
                         "ajax":{
-                            "url": "{{ route('admin.country') }}",
+                            "url": "{{ route('admin.city') }}",
                             "type": "POST",
                             "dataType": "json",
                             "data":{
@@ -94,8 +93,12 @@
                                 name: 'name'
                             },
                             {
-                                data: 'country_code',
-                                name: 'country_code'
+                                data: 'state_name',
+                                name: 'state_name'
+                            },
+                            {
+                                data: 'country_name',
+                                name: 'country_name'
                             },
                             {
                                 data: 'action',
@@ -111,7 +114,7 @@
                 var id = $(a_object).data("id");
                 if (confirm('Are You Sure You Want To Delete?')) {
                     $.ajax({
-                        "url": "{!! route('admin.country.delete') !!}",
+                        "url": "{!! route('admin.city.delete') !!}",
                         "dataType": "json",
                         "type": "POST",
                         "data":{

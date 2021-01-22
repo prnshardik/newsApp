@@ -25,20 +25,30 @@
                         <div class="row">
                             <div class="form-group col-sm-6">
                                 <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Plese Enter Name" value="{{ $country->name ?? '' }}" readonly>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Plese Enter Name" value="{{ $city->name ?? '' }}" readonly>
                                 <span class="kt-form__help error name"></span>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="form-group col-sm-6">
-                                <label for="country_code">Country Code</label>
-                                <input type="text" class="form-control" id="country_code" name="country_code" placeholder="Plese Enter Country Code" value="{{ $country->country_code ?? '' }}" readonly>
-                                <span class="kt-form__help error country_code"></span>
+                                <label for="country_code">Country Name</label>
+                                <select name="country_name" class="form-control" disabled>
+                                    <option value="{{$city->id}}">{{$city->country_name}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label for="country_code">State Name</label>
+                                <select name="state_name" class="form-control" disabled>
+                                    <option value="{{$city->id}}">{{$city->state_name}}</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <a href="{{ route('admin.country') }}">
+                            <a href="{{ route('admin.city') }}">
                                 <button type="button" class="btn btn-secondary">Back</button>
                             </a>
                         </div>

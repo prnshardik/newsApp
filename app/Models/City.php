@@ -2,13 +2,12 @@
 
     namespace App\Models;
 
-    use Illuminate\Contracts\Auth\MustVerifyEmail;
     use Illuminate\Database\Eloquent\Factories\HasFactory;
-    use Illuminate\Notifications\Notifiable;
-    use Spatie\Permission\Traits\HasRoles;
+    use Illuminate\Database\Eloquent\Model;
 
     class City extends Model
     {
+        use HasFactory;
     	public $table = 'city';
         protected $fillable = ['name', 'country_id', 'state_id', 'status'];
     }

@@ -4,7 +4,7 @@
 @endsection
 
 @section('title')
-    Edit Country
+    Edit State
 @endsection
 
 @section('styles')
@@ -16,31 +16,37 @@
         <div class="col-md-12">
             <div class="ibox">
                 <div class="ibox-head">
-                    <div class="ibox-title">Edit Country</div>
+                    <div class="ibox-title">Edit State</div>
                 </div>
                 <div class="ibox-body">
-                    <form action="{{ route('admin.country.update') }}" name="form" id="form" method="post">
+                    <form action="{{ route('admin.state.update') }}" name="form" id="form" method="post">
                         @csrf
                         @method('PATCH')
-                        <input type="hidden" name="id" value="{{$country->id}}">
+
+                        <input type="hidden" name="id" value="{{$state->id}}">
                         <div class="row">
                             <div class="form-group col-sm-6">
-                                <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Plese Enter Name" value="{{ $country->name ?? '' }}">
-                                <span class="kt-form__help error name"></span>
+                                <label for="country_code">Country Name</label>
+                                <select class="form-control" id="country_id" name="country_id">
+                                    <option value="" hidden>Selct Country</option>
+                                    @foreach($country AS $row)
+                                        <option value="{{$row->id}}" <?= (isset($state->country_id) && $state->country_id == $row->id ? 'selected' : '')?>>{{$row->name}}</option>
+                                    @endforeach
+                                </select>
+                                <span class="kt-form__help error country_id"></span>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="form-group col-sm-6">
-                                <label for="country_code">Country Code</label>
-                                <input type="text" class="form-control" id="country_code" name="country_code" placeholder="Plese Enter Country Code" value="{{ $country->country_code ?? '' }}">
-                                <span class="kt-form__help error country_code"></span>
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Plese Enter Name" value="{{ $state->name ?? '' }}">
+                                <span class="kt-form__help error name"></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Submit</button>
-                            <a href="{{ route('admin.country') }}">
+                            <a href="{{ route('admin.state') }}">
                                 <button type="button" class="btn btn-secondary">Cancel</button>
                             </a>
                         </div>
@@ -53,13 +59,9 @@
 @endsection
 
 @section('scripts')
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $('#country_code').keypress(function(e){
-                if (/\D/g.test(this.value)){
-                    this.value = this.value.replace(/\D/g, '');
-                }
-            });
+    <script>
+        $('#country_id').select2({
+            multiple: false,
         });
     </script>
     <script>

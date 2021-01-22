@@ -10,6 +10,7 @@
 <script src="{{ asset('backend/js/app.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('backend/js/toastr.js') }}" type="text/javascript"></script>
 <script src="{{ asset('backend/js/datatable.min.js') }}"></script>
+<script src="{{ asset('backend/js/select2.min.js') }}"></script>
 
 <script>
     @php
