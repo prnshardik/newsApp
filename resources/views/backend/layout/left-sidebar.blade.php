@@ -36,18 +36,18 @@
                     <span class="nav-label">Region</span><i class="fa fa-angle-left arrow"></i>
                 </a>
                 <ul class="nav-2-level collapse">
-                    <li class="{{ Request::is('country*') ? 'active' : '' }}">
-                        <a class="active" href="{{ route('admin.country') }}"><i class="sidebar-item-icon fa fa-globe"></i>
+                    <li class="">
+                        <a class="{{ Request::is('country*') ? 'active' : '' }}" href="{{ route('admin.country') }}"><i class="sidebar-item-icon fa fa-globe"></i>
                             <span class="nav-label">Country</span>
                         </a>
                     </li>
-                    <li class="{{ Request::is('state*') ? 'active' : '' }}">
-                        <a class="active" href="{{ route('admin.state') }}"><i class="sidebar-item-icon fa fa-globe"></i>
+                    <li class="">
+                        <a class="{{ Request::is('state*') ? 'active' : '' }}" href="{{ route('admin.state') }}"><i class="sidebar-item-icon fa fa-globe"></i>
                             <span class="nav-label">State</span>
                         </a>
                     </li>
-                    <li class="{{ Request::is('city*') ? 'active' : '' }}">
-                        <a class="active" href="{{ route('admin.city') }}"><i class="sidebar-item-icon fa fa-globe"></i>
+                    <li class="">
+                        <a class="{{ Request::is('city*') ? 'active' : '' }}" href="{{ route('admin.city') }}"><i class="sidebar-item-icon fa fa-globe"></i>
                             <span class="nav-label">City</span>
                         </a>
                     </li>
