@@ -17,7 +17,7 @@ class CreateCountryTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('country_code');
-            $table->enum('status', ['active', 'inactive', 'deleted'])->default('active');
+            $table->enum('status', ['active', 'inactive'])->default('inactive');
             $table->timestamps();
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();

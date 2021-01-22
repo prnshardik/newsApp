@@ -28,25 +28,27 @@
 
                 Route::get('dashboard', 'DashboardController@index')->name('admin.dashboard');
 
-                /** role */
-                    Route::any('role', 'RoleController@index')->name('admin.role');
-                    Route::get('role/create', 'RoleController@create')->name('admin.role.create');
-                    Route::post('role/insert', 'RoleController@insert')->name('admin.role.insert');
-                    Route::get('role/edit', 'RoleController@edit')->name('admin.role.edit');
-                    Route::patch('role/update/{id?}', 'RoleController@update')->name('admin.role.update');
-                    Route::get('role/view', 'RoleController@view')->name('admin.role.view');
-                    Route::post('role/delete', 'RoleController@delete')->name('admin.role.delete');
-                /** role */
+                /** access control */
+                    /** role */
+                        Route::any('role', 'RoleController@index')->name('admin.role');
+                        Route::get('role/create', 'RoleController@create')->name('admin.role.create');
+                        Route::post('role/insert', 'RoleController@insert')->name('admin.role.insert');
+                        Route::get('role/edit', 'RoleController@edit')->name('admin.role.edit');
+                        Route::patch('role/update/{id?}', 'RoleController@update')->name('admin.role.update');
+                        Route::get('role/view', 'RoleController@view')->name('admin.role.view');
+                        Route::post('role/delete', 'RoleController@delete')->name('admin.role.delete');
+                    /** role */
 
-                /** permission */
-                    Route::any('permission', 'PermissionController@index')->name('admin.permission');
-                    Route::get('permission/create', 'PermissionController@create')->name('admin.permission.create');
-                    Route::post('permission/insert', 'PermissionController@insert')->name('admin.permission.insert');
-                    Route::get('permission/edit', 'PermissionController@edit')->name('admin.permission.edit');
-                    Route::patch('permission/update/{id?}', 'PermissionController@update')->name('admin.permission.update');
-                    Route::get('permission/view', 'PermissionController@view')->name('admin.permission.view');
-                    Route::post('permission/delete', 'PermissionController@delete')->name('admin.permission.delete');
-                /** permission */
+                    /** permission */
+                        Route::any('permission', 'PermissionController@index')->name('admin.permission');
+                        Route::get('permission/create', 'PermissionController@create')->name('admin.permission.create');
+                        Route::post('permission/insert', 'PermissionController@insert')->name('admin.permission.insert');
+                        Route::get('permission/edit', 'PermissionController@edit')->name('admin.permission.edit');
+                        Route::patch('permission/update/{id?}', 'PermissionController@update')->name('admin.permission.update');
+                        Route::get('permission/view', 'PermissionController@view')->name('admin.permission.view');
+                        Route::post('permission/delete', 'PermissionController@delete')->name('admin.permission.delete');
+                    /** permission */
+                /** access control */
 
                 /** Country */
                     Route::any('country', 'CountryController@index')->name('admin.country');
