@@ -14,6 +14,24 @@
                     <span class="nav-label">Dashboard</span>
                 </a>
             </li>
+            <li class="heading">Access Control</li>
+            <li class="{{ (Request::is('role*') || Request::is('permission*')) ? 'active' : '' }}">
+                <a href="javascript:;"><i class="sidebar-item-icon fa fa-universal-access"></i>
+                    <span class="nav-label">Access Control</span><i class="fa fa-angle-left arrow"></i>
+                </a>
+                <ul class="nav-2-level collapse">
+                    <li class="{{ Request::is('role*') ? 'active' : '' }}">
+                        <a class="active" href="{{ route('admin.role') }}"><i class="sidebar-item-icon fa fa-male"></i>
+                            <span class="nav-label">Roles</span>
+                        </a>
+                    </li>
+                    <li class="{{ Request::is('permission*') ? 'active' : '' }}">
+                        <a class="active" href="{{ route('admin.permission') }}"><i class="sidebar-item-icon fa fa-asterisk"></i>
+                            <span class="nav-label">Permissions</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
             <li class="{{ Request::is('country*') ? 'active' : '' }}">
                 <a class="active" href="{{ route('admin.country') }}"><i class="sidebar-item-icon fa fa-building"></i>
                     <span class="nav-label">Country</span>
