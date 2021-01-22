@@ -14,7 +14,7 @@
                     <span class="nav-label">Dashboard</span>
                 </a>
             </li>
-            <li class="{{ (Request::is('role*') || Request::is('permission*')) ? 'active' : '' }}">
+            <li class="{{ (Request::is('role*') || Request::is('permission*') || Request::is('acl*')) ? 'active' : '' }}">
                 <a href="javascript:;"><i class="sidebar-item-icon fa fa-universal-access"></i>
                     <span class="nav-label">Access Control</span><i class="fa fa-angle-left arrow"></i>
                 </a>
@@ -27,6 +27,11 @@
                     <li class="{{ Request::is('permission*') ? 'active' : '' }}">
                         <a class="active" href="{{ route('admin.permission') }}"><i class="sidebar-item-icon fa fa-asterisk"></i>
                             <span class="nav-label">Permissions</span>
+                        </a>
+                    </li>
+                    <li class="{{ Request::is('acl*') ? 'active' : '' }}">
+                        <a class="active" href="{{ route('admin.acl') }}"><i class="sidebar-item-icon fa fa-sync"></i>
+                            <span class="nav-label">Access Control</span>
                         </a>
                     </li>
                 </ul>

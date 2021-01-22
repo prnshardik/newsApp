@@ -48,6 +48,16 @@
                         Route::get('permission/view', 'PermissionController@view')->name('admin.permission.view');
                         Route::post('permission/delete', 'PermissionController@delete')->name('admin.permission.delete');
                     /** permission */
+
+                    /** acl */
+                        Route::any('acl', 'AccessControlController@index')->name('admin.acl');
+                        Route::get('acl/create', 'AccessControlController@create')->name('admin.acl.create');
+                        Route::post('acl/insert', 'AccessControlController@insert')->name('admin.acl.insert');
+                        Route::get('acl/edit', 'AccessControlController@edit')->name('admin.acl.edit');
+                        Route::patch('acl/update/{id?}', 'AccessControlController@update')->name('admin.acl.update');
+                        Route::get('acl/view', 'AccessControlController@view')->name('admin.acl.view');
+                        Route::post('acl/delete', 'AccessControlController@delete')->name('admin.acl.delete');
+                    /** acl */
                 /** access control */
 
                 /** Country */
