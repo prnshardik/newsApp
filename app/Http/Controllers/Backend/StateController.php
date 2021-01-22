@@ -6,18 +6,16 @@
     use Illuminate\Http\Request;
     use App\Models\Country;
     use App\Models\State;
-    use App\Http\Requests\StateForm;
-    use DataTables , DB;
+    use App\Http\Requests\StateRequest;
+    use DataTables, DB;
 
     class StateController extends Controller{
-
         public function index(Request $request){
         	if($request->ajax()){
-                $data = DB::table('state')
-                            ->select('state.name' ,'state.id' , 'c.name AS country_name')
-                            ->join('country AS c' ,'state.country_id' ,'c.id')
-                            ->where('state.status' ,'active')
-                            ->orderBy('state.id' ,'DESC')
+                $data = DB::table('state as s')
+                            ->select('s.id', 's.name', 's.status', 'c.name as country_name')
+                            ->join('country as c', 's.country_id', 'c.id')
+                            ->orderBy('s.id', 'DESC')
                             ->get();
 
                 return Datatables::of($data)
@@ -30,12 +28,30 @@
                                         <a href="'.route('admin.state.edit', ['id' => base64_encode($data->id)]).'" class="btn btn-default btn-xs">
                                             <i class="fa fa-edit"></i>
                                         </a> &nbsp;
-                                        <a class="btn btn-default btn-xs" href="javascript:void(0);" onclick="delete_func(this);" data-id="'.$data->id.'">
-                                            <i class="fa fa-trash"></i>
-                                        </a> &nbsp;
+                                        <a href="javascript:;" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                            <i class="fa fa-bars"></i>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="active" data-id="'.base64_encode($data->id).'">Active</a></li>
+                                            <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="inactive" data-id="'.base64_encode($data->id).'">Inactive</a></li>
+                                            <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="deleted" data-id="'.base64_encode($data->id).'">Delete</a></li>
+                                        </ul>
                                     </div>';
                         })
-                        ->rawColumns(['action'])
+
+                        ->editColumn('status', function($data) {
+                            if($data->status == 'active'){
+                                return '<span class="badge badge-success">Active</span>';
+                            }else if($data->status == 'inactive'){
+                                return '<span class="badge badge-warning">Inactive</span>';
+                            }else if($data->status == 'deleted'){
+                                return '<span class="badge badge-danger">Delete</span>';
+                            }else{
+                                return '-';
+                            }
+                        })
+
+                        ->rawColumns(['action', 'status'])
                         ->make(true);
             }
 
@@ -47,74 +63,80 @@
             return view('backend.state.create')->with(['country' => $country]);
         }
 
-        public function insert(StateForm $request){
+        public function insert(StateRequest $request){
             if($request->ajax()){ return true; }
 
-            $data = new State();
-            $data->name = ucfirst($request->name);
-            $data->country_id = $request->country_id;
-            $data->created_at = date('Y-m-d H:i:s');
-            $data->created_by = auth()->user()->id;
-            $data->updated_at = date('Y-m-d H:i:s');
+            $crud = [
+                'name' => ucfirst($request->name),
+                'country_id' => $request->country_id,
+                'status' => 'active',
+                'created_at' => date('Y-m-d H:i:s'),
+                'created_by' => auth()->user()->id,
+                'updated_at' => date('Y-m-d H:i:s'),
+                'updated_by' => auth()->user()->id
+            ];
 
-            if($data->save()){
-                return redirect()->route('admin.state')->with('success', 'State Inserted Successfully.');
-            }else{
+            $last_id = State()::insertGetId($crud);
+
+            if($last_id > 0)
+                return redirect()->route('admin.state')->with('success', 'State inserted successfully.');
+            else
                 return redirect()->back()->with('error', 'Failed to insert record.')->withInput();
-            }
-        }
-
-
-        public function view(Request $request){
-        	$id = base64_decode($request->id);
-        	$state = DB::table('state')
-                        ->select('state.id' ,'state.name' ,'c.name AS country_name')
-                        ->join('country AS c' ,'state.country_id' ,'c.id')
-                        ->where(['state.id' => $id])
-                        ->first();
-            return view('backend.state.view')->with(['state' => $state]);
         }
 
         public function edit(Request $request){
         	$id = base64_decode($request->id);
-        	$state = State::find($id);
+        	$data = State::find($id);
             $country = Country::all();
-            return view('backend.state.edit')->with(['state' => $state , 'country' => $country]);
+
+            return view('backend.state.edit')->with(['data' => $data , 'country' => $country]);
         }
 
-        public function update(StateForm $request){
+        public function update(StateRequest $request){
         	if($request->ajax()){ return true ;}
 
             $id = $request->id;
 
-            $crud = array(
+            $crud = [
                     'name' => ucfirst($request->name),
                     'country_id' => $request->country_id,
-                    'updated_at' => date('Y-m-d H:i:s')
-                );
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'updated_by' => auth()->user()->id
+            ];
 
-            $update = DB::table('state')->where('id', $id)->limit(1)->update($crud);
+            $update = DB::table('state')->where(['id' => $id])->update($crud);
 
-            if($update){
-                return redirect()->route('admin.state')->with('success', 'Country updated successfully.');
-            }else{
+            if($update)
+                return redirect()->route('admin.state')->with('success', 'State updated successfully.');
+            else
                 return redirect()->back()->with('error', 'Failed to updated record.')->withInput();
-            }
         }
 
-        public function delete(Request $request){
+        public function view(Request $request){
+        	$id = base64_decode($request->id);
+
+            $data = DB::table('state as s')
+                        ->select('s.id', 's.name', 'c.name as country_name')
+                        ->join('country as c', 's.country_id', 'c.id')
+                        ->where(['s.id' => $id])
+                        ->first();
+
+            return view('backend.state.view')->with(['data' => $data]);
+        }
+
+        public function change_status(Request $request){
             if(!$request->ajax()){ exit('No direct script access allowed'); }
 
             if(!empty($request->all())){
-                $id = $request->id;
+                $id = base64_decode($request->id);
+                $status = $request->status;
 
-                $delete = State::where('id', $id)->delete();
+                $update = State::where(['id' => $id])->update(['status' => $status, 'updated_by' => auth()->user()->id]);
 
-                if($delete){
+                if($update)
                     return response()->json(['code' => 200]);
-                }else{
+                else
                     return response()->json(['code' => 201]);
-                }
             }else{
                 return response()->json(['code' => 201]);
             }

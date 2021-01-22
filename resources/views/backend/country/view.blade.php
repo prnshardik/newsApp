@@ -4,43 +4,47 @@
 @endsection
 
 @section('title')
-    View Country
+    Country View
 @endsection
 
 @section('styles')
 @endsection
 
 @section('content')
+    <div class="page-heading mt-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ route('admin.country') }}">Countries</i></a>
+            </li>
+            <li class="breadcrumb-item">View</li>
+        </ol>
+    </div>
    <div class="page-content fade-in-up">
     <div class="row">
         <div class="col-md-12">
             <div class="ibox">
                 <div class="ibox-head">
-                    <div class="ibox-title">View Country</div>
+                    <div class="ibox-title">Country View</div>
                 </div>
                 <div class="ibox-body">
                     <form name="form" id="form" method="post">
-                        @csrf
-                        @method('PATCH')
                         <div class="row">
                             <div class="form-group col-sm-6">
                                 <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Plese Enter Name" value="{{ $country->name ?? '' }}" readonly>
+                                <input type="text" name="name" id="name" class="form-control" placeholder="Plese enter name" value="{{ $data->name ?? '' }}" readonly>
                                 <span class="kt-form__help error name"></span>
                             </div>
-                        </div>
-
-                        <div class="row">
                             <div class="form-group col-sm-6">
                                 <label for="country_code">Country Code</label>
-                                <input type="text" class="form-control" id="country_code" name="country_code" placeholder="Plese Enter Country Code" value="{{ $country->country_code ?? '' }}" readonly>
+                                <input type="text" name="country_code" id="country_code" class="form-control" placeholder="Plese enter country code" value="{{ $data->country_code ?? '' }}" readonly>
                                 <span class="kt-form__help error country_code"></span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <a href="{{ route('admin.country') }}">
-                                <button type="button" class="btn btn-secondary">Back</button>
-                            </a>
+                            <a href="{{ route('admin.country') }}" class="btn btn-secondary">Back</a>
                         </div>
                     </form>
                 </div>
@@ -50,3 +54,5 @@
 </div>
 @endsection
 
+@section('scripts')
+@endsection

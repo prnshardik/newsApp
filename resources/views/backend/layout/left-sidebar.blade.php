@@ -19,18 +19,18 @@
                     <span class="nav-label">Access Control</span><i class="fa fa-angle-left arrow"></i>
                 </a>
                 <ul class="nav-2-level collapse">
-                    <li class="{{ Request::is('role*') ? 'active' : '' }}">
-                        <a class="active" href="{{ route('admin.role') }}"><i class="sidebar-item-icon fa fa-male"></i>
+                    <li>
+                        <a class="{{ Request::is('role*') ? 'active' : '' }}" href="{{ route('admin.role') }}"><i class="sidebar-item-icon fa fa-male"></i>
                             <span class="nav-label">Roles</span>
                         </a>
                     </li>
-                    <li class="{{ Request::is('permission*') ? 'active' : '' }}">
-                        <a class="active" href="{{ route('admin.permission') }}"><i class="sidebar-item-icon fa fa-asterisk"></i>
+                    <li>
+                        <a class="{{ Request::is('permission*') ? 'active' : '' }}" href="{{ route('admin.permission') }}"><i class="sidebar-item-icon fa fa-asterisk"></i>
                             <span class="nav-label">Permissions</span>
                         </a>
                     </li>
-                    <li class="{{ Request::is('acl*') ? 'active' : '' }}">
-                        <a class="active" href="{{ route('admin.acl') }}"><i class="sidebar-item-icon fa fa-sync"></i>
+                    <li>
+                        <a class="{{ Request::is('acl*') ? 'active' : '' }}" href="{{ route('admin.acl') }}"><i class="sidebar-item-icon fa fa-refresh"></i>
                             <span class="nav-label">Access Control</span>
                         </a>
                     </li>

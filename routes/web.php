@@ -67,7 +67,7 @@
                     Route::get('country/edit', 'CountryController@edit')->name('admin.country.edit');
                     Route::patch('country/update/{id?}', 'CountryController@update')->name('admin.country.update');
                     Route::get('country/view', 'CountryController@view')->name('admin.country.view');
-                    Route::post('country/delete', 'CountryController@delete')->name('admin.country.delete');
+                    Route::post('country/change_status', 'CountryController@change_status')->name('admin.country.change.status');
                 /** Country */
 
                 /** State */
@@ -77,7 +77,7 @@
                     Route::get('state/view', 'StateController@view')->name('admin.state.view');
                     Route::get('state/edit', 'StateController@edit')->name('admin.state.edit');
                     Route::patch('state/update/{id?}', 'StateController@update')->name('admin.state.update');
-                    Route::post('state/delete', 'StateController@delete')->name('admin.state.delete');
+                    Route::post('state/change_status', 'StateController@change_status')->name('admin.state.change.status');
                 /** State */
 
                 /** City */

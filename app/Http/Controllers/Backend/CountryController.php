@@ -5,14 +5,13 @@
     use App\Http\Controllers\Controller;
     use Illuminate\Http\Request;
     use App\Models\Country;
-    use App\Http\Requests\CountryForm;
-    use DataTables ,DB;
+    use App\Http\Requests\CountryRequest;
+    use DataTables, DB;
 
     class CountryController extends Controller{
-
         public function index(Request $request){
         	if($request->ajax()){
-                $data = Country::select('id', 'name', 'country_code')->orderBy('id' ,'DESC')->get();
+                $data = Country::select('id', 'name', 'country_code', 'status')->orderBy('id' ,'DESC')->get();
 
                 return Datatables::of($data)
                         ->addIndexColumn()
@@ -24,12 +23,30 @@
                                         <a href="'.route('admin.country.edit', ['id' => base64_encode($data->id)]).'" class="btn btn-default btn-xs">
                                             <i class="fa fa-edit"></i>
                                         </a> &nbsp;
-                                        <a class="btn btn-default btn-xs" href="javascript:void(0);" onclick="delete_func(this);" data-id="'.$data->id.'">
-                                            <i class="fa fa-trash"></i>
-                                        </a> &nbsp;
+                                        <a href="javascript:;" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                            <i class="fa fa-bars"></i>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="active" data-id="'.base64_encode($data->id).'">Active</a></li>
+                                            <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="inactive" data-id="'.base64_encode($data->id).'">Inactive</a></li>
+                                            <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="deleted" data-id="'.base64_encode($data->id).'">Delete</a></li>
+                                        </ul>
                                     </div>';
                         })
-                        ->rawColumns(['action'])
+
+                        ->editColumn('status', function($data) {
+                            if($data->status == 'active'){
+                                return '<span class="badge badge-success">Active</span>';
+                            }else if($data->status == 'inactive'){
+                                return '<span class="badge badge-warning">Inactive</span>';
+                            }else if($data->status == 'deleted'){
+                                return '<span class="badge badge-danger">Delete</span>';
+                            }else{
+                                return '-';
+                            }
+                        })
+
+                        ->rawColumns(['action', 'status'])
                         ->make(true);
             }
 
@@ -40,68 +57,72 @@
             return view('backend.country.create');
         }
 
-        public function insert(CountryForm $request){
+        public function insert(CountryRequest $request){
             if($request->ajax()){ return true; }
 
-            $data = new Country();
-            $data->name = ucfirst($request->name);
-            $data->country_code = $request->country_code;
-            $data->created_at = date('Y-m-d H:i:s');
-            $data->created_by = auth()->user()->id;
-            $data->updated_at = date('Y-m-d H:i:s');
+            $crud = [
+                'name' => ucfirst($request->name),
+                'country_code' => $request->country_code,
+                'status' => 'active',
+                'created_at' => date('Y-m-d H:i:s'),
+                'created_by' => auth()->user()->id,
+                'updated_at' => date('Y-m-d H:i:s'),
+                'updated_by' => auth()->user()->id
+            ];
 
-            if($data->save()){
-                return redirect()->route('admin.country')->with('success', 'Country Inserted Successfully.');
-            }else{
+            $last_id = Country::insertGetId($crud);
+
+            if($last_id > 0)
+                return redirect()->route('admin.country')->with('success', 'Country inserted successfully.');
+            else
                 return redirect()->back()->with('error', 'Failed to insert record.')->withInput();
-            }
-        }
-
-
-        public function view(Request $request){
-        	$id = base64_decode($request->id);
-        	$country = Country::find($id);
-            return view('backend.country.view')->with(['country' => $country]);
         }
 
         public function edit(Request $request){
         	$id = base64_decode($request->id);
-        	$country = Country::find($id);
-            return view('backend.country.edit')->with(['country' => $country]);
+            $data = Country::find($id);
+
+            return view('backend.country.edit')->with(['data' => $data]);
         }
 
-        public function update(CountryForm $request){
+        public function update(CountryRequest $request){
         	if($request->ajax()){ return true ;}
-            $id = $request->id;
 
-            $crud = array(
-                    'name' => ucfirst($request->name),
-                    'country_code' => $request->country_code,
-                    'updated_at' => date('Y-m-d H:i:s')
-                );
+            $crud = [
+                'name' => ucfirst($request->name),
+                'country_code' => $request->country_code,
+                'updated_at' => date('Y-m-d H:i:s'),
+                'updated_by' => auth()->user()->id
+            ];
 
-            $update = DB::table('country')->where('id', $id)->limit(1)->update($crud);
+            $update = Country::where(['id' => $request->id])->update($crud);
 
-            if($update){
+            if($update)
                 return redirect()->route('admin.country')->with('success', 'Country updated successfully.');
-            }else{
+            else
                 return redirect()->back()->with('error', 'Failed to updated record.')->withInput();
-            }
         }
 
-        public function delete(Request $request){
+        public function view(Request $request){
+        	$id = base64_decode($request->id);
+            $data = Country::find($id);
+
+            return view('backend.country.view')->with(['data' => $data]);
+        }
+
+        public function change_status(Request $request){
             if(!$request->ajax()){ exit('No direct script access allowed'); }
 
             if(!empty($request->all())){
-                $id = $request->id;
+                $id = base64_decode($request->id);
+                $status = $request->status;
 
-                $delete = Country::where('id', $id)->delete();
+                $update = Country::where(['id' => $id])->update(['status' => $status, 'updated_by' => auth()->user()->id]);
 
-                if($delete){
+                if($update)
                     return response()->json(['code' => 200]);
-                }else{
+                else
                     return response()->json(['code' => 201]);
-                }
             }else{
                 return response()->json(['code' => 201]);
             }

@@ -4,52 +4,60 @@
 @endsection
 
 @section('title')
-    Edit Country
+    Country Edit
 @endsection
 
 @section('styles')
 @endsection
 
 @section('content')
-   <div class="page-content fade-in-up">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="ibox">
-                <div class="ibox-head">
-                    <div class="ibox-title">Edit Country</div>
-                </div>
-                <div class="ibox-body">
-                    <form action="{{ route('admin.country.update') }}" name="form" id="form" method="post">
-                        @csrf
-                        @method('PATCH')
-                        <input type="hidden" name="id" value="{{$country->id}}">
-                        <div class="row">
-                            <div class="form-group col-sm-6">
-                                <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Plese Enter Name" value="{{ $country->name ?? '' }}">
-                                <span class="kt-form__help error name"></span>
-                            </div>
-                        </div>
+    <div class="page-heading mt-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ route('admin.country') }}">Countries</i></a>
+            </li>
+            <li class="breadcrumb-item">Edit</li>
+        </ol>
+    </div>
+    <div class="page-content fade-in-up">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="ibox">
+                    <div class="ibox-head">
+                        <div class="ibox-title">Country Edit</div>
+                    </div>
+                    <div class="ibox-body">
+                        <form action="{{ route('admin.country.update') }}" name="form" id="form" method="post">
+                            @csrf
+                            @method('PATCH')
 
-                        <div class="row">
-                            <div class="form-group col-sm-6">
-                                <label for="country_code">Country Code</label>
-                                <input type="text" class="form-control" id="country_code" name="country_code" placeholder="Plese Enter Country Code" value="{{ $country->country_code ?? '' }}">
-                                <span class="kt-form__help error country_code"></span>
+                            <input type="hidden" name="id" value="{{ $data->id }}">
+
+                            <div class="row">
+                                <div class="form-group col-sm-6">
+                                    <label for="name">Name</label>
+                                    <input type="text" name="name" id="name" class="form-control" placeholder="Plese enter name" value="{{ $data->name ?? '' }}">
+                                    <span class="kt-form__help error name"></span>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="country_code">Country Code</label>
+                                    <input type="text" name="country_code" id="country_code" class="form-control" placeholder="Plese enter country code" value="{{ $data->country_code ?? '' }}">
+                                    <span class="kt-form__help error country_code"></span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                            <a href="{{ route('admin.country') }}">
-                                <button type="button" class="btn btn-secondary">Cancel</button>
-                            </a>
-                        </div>
-                    </form>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <a href="{{ route('admin.country') }}" class="btn btn-secondary">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 @endsection
 
 @section('scripts')
@@ -62,6 +70,7 @@
             });
         });
     </script>
+
     <script>
         $(document).ready(function () {
             var form = $('#form');

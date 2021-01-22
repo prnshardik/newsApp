@@ -4,56 +4,63 @@
 @endsection
 
 @section('title')
-    Create State
+    State Create
 @endsection
 
 @section('styles')
 @endsection
 
 @section('content')
-   <div class="page-content fade-in-up">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="ibox">
-                <div class="ibox-head">
-                    <div class="ibox-title">Create State</div>
-                </div>
-                <div class="ibox-body">
-                    <form action="{{ route('admin.state.insert') }}" name="form" id="form" method="post">
-                        @csrf
-                        @method('POST')
-                        <div class="row">
-                            <div class="form-group col-sm-6">
-                                <label for="country_code">Country Name</label>
-                                <select class="form-control" id="country_id" name="country_id">
-                                    <option value="" hidden>Selct Country</option>
-                                    @foreach($country AS $row)
-                                        <option value="{{$row->id}}">{{$row->name}}</option>
-                                    @endforeach
-                                </select>
-                                <span class="kt-form__help error country_id"></span>
-                            </div>
-                        </div>
+    <div class="page-heading mt-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ route('admin.state') }}">States</i></a>
+            </li>
+            <li class="breadcrumb-item">Create</li>
+        </ol>
+    </div>
+    <div class="page-content fade-in-up">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="ibox">
+                    <div class="ibox-head">
+                        <div class="ibox-title">State Create</div>
+                    </div>
+                    <div class="ibox-body">
+                        <form action="{{ route('admin.state.insert') }}" name="form" id="form" method="post">
+                            @csrf
+                            @method('POST')
 
-                        <div class="row">
-                            <div class="form-group col-sm-6">
-                                <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Plese Enter Name" value="{{ @old('name') }}">
-                                <span class="kt-form__help error name"></span>
+                            <div class="row">
+                                <div class="form-group col-sm-6">
+                                    <label for="country_code">Country Name</label>
+                                    <select name="country_id" id="country_id" class="form-control">
+                                        <option value="" hidden>Selct Country</option>
+                                        @foreach($country AS $row)
+                                            <option value="{{$row->id}}">{{$row->name}}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="kt-form__help error country_id"></span>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="name">Name</label>
+                                    <input type="text" name="name" id="name" class="form-control" placeholder="Plese Enter Name" value="{{ @old('name') }}">
+                                    <span class="kt-form__help error name"></span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                            <a href="{{ route('admin.state') }}">
-                                <button type="button" class="btn btn-secondary">Cancel</button>
-                            </a>
-                        </div>
-                    </form>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <a href="{{ route('admin.state') }}" class="btn btn-secondary">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 @endsection
 
 @section('scripts')
@@ -62,6 +69,7 @@
             multiple: false,
         });
     </script>
+
     <script>
         $(document).ready(function () {
             var form = $('#form');
