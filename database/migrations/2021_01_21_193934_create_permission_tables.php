@@ -27,14 +27,27 @@ class CreatePermissionTables extends Migration
             $table->timestamps();
         });
 
-        $permission_id_1 = DB::table('permissions')->insertGetId(['name' => 'role-create', 'guard_name' => 'web']);
-        $permission_id_2 = DB::table('permissions')->insertGetId(['name' => 'role-edit', 'guard_name' => 'web']);
-        $permission_id_3 = DB::table('permissions')->insertGetId(['name' => 'role-view', 'guard_name' => 'web']);
-        $permission_id_4 = DB::table('permissions')->insertGetId(['name' => 'role-delete', 'guard_name' => 'web']);
-        $permission_id_5 = DB::table('permissions')->insertGetId(['name' => 'permission-create', 'guard_name' => 'web']);
-        $permission_id_6 = DB::table('permissions')->insertGetId(['name' => 'permission-edit', 'guard_name' => 'web']);
-        $permission_id_7 = DB::table('permissions')->insertGetId(['name' => 'permission-view', 'guard_name' => 'web']);
-        $permission_id_8 = DB::table('permissions')->insertGetId(['name' => 'permission-delete', 'guard_name' => 'web']);
+        $role_create = DB::table('permissions')->insertGetId(['name' => 'role-create', 'guard_name' => 'web']);
+        $role_edit = DB::table('permissions')->insertGetId(['name' => 'role-edit', 'guard_name' => 'web']);
+        $role_view = DB::table('permissions')->insertGetId(['name' => 'role-view', 'guard_name' => 'web']);
+        $role_delete = DB::table('permissions')->insertGetId(['name' => 'role-delete', 'guard_name' => 'web']);
+        $permission_create = DB::table('permissions')->insertGetId(['name' => 'permission-create', 'guard_name' => 'web']);
+        $permission_edit = DB::table('permissions')->insertGetId(['name' => 'permission-edit', 'guard_name' => 'web']);
+        $permission_view = DB::table('permissions')->insertGetId(['name' => 'permission-view', 'guard_name' => 'web']);
+        $permission_delete = DB::table('permissions')->insertGetId(['name' => 'permission-delete', 'guard_name' => 'web']);
+
+        $country_create = DB::table('permissions')->insertGetId(['name' => 'country-create', 'guard_name' => 'web']);
+        $country_edit = DB::table('permissions')->insertGetId(['name' => 'country-edit', 'guard_name' => 'web']);
+        $country_view = DB::table('permissions')->insertGetId(['name' => 'country-view', 'guard_name' => 'web']);
+        $country_delete = DB::table('permissions')->insertGetId(['name' => 'country-delete', 'guard_name' => 'web']);
+        $state_create = DB::table('permissions')->insertGetId(['name' => 'state-create', 'guard_name' => 'web']);
+        $state_edit = DB::table('permissions')->insertGetId(['name' => 'state-edit', 'guard_name' => 'web']);
+        $state_view = DB::table('permissions')->insertGetId(['name' => 'state-view', 'guard_name' => 'web']);
+        $state_delete = DB::table('permissions')->insertGetId(['name' => 'state-delete', 'guard_name' => 'web']);
+        $city_create = DB::table('permissions')->insertGetId(['name' => 'city-create', 'guard_name' => 'web']);
+        $city_edit = DB::table('permissions')->insertGetId(['name' => 'city-edit', 'guard_name' => 'web']);
+        $city_view = DB::table('permissions')->insertGetId(['name' => 'city-view', 'guard_name' => 'web']);
+        $city_delete = DB::table('permissions')->insertGetId(['name' => 'city-delete', 'guard_name' => 'web']);
 
         Schema::create($tableNames['roles'], function (Blueprint $table) {
             $table->bigIncrements('id');
@@ -96,14 +109,27 @@ class CreatePermissionTables extends Migration
             $table->primary(['permission_id', 'role_id'], 'role_has_permissions_permission_id_role_id_primary');
         });
 
-        DB::table('role_has_permissions')->insert(['permission_id' => $permission_id_1, 'role_id' => $admin_role_id]);
-        DB::table('role_has_permissions')->insert(['permission_id' => $permission_id_2, 'role_id' => $admin_role_id]);
-        DB::table('role_has_permissions')->insert(['permission_id' => $permission_id_3, 'role_id' => $admin_role_id]);
-        DB::table('role_has_permissions')->insert(['permission_id' => $permission_id_4, 'role_id' => $admin_role_id]);
-        DB::table('role_has_permissions')->insert(['permission_id' => $permission_id_5, 'role_id' => $admin_role_id]);
-        DB::table('role_has_permissions')->insert(['permission_id' => $permission_id_6, 'role_id' => $admin_role_id]);
-        DB::table('role_has_permissions')->insert(['permission_id' => $permission_id_7, 'role_id' => $admin_role_id]);
-        DB::table('role_has_permissions')->insert(['permission_id' => $permission_id_8, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $role_create, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $role_edit, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $role_view, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $role_delete, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $permission_create, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $permission_edit, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $permission_view, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $permission_delete, 'role_id' => $admin_role_id]);
+
+        DB::table('role_has_permissions')->insert(['permission_id' => $country_create, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $country_edit, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $country_view, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $country_delete, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $state_create, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $state_edit, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $state_view, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $state_delete, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $city_create, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $city_edit, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $city_view, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $city_delete, 'role_id' => $admin_role_id]);
 
         $user = DB::table('users')->where(['email' => 'superadmin@newsapp.com'])->first();
         if($user){
