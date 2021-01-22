@@ -78,7 +78,7 @@
                     Route::get('city/view', 'CityController@view')->name('admin.city.view');
                     Route::get('city/edit', 'CityController@edit')->name('admin.city.edit');
                     Route::patch('city/update/{id?}', 'CityController@update')->name('admin.city.update');
-                    Route::post('city/delete', 'CityController@delete')->name('admin.city.delete');
+                    Route::post('city/change_status', 'CityController@change_status')->name('admin.city.change.status');
                 /** City */
             });
         });
