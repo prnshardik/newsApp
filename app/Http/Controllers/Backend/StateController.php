@@ -30,7 +30,7 @@
                                         </a> &nbsp;
                                         <a href="javascript:;" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
                                             <i class="fa fa-bars"></i>
-                                        </a>
+                                        </a> &nbsp;
                                         <ul class="dropdown-menu">
                                             <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="active" data-id="'.base64_encode($data->id).'">Active</a></li>
                                             <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="inactive" data-id="'.base64_encode($data->id).'">Inactive</a></li>

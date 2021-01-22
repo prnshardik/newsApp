@@ -15,10 +15,9 @@
         public function index(Request $request){
         	if($request->ajax()){
                 $data = DB::table('city')
-                            ->select('city.name' ,'city.id' , 'c.name AS country_name' ,'state.name AS state_name')
+                            ->select('city.name' ,'city.id','city.status' , 'c.name AS country_name' ,'state.name AS state_name')
                             ->join('country AS c' ,'city.country_id' ,'c.id')
                             ->join('state' ,'city.state_id' ,'state.id')
-                            ->where('city.status' ,'active')
                             ->orderBy('city.id' ,'DESC')
                             ->get();
 
@@ -32,12 +31,29 @@
                                         <a href="'.route('admin.city.edit', ['id' => base64_encode($data->id)]).'" class="btn btn-default btn-xs">
                                             <i class="fa fa-edit"></i>
                                         </a> &nbsp;
-                                        <a class="btn btn-default btn-xs" href="javascript:void(0);" onclick="delete_func(this);" data-id="'.$data->id.'">
-                                            <i class="fa fa-trash"></i>
+                                        <a href="javascript:;" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                            <i class="fa fa-bars"></i>
                                         </a> &nbsp;
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="active" data-id="'.base64_encode($data->id).'">Active</a></li>
+                                                <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="inactive" data-id="'.base64_encode($data->id).'">Inactive</a></li>
+                                                <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="deleted" data-id="'.base64_encode($data->id).'">Delete</a></li>
+                                            </ul>
                                     </div>';
                         })
-                        ->rawColumns(['action'])
+                        ->editColumn('status', function($data) {
+                            if($data->status == 'active'){
+                                return '<span class="badge badge-pill badge-success">Active</span>';
+                            }else if($data->status == 'inactive'){
+                                return '<span class="badge badge-pill badge-warning">Inactive</span>';
+                            }else if($data->status == 'deleted'){
+                                return '<span class="badge badge-pill badge-danger">Delete</span>';
+                            }else{
+                                return '-';
+                            }
+                        })
+
+                        ->rawColumns(['action', 'status'])
                         ->make(true);
             }
 
@@ -143,6 +159,24 @@
                     $html .= "<option value='".$row->id."'>".$row->name."</option>";
                 }
                 return response()->json(['code' => 200, 'data' => $html]);
+            }else{
+                return response()->json(['code' => 201]);
+            }
+        }
+
+        public function change_status(Request $request){
+            if(!$request->ajax()){ exit('No direct script access allowed'); }
+
+            if(!empty($request->all())){
+                $id = base64_decode($request->id);
+                $status = $request->status;
+
+                $update = City::where(['id' => $id])->update(['status' => $status, 'updated_by' => auth()->user()->id]);
+
+                if($update)
+                    return response()->json(['code' => 200]);
+                else
+                    return response()->json(['code' => 201]);
             }else{
                 return response()->json(['code' => 201]);
             }

@@ -31,6 +31,7 @@
                                     <th>Name</th>
                                     <th>State Name</th>
                                     <th>Country Name</th>
+                                    <th>Status</th>
                                     <th width="100px">Action</th>
                                 </tr>
                             </thead>
@@ -46,10 +47,10 @@
 
 @section('scripts')
     <script type="text/javascript">
-        var list_table_one;
+        var datatable;
             $(document).ready(function() {
                 if($('#data-table').length > 0){
-                    list_table_one = $('#data-table').DataTable({
+                    datatable = $('#data-table').DataTable({
                         processing: true,
                         serverSide: true,
 
@@ -101,6 +102,10 @@
                                 name: 'country_name'
                             },
                             {
+                                data: 'status',
+                                name: 'status'
+                            },
+                            {
                                 data: 'action',
                                 name: 'action',
                                 orderable: false,
@@ -110,27 +115,30 @@
                 }
             });
 
-            function delete_func(a_object){
-                var id = $(a_object).data("id");
-                if (confirm('Are You Sure You Want To Delete?')) {
-                    $.ajax({
-                        "url": "{!! route('admin.city.delete') !!}",
-                        "dataType": "json",
-                        "type": "POST",
-                        "data":{
-                            id: id,
-                            _token: "{{ csrf_token() }}"
-                        },
-                        success: function (response){
-                            if (response.code == 200){
-                                list_table_one.ajax.reload();
-                                toastr.success('Record deleted successfully.', 'Success');
-                            }else{
-                                toastr.error('Failed to delete record.', 'Error');
-                            }
+            function change_status(object){
+            var id = $(object).data("id");
+            var status = $(object).data("status");
+
+            if (confirm('Are you sure?')) {
+                $.ajax({
+                    "url": "{!! route('admin.city.change.status') !!}",
+                    "dataType": "json",
+                    "type": "POST",
+                    "data":{
+                        id: id,
+                        status: status,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function (response){
+                        if (response.code == 200){
+                            datatable.ajax.reload();
+                            toastr.success('Record status changed successfully.', 'Success');
+                        }else{
+                            toastr.error('Failed to delete record.', 'Error');
                         }
-                    });
-                }
+                    }
+                });
             }
+        }
     </script>
 @endsection
