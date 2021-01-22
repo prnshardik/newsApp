@@ -18,7 +18,7 @@ class CreateCityTable extends Migration
             $table->string('country_id');
             $table->string('state_id');
             $table->string('name');
-            $table->enum('status', ['active', 'inactive', 'deleted'])->default('inactive');
+            $table->enum('status', ['active', 'inactive', 'deleted'])->default('active');
             $table->timestamps();
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
