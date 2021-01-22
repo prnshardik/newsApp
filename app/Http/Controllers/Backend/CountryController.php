@@ -36,11 +36,11 @@
 
                         ->editColumn('status', function($data) {
                             if($data->status == 'active'){
-                                return '<span class="badge badge-success">Active</span>';
+                                return '<span class="badge badge-pill badge-success">Active</span>';
                             }else if($data->status == 'inactive'){
-                                return '<span class="badge badge-warning">Inactive</span>';
+                                return '<span class="badge badge-pill badge-warning">Inactive</span>';
                             }else if($data->status == 'deleted'){
-                                return '<span class="badge badge-danger">Delete</span>';
+                                return '<span class="badge badge-pill badge-danger">Delete</span>';
                             }else{
                                 return '-';
                             }

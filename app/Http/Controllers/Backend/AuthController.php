@@ -35,7 +35,7 @@
                         Auth::logout();
                         return redirect()->route('admin.login')->with('error', 'Account belongs to this credentials is deleted, please contact administrator');
                     }else{
-                        return redirect()->route('dashboard')->with('success', 'Login successfully');
+                        return redirect()->route('admin.dashboard')->with('success', 'Login successfully');
                     }
                 }else{
                     return redirect()->route('admin.login')->with('error', 'invalid credentials, please check credentials');

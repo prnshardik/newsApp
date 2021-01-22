@@ -4,9 +4,10 @@
 
     use App\Http\Controllers\Controller;
     use Illuminate\Http\Request;
-    use App\Models\Role;
+    use Spatie\Permission\Models\Role;
     use App\Http\Requests\RoleRequest;
     use DataTables;
+    use Spatie\Permission\Models\Permission;
 
     class RoleController extends Controller{
         public function index(Request $request){
@@ -36,7 +37,8 @@
         }
 
         public function create(Request $request){
-            return view('backend.role.create');
+            $permissions = Permission::get();
+            return view('backend.role.create', ['permissions' => $permissions]);
         }
 
         public function insert(RoleRequest $request){
@@ -49,12 +51,15 @@
                 'updated_at' => date('Y-m-d H:i:s')
             ];
 
-            $last_id = Role::insertGetId($curd);
+            $role = Role::create($curd);
 
-            if($last_id > 0)
+            if($role){
+                $role->syncPermissions($request->permissions);
+
                 return redirect()->route('admin.role')->with('success', 'Role inserted successfully.');
-            else
+            }else{
                 return redirect()->back()->with('error', 'Failed to insert record.')->withInput();
+            }
         }
 
         public function edit(Request $request){
