@@ -11,18 +11,18 @@
 @endsection
 
 @section('content')
-<div class="page-content fade-in-up">
+    <div class="page-content fade-in-up">
         <div class="row">
             <div class="col-lg-12">
                 <div class="ibox">
-                    
+
                     <div class="ibox-head">
                         <h1 class="ibox-title">State</h1>
                         <h1 class="pull-right">
                            <a class="btn btn-primary pull-right" style="margin-top: 8px;margin-bottom: 5px" href="{{ route('admin.state.create') }}">Add New</a>
                         </h1>
-                    </div>            
-                       
+                    </div>
+
                     <div class="dataTables_wrapper container-fluid dt-bootstrap4">
                         <table class="table table-bordered data-table" id="data-table">
                             <thead>
@@ -37,12 +37,10 @@
                     </div>
 
                     <div class="text-center"></div>
-
                 </div>
             </div>
         </div>
-</div>
-
+    </div>
 @endsection
 
 @section('scripts')

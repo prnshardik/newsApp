@@ -508,4 +508,5 @@
 @endsection
 
 @section('scripts')
+    <script src="{{ asset('backend/js/scripts/dashboard_1_demo.js') }}" type="text/javascript"></script>
 @endsection

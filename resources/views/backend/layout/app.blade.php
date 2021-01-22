@@ -31,7 +31,6 @@
     </div>
 
     @include('backend.layout.scripts')
-
 </body>
 
 </html>

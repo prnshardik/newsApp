@@ -8,10 +8,8 @@
 <script src="{{ asset('backend/vendors/jvectormap/jquery-jvectormap-world-mill-en.js') }}" type="text/javascript"></script>
 <script src="{{ asset('backend/vendors/jvectormap/jquery-jvectormap-us-aea-en.js') }}" type="text/javascript"></script>
 <script src="{{ asset('backend/js/app.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('backend/js/scripts/dashboard_1_demo.js') }}" type="text/javascript"></script>
 <script src="{{ asset('backend/js/toastr.js') }}" type="text/javascript"></script>
-<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-
+<script src="{{ asset('backend/js/datatable.min.js') }}"></script>
 
 <script>
     @php
