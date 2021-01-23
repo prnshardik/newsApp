@@ -140,7 +140,7 @@
                     <img src="{{ asset('backend/img/admin-avatar.png') }}" />
                     <span></span>{{ auth()->user()->firstname.' '.auth()->user()->lastname }}<i class="fa fa-angle-down m-l-5"></i></a>
                 <ul class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="javascript:void(0);"><i class="fa fa-user"></i>Profile</a>
+                    <a class="dropdown-item" href="{{url('admin/profile',Auth::user()->id)}}"><i class="fa fa-user"></i>Profile</a>
                     <a class="dropdown-item" href="javascript:void(0);"><i class="fa fa-cog"></i>Settings</a>
                     {{-- <a class="dropdown-item" href="javascript:;"><i class="fa fa-support"></i>Support</a> --}}
                     <li class="dropdown-divider"></li>

@@ -108,9 +108,9 @@
 
 
                 /** User Profile */
-                    // Route::get('subscriber/create', 'SubscriberController@create')->name('admin.subscriber.create');
-                    // Route::post('subscriber/insert', 'SubscriberController@insert')->name('admin.subscriber.insert');
-                    // Route::get('subscriber/edit', 'SubscriberController@edit')->name('admin.subscriber.edit');
+                    Route::get('admin/profile/{id?}', 'AdminProfileController@profile')->name('admin.profile');
+                    Route::get('admin/profile-edit/{id?}', 'AdminProfileController@profile_edit')->name('admin.profile_edit');
+                    Route::PATCH('admin/profile-update', 'AdminProfileController@profile_update')->name('admin.profile_update');
                 /** User Profile */
 
             });
