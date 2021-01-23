@@ -179,7 +179,24 @@
             $data = State::select('id', 'name')->where(['country_id' => $country_id])->get();
 
             if(isset($data) && $data->isNotEmpty()){
-                $html = '<option value="">select state</option>';
+                $html = '<option value="">Select State</option>';
+                foreach($data as $row){
+                    $html .= "<option value='".$row->id."'>".$row->name."</option>";
+                }
+                return response()->json(['code' => 200, 'data' => $html]);
+            }else{
+                return response()->json(['code' => 201]);
+            }
+        }
+
+        public function get_city(Request $request){
+            $state_id = $request->state_id;
+            $country_id = $request->country_id;
+
+            $data = City::select('id', 'name')->where(['country_id' => $country_id, 'state_id' => $state_id])->get();
+
+            if(isset($data) && $data->isNotEmpty()){
+                $html = '<option value="">Select City</option>';
                 foreach($data as $row){
                     $html .= "<option value='".$row->id."'>".$row->name."</option>";
                 }
