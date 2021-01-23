@@ -45,11 +45,20 @@
                                     <input type="text" name="lastname" id="lastname" class="form-control" placeholder="Plese enter lastname" value="{{ @old('lastname') }}">
                                     <span class="kt-form__help error lastname"></span>
                                 </div>
-                                <div class="form-group col-sm-6">
-                                    <label for="receipt_no">Receipt No</label>
-                                    <input type="text" name="receipt_no" id="receipt_no" class="form-control" placeholder="Plese enter receipt_no" value="{{ @old('receipt_no') }}">
-                                    <span class="kt-form__help error receipt_no"></span>
-                                </div>
+                                @if(auth()->user()->role_id == 1)
+                                    <div class="form-group col-sm-6">
+                                        <label for="receipt_no">Receipt No</label>
+                                        <input type="text" name="receipt_no" id="receipt_no" class="form-control" placeholder="Plese enter receipt no" value="{{ @old('receipt_no') }}">
+                                        <span class="kt-form__help error receipt_no"></span>
+                                    </div>
+                                @else
+                                    <div class="form-group col-sm-6">
+                                        <label for="receipt_no">Receipt No</label>
+                                        <input type="text" name="receipt_no_1" id="receipt_no_1" class="form-control" placeholder="Plese enter receipt no" value="{{ $receipt_no }}" disabled>
+                                        <input type="hidden" name="receipt_no" id="receipt_no" value="{{ $receipt_no }}" >
+                                        <span class="kt-form__help error receipt_no"></span>
+                                    </div>
+                                @endif
                                 <div class="form-group col-sm-6">
                                     <label for="description">Description</label>
                                     <input type="text" name="description" id="description" class="form-control" placeholder="Plese enter description" value="{{ @old('description') }}">

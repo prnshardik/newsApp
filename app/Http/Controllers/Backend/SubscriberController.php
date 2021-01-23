@@ -22,16 +22,20 @@
 
         public function index(Request $request){
         	if($request->ajax()){
-                $data = DB::table('subscribers as s')
-                            ->select('s.id', 's.receipt_no', 's.phone', 's.pincode', 's.status',
-                                        DB::Raw("CONCAT(".'u.firstname'.", ' ', ".'u.lastname'.") as name"),
-                                        'ct.name as city_name', 'st.name as state_name'
-                                    )
-                            ->join('users as u', 'u.id', 's.user_id')
-                            ->join('state as st', 'st.id', 's.state')
-                            ->join('city as ct', 'ct.id', 's.city')
-                            ->orderBy('id', 'desc')
-                            ->get();
+                $collections = DB::table('subscribers as s')
+                                    ->select('s.id', 's.receipt_no', 's.phone', 's.pincode', 's.status',
+                                                DB::Raw("CONCAT(".'u.firstname'.", ' ', ".'u.lastname'.") as name"),
+                                                'ct.name as city_name', 'st.name as state_name'
+                                            )
+                                    ->join('users as u', 'u.id', 's.user_id')
+                                    ->join('state as st', 'st.id', 's.state')
+                                    ->join('city as ct', 'ct.id', 's.city');
+
+                if(auth()->user()->role_id != 1)
+                    $collections->where(['s.created_by' => auth()->user()->id]);
+
+                $data = $collections->orderBy('s.id', 'desc')
+                                    ->get();
 
                 return Datatables::of($data)
                         ->addIndexColumn()
@@ -87,7 +91,37 @@
 
         public function create(Request $request){
             $countries = Country::get();
-            return view('backend.subscriber.create', ['countries' => $countries]);
+            $receipt_no = '';
+
+            if(auth()->user()->id != 1){
+                $reporter = DB::table('reporter')
+                                    ->select('receipt_book_start_no', 'receipt_book_end_no')
+                                    ->where(['user_id' => auth()->user()->id])
+                                    ->first();
+
+                $subscribers = DB::table('subscribers')
+                                    ->select('receipt_no')
+                                    ->where(['created_by' => auth()->user()->id])
+                                    ->orderBy('id', 'desc')
+                                    ->first();
+
+                if(empty($subscribers)){
+                    $receipt_no = $reporter->receipt_book_start_no;
+                }else{
+                    // dd($subscribers->receipt_no, $reporter->receipt_book_start_no, $reporter->receipt_book_end_no);
+                    if($subscribers->receipt_no >= $reporter->receipt_book_start_no && $subscribers->receipt_no < $reporter->receipt_book_end_no){
+                        $receipt_no = $subscribers->receipt_no + 1;
+                    }else{
+                        if($subscribers->receipt_no < $reporter->receipt_book_end_no){
+                            $receipt_no = $reporter->receipt_book_start_no;
+                        }else{
+                            return redirect()->back()->with(['error' => 'your reciept book is completed, please contact administrator']);
+                        }
+                    }
+                }
+            }
+
+            return view('backend.subscriber.create', ['countries' => $countries, 'receipt_no' => $receipt_no]);
         }
 
         public function insert(SubscriberRequest $request){

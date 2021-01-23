@@ -49,7 +49,8 @@
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="receipt_no">Receipt No</label>
-                                    <input type="text" name="receipt_no" id="receipt_no" class="form-control" placeholder="Plese enter receipt_no" value="{{ $data->receipt_no ?? '' }}">
+                                    <input type="text" name="receipt_no_1" id="receipt_no_1" class="form-control" placeholder="Plese enter receipt_no" value="{{ $data->receipt_no ?? '' }}" disabled>
+                                    <input type="hidden" name="receipt_no" id="receipt_no" value="{{ $data->receipt_no ?? '' }}">
                                     <span class="kt-form__help error receipt_no"></span>
                                 </div>
                                 <div class="form-group col-sm-6">
