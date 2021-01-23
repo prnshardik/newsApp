@@ -18,7 +18,8 @@
         <div class="brand">
             <a class="link" href="javascript:void(0);">{{ _site_name() }}</a>
         </div>
-        <form id="forgot-form" action="{{ route('admin.recover.password') }}" method="post">
+        <form id="forgot-form" action="{{ route('admin.password.forget') }}" method="post">
+            @csrf
             <h3 class="m-t-10 m-b-10">Forgot password</h3>
             <p class="m-b-20">Enter your email address below and we'll send you password reset instructions.</p>
             <div class="form-group">

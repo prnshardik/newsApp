@@ -30,13 +30,13 @@
                             ->join('state as st', 'st.id', 'r.state_id')
                             ->join('city as ct', 'ct.id', 'r.city_id')
                             ->select('r.id', 'r.unique_id', 'r.phone_no', 'r.status',
-                                        DB::Raw("CONCAT(".'u.firstname'.", ' ', ".'u.lastname'.") as name"), 
-                                        DB::Raw("CONCAT(".'r.receipt_book_start_no'.", ' ', ".'r.receipt_book_end_no'.") as receipt_book_no"),
+                                        DB::Raw("CONCAT(".'u.firstname'.", ' ', ".'u.lastname'.") as name"),
+                                        DB::Raw("CONCAT(".'r.receipt_book_start_no'.", ' - ', ".'r.receipt_book_end_no'.") as receipt_book_no"),
                                         'ct.name as city_name', 'st.name as state_name'
                                     )
                             ->orderBy('id', 'desc')
                             ->get();
-                
+
                 return Datatables::of($data)
                         ->addIndexColumn()
                         ->addColumn('action', function($data){

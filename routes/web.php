@@ -20,7 +20,10 @@
                 Route::post('signin', 'AuthController@signin')->name('admin.signin');
 
                 Route::get('forget-password', 'AuthController@forget_password')->name('admin.forget.password');
-                Route::get('recover-password', 'AuthController@recover_password')->name('admin.recover.password');
+                Route::post('password-forget', 'AuthController@password_forget')->name('admin.password.forget');
+                Route::get('forget-password-page/{mail}', 'AuthController@forget_password_page')->name('admin.forget.password.page');
+                Route::get('reset-password/{string}', 'AuthController@reset_password')->name('admin.reset.password');
+                Route::post('recover-password', 'AuthController@recover_password')->name('admin.recover.password');
             });
 
             Route::group(['middleware' => ['auth']], function () {
