@@ -12,6 +12,7 @@
     use App\Http\Requests\ReporterRequest;
     use DataTables, DB;
     use Spatie\Permission\Models\Role;
+    use Hash;
 
     class ReporterController extends Controller{
 
@@ -25,14 +26,14 @@
         public function index(Request $request){
         	if($request->ajax()){
                 $data = DB::table('reporter as r')
+                            ->join('users as u', 'r.user_id' , 'u.id')
+                            ->join('state as st', 'st.id', 'r.state_id')
+                            ->join('city as ct', 'ct.id', 'r.city_id')
                             ->select('r.id', 'r.unique_id', 'r.phone_no', 'r.status',
                                         DB::Raw("CONCAT(".'u.firstname'.", ' ', ".'u.lastname'.") as name"),
                                         DB::Raw("CONCAT(".'r.receipt_book_start_no'.", ' - ', ".'r.receipt_book_end_no'.") as receipt_book_no"),
                                         'ct.name as city_name', 'st.name as state_name'
                                     )
-                            ->join('users as u', 'u.id', 'r.user_id')
-                            ->join('state as st', 'st.id', 'r.state_id')
-                            ->join('city as ct', 'ct.id', 'r.city_id')
                             ->orderBy('id', 'desc')
                             ->get();
 
@@ -97,18 +98,25 @@
             if($request->ajax()){ return true; }
 
             $role_id = 2;
+            $password = 'abcd1234';
+
+            if($request->password != '' && $request->password != NULL){
+                $password = $request->password;
+            }
+
             $crud = [
                 'firstname' => ucfirst($request->firstname),
                 'lastname' => ucfirst($request->lastname),
-                'email' => $request->email ?? NULL,
+                'email' => $request->email,
                 'role_id' => $role_id,
                 'status' => 'active',
+                'password' => bcrypt($password),
                 'created_at' => date('Y-m-d H:i:s'),
                 'created_by' => auth()->user()->id,
                 'updated_at' => date('Y-m-d H:i:s'),
                 'updated_by' => auth()->user()->id
             ];
-
+            // dd($request);
             DB::beginTransaction();
             try {
                 $user = User::create($crud);
@@ -147,7 +155,6 @@
                     return redirect()->back()->with('error', 'Failed to insert record in user.')->withInput();
                 }
             } catch (\Throwable $th) {
-                dd('by');
                 DB::rollback();
                 return redirect()->back()->with('error', 'Failed to insert record.')->withInput();
             }

@@ -108,6 +108,14 @@
                     Route::post('subscriber/change_status', 'SubscriberController@change_status')->name('admin.subscriber.change.status');
                 /** subscriber */
 
+
+
+                /** User Profile */
+                    // Route::get('subscriber/create', 'SubscriberController@create')->name('admin.subscriber.create');
+                    // Route::post('subscriber/insert', 'SubscriberController@insert')->name('admin.subscriber.insert');
+                    // Route::get('subscriber/edit', 'SubscriberController@edit')->name('admin.subscriber.edit');
+                /** User Profile */
+
             });
         });
 

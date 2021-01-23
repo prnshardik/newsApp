@@ -12,7 +12,7 @@
     {
         use HasFactory, Notifiable, HasRoles;
 
-        protected $fillable = ['firstname', 'lastname', 'role_id', 'email', 'status'];
+        protected $fillable = ['firstname', 'lastname', 'role_id', 'email', 'status','password'];
 
         protected $hidden = ['password', 'remember_token'];
 

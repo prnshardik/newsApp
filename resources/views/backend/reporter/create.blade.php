@@ -91,7 +91,11 @@
                                     </select>
                                     <span class="kt-form__help error city_id"></span>
                                 </div>
-                                <div class="form-group col-sm-6"></div>
+                                <div class="form-group col-sm-6">
+                                    <label for="password">Password</label>
+                                    <input type="password" name="password" id="password" class="form-control" placeholder="Please Enter Password">
+                                    <span class="kt-form__help error password"></span>
+                                </div>
                                 <div class="form-group col-sm-6">
                                     <label for="receipt_book_start_no">Receipt Book Start</label>
                                     <input type="text" name="receipt_book_start_no" id="receipt_book_start_no" class="form-control" value="{{ @old('receipt_book_start_no')}}" placeholder="Please enter receipt book start no.">
