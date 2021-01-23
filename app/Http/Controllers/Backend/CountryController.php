@@ -9,6 +9,14 @@
     use DataTables, DB;
 
     class CountryController extends Controller{
+
+        public function __construct(){
+            $this->middleware('permission:country-create', ['only' => ['create', 'insert']]);
+            $this->middleware('permission:country-edit', ['only' => ['edit', 'update']]);
+            $this->middleware('permission:country-view', ['only' => ['index', 'change_status']]);
+            $this->middleware('permission:country-delete', ['only' => ['change_status']]);
+        }
+
         public function index(Request $request){
         	if($request->ajax()){
                 $data = Country::select('id', 'name', 'country_code', 'status')->orderBy('id' ,'DESC')->get();
@@ -16,22 +24,34 @@
                 return Datatables::of($data)
                         ->addIndexColumn()
                         ->addColumn('action', function($data){
-                            return '<div class="btn-group">
-                                        <a href="'.route('admin.country.view', ['id' => base64_encode($data->id)]).'" class="btn btn-default btn-xs">
-                                            <i class="fa fa-eye"></i>
-                                        </a> &nbsp;
-                                        <a href="'.route('admin.country.edit', ['id' => base64_encode($data->id)]).'" class="btn btn-default btn-xs">
-                                            <i class="fa fa-edit"></i>
-                                        </a> &nbsp;
-                                        <a href="javascript:;" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                            <i class="fa fa-bars"></i>
-                                        </a> &nbsp;
-                                        <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="active" data-id="'.base64_encode($data->id).'">Active</a></li>
-                                            <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="inactive" data-id="'.base64_encode($data->id).'">Inactive</a></li>
-                                            <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="deleted" data-id="'.base64_encode($data->id).'">Delete</a></li>
-                                        </ul>
-                                    </div>';
+                            $return = '<div class="btn-group">';
+
+                            if(auth()->user()->can('country-view')){
+                                $return .=  '<a href="'.route('admin.country.view', ['id' => base64_encode($data->id)]).'" class="btn btn-default btn-xs">
+                                                <i class="fa fa-eye"></i>
+                                            </a> &nbsp;';
+                            }
+
+                            if(auth()->user()->can('country-edit')){
+                                $return .= '<a href="'.route('admin.country.edit', ['id' => base64_encode($data->id)]).'" class="btn btn-default btn-xs">
+                                                <i class="fa fa-edit"></i>
+                                            </a> &nbsp;';
+                            }
+
+                            if(auth()->user()->can('country-delete')){
+                                $return .= '<a href="javascript:;" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                                <i class="fa fa-bars"></i>
+                                            </a> &nbsp;
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="active" data-id="'.base64_encode($data->id).'">Active</a></li>
+                                                <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="inactive" data-id="'.base64_encode($data->id).'">Inactive</a></li>
+                                                <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="deleted" data-id="'.base64_encode($data->id).'">Delete</a></li>
+                                            </ul>';
+                            }
+
+                            $return .= '</div>';
+
+                            return $return;
                         })
 
                         ->editColumn('status', function($data) {

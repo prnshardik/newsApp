@@ -29,7 +29,9 @@
                     <div class="ibox-head">
                         <h1 class="ibox-title">City</h1>
                         <h1 class="pull-right">
-                           <a class="btn btn-primary pull-right" style="margin-top: 8px;margin-bottom: 5px" href="{{ route('admin.city.create') }}">Add New</a>
+                            @canany(['city-create'])
+                                <a class="btn btn-primary pull-right" style="margin-top: 8px;margin-bottom: 5px" href="{{ route('admin.city.create') }}">Add New</a>
+                            @endcanany
                         </h1>
                     </div>
                     <div class="dataTables_wrapper container-fluid dt-bootstrap4">

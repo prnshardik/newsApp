@@ -50,36 +50,38 @@
                     /** permission */
                 /** access control */
 
-                /** Country */
-                    Route::any('country', 'CountryController@index')->name('admin.country');
-                    Route::get('country/create', 'CountryController@create')->name('admin.country.create');
-                    Route::post('country/insert', 'CountryController@insert')->name('admin.country.insert');
-                    Route::get('country/edit', 'CountryController@edit')->name('admin.country.edit');
-                    Route::patch('country/update/{id?}', 'CountryController@update')->name('admin.country.update');
-                    Route::get('country/view', 'CountryController@view')->name('admin.country.view');
-                    Route::post('country/change_status', 'CountryController@change_status')->name('admin.country.change.status');
-                /** Country */
+                /** region */
+                    /** Country */
+                        Route::any('country', 'CountryController@index')->name('admin.country');
+                        Route::get('country/create', 'CountryController@create')->name('admin.country.create');
+                        Route::post('country/insert', 'CountryController@insert')->name('admin.country.insert');
+                        Route::get('country/edit', 'CountryController@edit')->name('admin.country.edit');
+                        Route::patch('country/update/{id?}', 'CountryController@update')->name('admin.country.update');
+                        Route::get('country/view', 'CountryController@view')->name('admin.country.view');
+                        Route::post('country/change_status', 'CountryController@change_status')->name('admin.country.change.status');
+                    /** Country */
 
-                /** State */
-                    Route::any('state', 'StateController@index')->name('admin.state');
-                    Route::get('state/create', 'StateController@create')->name('admin.state.create');
-                    Route::post('state/insert', 'StateController@insert')->name('admin.state.insert');
-                    Route::get('state/view', 'StateController@view')->name('admin.state.view');
-                    Route::get('state/edit', 'StateController@edit')->name('admin.state.edit');
-                    Route::patch('state/update/{id?}', 'StateController@update')->name('admin.state.update');
-                    Route::post('state/change_status', 'StateController@change_status')->name('admin.state.change.status');
-                /** State */
+                    /** State */
+                        Route::any('state', 'StateController@index')->name('admin.state');
+                        Route::get('state/create', 'StateController@create')->name('admin.state.create');
+                        Route::post('state/insert', 'StateController@insert')->name('admin.state.insert');
+                        Route::get('state/view', 'StateController@view')->name('admin.state.view');
+                        Route::get('state/edit', 'StateController@edit')->name('admin.state.edit');
+                        Route::patch('state/update/{id?}', 'StateController@update')->name('admin.state.update');
+                        Route::post('state/change_status', 'StateController@change_status')->name('admin.state.change.status');
+                    /** State */
 
-                /** City */
-                    Route::any('city', 'CityController@index')->name('admin.city');
-                    Route::get('city/create', 'CityController@create')->name('admin.city.create');
-                    Route::post('city/get-state', 'CityController@get_state')->name('admin.city.get_state');
-                    Route::post('city/insert', 'CityController@insert')->name('admin.city.insert');
-                    Route::get('city/view', 'CityController@view')->name('admin.city.view');
-                    Route::get('city/edit', 'CityController@edit')->name('admin.city.edit');
-                    Route::patch('city/update/{id?}', 'CityController@update')->name('admin.city.update');
-                    Route::post('city/change_status', 'CityController@change_status')->name('admin.city.change.status');
-                /** City */
+                    /** City */
+                        Route::any('city', 'CityController@index')->name('admin.city');
+                        Route::get('city/create', 'CityController@create')->name('admin.city.create');
+                        Route::post('city/get-state', 'CityController@get_state')->name('admin.city.get_state');
+                        Route::post('city/insert', 'CityController@insert')->name('admin.city.insert');
+                        Route::get('city/view', 'CityController@view')->name('admin.city.view');
+                        Route::get('city/edit', 'CityController@edit')->name('admin.city.edit');
+                        Route::patch('city/update/{id?}', 'CityController@update')->name('admin.city.update');
+                        Route::post('city/change_status', 'CityController@change_status')->name('admin.city.change.status');
+                    /** City */
+                /** region */
             });
         });
 

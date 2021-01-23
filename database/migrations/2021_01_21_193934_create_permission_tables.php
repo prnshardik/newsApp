@@ -134,8 +134,8 @@ class CreatePermissionTables extends Migration
         $user = DB::table('users')->where(['email' => 'superadmin@newsapp.com'])->first();
         if($user){
             DB::table('users')->where(['id' => $user->id])->update(['role_id' => $admin_role_id]);
+            DB::table('model_has_roles')->insert(['role_id' => $admin_role_id, 'model_type' => 'App\Models\User', 'model_id' => $user->id]);
         }
-
 
         app('cache')
             ->store(config('permission.cache.store') != 'default' ? config('permission.cache.store') : null)

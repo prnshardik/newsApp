@@ -4,6 +4,7 @@
 
     use App\Http\Controllers\Controller;
     use Illuminate\Http\Request;
+    use Spatie\Permission\Models\Role;
 
     class DashboardController extends Controller{
 

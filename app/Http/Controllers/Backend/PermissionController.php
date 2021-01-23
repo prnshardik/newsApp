@@ -9,6 +9,14 @@
     use DataTables;
 
     class PermissionController extends Controller{
+
+        public function __construct(){
+            $this->middleware('permission:permission-create', ['only' => ['create', 'insert']]);
+            $this->middleware('permission:permission-edit', ['only' => ['edit', 'update']]);
+            $this->middleware('permission:permission-view', ['only' => ['index', 'change_status']]);
+            $this->middleware('permission:permission-delete', ['only' => ['change_status']]);
+        }
+
         public function index(Request $request){
         	if($request->ajax()){
                 $data = Permission::select('id', 'name', 'guard_name')->get();
@@ -16,17 +24,29 @@
                 return Datatables::of($data)
                         ->addIndexColumn()
                         ->addColumn('action', function($data){
-                            return '<div class="btn-group">
-                                        <a href="'.route('admin.permission.view', ['id' => base64_encode($data->id)]).'" class="btn btn-default btn-xs">
-                                            <i class="fa fa-eye"></i>
-                                        </a> &nbsp;
-                                        <a href="'.route('admin.permission.edit', ['id' => base64_encode($data->id)]).'" class="btn btn-default btn-xs">
-                                            <i class="fa fa-edit"></i>
-                                        </a> &nbsp;
-                                        <a class="btn btn-default btn-xs" href="javascript:void(0);" onclick="delete_func(this);" data-id="'.$data->id.'">
-                                            <i class="fa fa-trash"></i>
-                                        </a> &nbsp;
-                                    </div>';
+                            $return = '<div class="btn-group">';
+
+                            if(auth()->user()->can('permission-view')){
+                                $return .= '<a href="'.route('admin.permission.view', ['id' => base64_encode($data->id)]).'" class="btn btn-default btn-xs">
+                                                <i class="fa fa-eye"></i>
+                                            </a> &nbsp;';
+                            }
+
+                            if(auth()->user()->can('permission-edit')){
+                                $return .= '<a href="'.route('admin.permission.edit', ['id' => base64_encode($data->id)]).'" class="btn btn-default btn-xs">
+                                                <i class="fa fa-edit"></i>
+                                            </a> &nbsp;';
+                            }
+
+                            if(auth()->user()->can('permission-delete')){
+                                $return .= '<a class="btn btn-default btn-xs" href="javascript:void(0);" onclick="delete_func(this);" data-id="'.$data->id.'">
+                                                <i class="fa fa-trash"></i>
+                                            </a> &nbsp;';
+                            }
+
+                            $return .= '</div>';
+
+                            return $return;
                         })
                         ->rawColumns(['action'])
                         ->make(true);
