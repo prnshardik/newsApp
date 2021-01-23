@@ -53,7 +53,7 @@ class CreatePermissionTables extends Migration
         $reporter_edit = DB::table('permissions')->insertGetId(['name' => 'reporter-edit', 'guard_name' => 'web']);
         $reporter_view = DB::table('permissions')->insertGetId(['name' => 'reporter-view', 'guard_name' => 'web']);
         $reporter_delete = DB::table('permissions')->insertGetId(['name' => 'reporter-delete', 'guard_name' => 'web']);
-        
+
         $subscriber_create = DB::table('permissions')->insertGetId(['name' => 'subscriber-create', 'guard_name' => 'web']);
         $subscriber_edit = DB::table('permissions')->insertGetId(['name' => 'subscriber-edit', 'guard_name' => 'web']);
         $subscriber_view = DB::table('permissions')->insertGetId(['name' => 'subscriber-view', 'guard_name' => 'web']);

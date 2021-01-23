@@ -14,7 +14,7 @@
 
     if(!function_exists('_get_role_name')){
         function _get_role_name(){
-            $role = \DB::table('roles')->select('name')->where(['id' => auth()->user()->id])->first();
+            $role = \DB::table('roles')->select('name')->where(['id' => auth()->user()->role_id])->first();
             return ucfirst($role->name);
         }
     }
