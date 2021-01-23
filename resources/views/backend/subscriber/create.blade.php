@@ -81,7 +81,7 @@
                                         <option value="" hidden>Select Country</option>
                                         @if(isset($countries) && $countries->isNotEmpty())
                                             @foreach($countries AS $row)
-                                                <option value="{{$row->id}}">{{$row->name}}</option>
+                                                <option value="{{ $row->id }}">{{ $row->name }}</option>
                                             @endforeach
                                         @endif
                                     </select>

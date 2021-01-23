@@ -22,8 +22,17 @@
 
         public function index(Request $request){
         	if($request->ajax()){
-                // $data = Subscriber::select('id', 'name', 'country_code', 'status')->orderBy('id', 'DESC')->get();
-                $data  = [];
+                $data = DB::table('subscribers as s')
+                            ->select('s.id', 's.receipt_no', 's.phone', 's.pincode', 's.status',
+                                        DB::Raw("CONCAT(".'u.firstname'.", ' ', ".'u.lastname'.") as name"),
+                                        'ct.name as city_name', 'st.name as state_name'
+                                    )
+                            ->join('users as u', 'u.id', 's.user_id')
+                            ->join('state as st', 'st.id', 's.state')
+                            ->join('city as ct', 'ct.id', 's.city')
+                            ->orderBy('id', 'desc')
+                            ->get();
+
                 return Datatables::of($data)
                         ->addIndexColumn()
                         ->addColumn('action', function($data){
@@ -83,6 +92,7 @@
 
         public function insert(SubscriberRequest $request){
             if($request->ajax()){ return true; }
+
             $role_id = 3;
             $crud = [
                 'firstname' => ucfirst($request->firstname),
@@ -140,34 +150,96 @@
 
         public function edit(Request $request){
         	$id = base64_decode($request->id);
-            $data = Country::find($id);
+            $countries = Country::get();
+            $states = [];
+            $cities = [];
 
-            return view('backend.country.edit')->with(['data' => $data]);
+            $data = DB::table('subscribers as s')
+                            ->select('s.id', 's.receipt_no', 's.description', 's.address', 's.phone', 's.pincode', 's.country', 's.state', 's.city', 's.status',
+                                        'u.firstname', 'u.lastname', 'u.email'
+                                    )
+                            ->join('users as u', 'u.id', 's.user_id')
+                            ->where(['s.id' => $id])
+                            ->first();
+
+            if(!empty($data)){
+                $states = DB::table('state')->select('id', 'name')->where(['country_id' => $data->country])->get()->toArray();
+                $cities = DB::table('city')->select('id', 'name')->where(['country_id' => $data->country, 'state_id' => $data->state])->get()->toArray();
+            }
+
+            return view('backend.subscriber.edit')->with(['data' => $data, 'countries' => $countries, 'states' => $states, 'cities' => $cities]);
         }
 
-        public function update(CountryRequest $request){
+        public function update(SubscriberRequest $request){
         	if($request->ajax()){ return true ;}
 
+            $id = $request->id;
+            $exst_rec = Subscriber::where(['id' => $id])->first();
+
             $crud = [
-                'name' => ucfirst($request->name),
-                'country_code' => $request->country_code,
+                'firstname' => ucfirst($request->firstname),
+                'lastname' => ucfirst($request->lastname),
+                'email' => $request->email ?? NULL,
                 'updated_at' => date('Y-m-d H:i:s'),
                 'updated_by' => auth()->user()->id
             ];
 
-            $update = Country::where(['id' => $request->id])->update($crud);
+            DB::beginTransaction();
+            try {
+                $update = User::where(['id' => $exst_rec->user_id])->update($crud);
 
-            if($update)
-                return redirect()->route('admin.country')->with('success', 'Country updated successfully.');
-            else
-                return redirect()->back()->with('error', 'Failed to updated record.')->withInput();
+                if($update){
+                    $subscriber_crud = [
+                        'receipt_no' => $request->receipt_no,
+                        'address' => $request->address,
+                        'phone' => $request->phone,
+                        'pincode' => $request->pincode,
+                        'country' => $request->country,
+                        'state' => $request->state,
+                        'city' => $request->city,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                        'updated_by' => auth()->user()->id
+                    ];
+
+                    $subscriber_update = Subscriber::where(['id' => $id])->update($subscriber_crud);
+
+                    if($subscriber_update){
+                        DB::commit();
+                        return redirect()->route('admin.subscriber')->with('success', 'Subscriber updated successfully.');
+                    }else{
+                        DB::rollback();
+                        return redirect()->back()->with('error', 'Failed to insert record.')->withInput();
+                    }
+                }else{
+                    DB::rollback();
+                    return redirect()->back()->with('error', 'Failed to insert record.')->withInput();
+                }
+            } catch (\Throwable $th) {
+                DB::rollback();
+                return redirect()->back()->with('error', 'Failed to insert record.')->withInput();
+            }
         }
 
         public function view(Request $request){
         	$id = base64_decode($request->id);
-            $data = Country::find($id);
+            $countries = Country::get();
+            $states = [];
+            $cities = [];
 
-            return view('backend.country.view')->with(['data' => $data]);
+            $data = DB::table('subscribers as s')
+                            ->select('s.id', 's.receipt_no', 's.description', 's.address', 's.phone', 's.pincode', 's.country', 's.state', 's.city', 's.status',
+                                        'u.firstname', 'u.lastname', 'u.email'
+                                    )
+                            ->join('users as u', 'u.id', 's.user_id')
+                            ->where(['s.id' => $id])
+                            ->first();
+
+            if(!empty($data)){
+                $states = DB::table('state')->select('id', 'name')->where(['country_id' => $data->country])->get()->toArray();
+                $cities = DB::table('city')->select('id', 'name')->where(['country_id' => $data->country, 'state_id' => $data->state])->get()->toArray();
+            }
+
+            return view('backend.subscriber.view')->with(['data' => $data, 'countries' => $countries, 'states' => $states, 'cities' => $cities]);
         }
 
         public function change_status(Request $request){
@@ -177,12 +249,34 @@
                 $id = base64_decode($request->id);
                 $status = $request->status;
 
-                $update = Country::where(['id' => $id])->update(['status' => $status, 'updated_by' => auth()->user()->id]);
+                $subscriber = Subscriber::where(['id' => $id])->first();
 
-                if($update)
-                    return response()->json(['code' => 200]);
-                else
+                if(!empty($subscriber)){
+                    DB::beginTransaction();
+                    try {
+                        $update = Subscriber::where(['id' => $id])->update(['status' => $status, 'updated_by' => auth()->user()->id]);
+
+                        if($update){
+                            $update_user = User::where(['id' => $subscriber->user_id])->update(['status' => $status, 'updated_by' => auth()->user()->id]);
+
+                            if($update_user){
+                                DB::commit();
+                                return response()->json(['code' => 200]);
+                            }else{
+                                DB::rollback();
+                                return response()->json(['code' => 201]);
+                            }
+                        }else{
+                            DB::rollback();
+                            return response()->json(['code' => 201]);
+                        }
+                    } catch (\Throwable $th) {
+                        DB::rollback();
+                        return response()->json(['code' => 201]);
+                    }
+                }else{
                     return response()->json(['code' => 201]);
+                }
             }else{
                 return response()->json(['code' => 201]);
             }

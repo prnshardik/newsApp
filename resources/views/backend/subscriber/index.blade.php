@@ -40,7 +40,11 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Name</th>
-                                    <th>Country Code</th>
+                                    <th>Receipt No</th>
+                                    <th>Phone</th>
+                                    <th>Pincode</th>
+                                    <th>State</th>
+                                    <th>City</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -104,8 +108,24 @@
                             name: 'name'
                         },
                         {
-                            data: 'country_code',
-                            name: 'country_code'
+                            data: 'receipt_no',
+                            name: 'receipt_no'
+                        },
+                        {
+                            data: 'phone',
+                            name: 'phone'
+                        },
+                        {
+                            data: 'pincode',
+                            name: 'pincode'
+                        },
+                        {
+                            data: 'state_name',
+                            name: 'state_name'
+                        },
+                        {
+                            data: 'city_name',
+                            name: 'city_name'
                         },
                         {
                             data: 'status',
