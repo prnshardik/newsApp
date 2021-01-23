@@ -29,8 +29,11 @@
                     <div class="ibox-head">
                         <h1 class="ibox-title">Subscribers</h1>
                         <h1 class="pull-right">
+                            @if(auth()->user()->role_id == 1)
+
+                            @endif
                             @canany(['subscriber-create'])
-                                <a class="btn btn-primary pull-right" style="margin-top: 8px;margin-bottom: 5px" href="{{ route('admin.subscriber.create') }}">Add New</a>
+                            <a class="btn btn-primary pull-right" style="margin-top: 8px;margin-bottom: 5px" href="{{ route('admin.subscriber.create') }}">Add New</a>
                             @endcanany
                         </h1>
                     </div>

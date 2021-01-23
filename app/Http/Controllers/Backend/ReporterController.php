@@ -27,7 +27,7 @@
                 $data = DB::table('reporter as r')
                             ->select('r.id', 'r.unique_id', 'r.phone_no', 'r.status',
                                         DB::Raw("CONCAT(".'u.firstname'.", ' ', ".'u.lastname'.") as name"),
-                                        DB::Raw("CONCAT(".'r.receipt_book_start_no'.", ' ', ".'r.receipt_book_end_no'.") as receipt_book_no"),
+                                        DB::Raw("CONCAT(".'r.receipt_book_start_no'.", ' - ', ".'r.receipt_book_end_no'.") as receipt_book_no"),
                                         'ct.name as city_name', 'st.name as state_name'
                                     )
                             ->join('users as u', 'u.id', 'r.user_id')
