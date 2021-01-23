@@ -49,6 +49,15 @@ class CreatePermissionTables extends Migration
         $city_view = DB::table('permissions')->insertGetId(['name' => 'city-view', 'guard_name' => 'web']);
         $city_delete = DB::table('permissions')->insertGetId(['name' => 'city-delete', 'guard_name' => 'web']);
 
+        $agent_create = DB::table('permissions')->insertGetId(['name' => 'agent-create', 'guard_name' => 'web']);
+        $agent_edit = DB::table('permissions')->insertGetId(['name' => 'agent-edit', 'guard_name' => 'web']);
+        $agent_view = DB::table('permissions')->insertGetId(['name' => 'agent-view', 'guard_name' => 'web']);
+        $agent_delete = DB::table('permissions')->insertGetId(['name' => 'agent-delete', 'guard_name' => 'web']);
+        $subscriber_create = DB::table('permissions')->insertGetId(['name' => 'subscriber-create', 'guard_name' => 'web']);
+        $subscriber_edit = DB::table('permissions')->insertGetId(['name' => 'subscriber-edit', 'guard_name' => 'web']);
+        $subscriber_view = DB::table('permissions')->insertGetId(['name' => 'subscriber-view', 'guard_name' => 'web']);
+        $subscriber_delete = DB::table('permissions')->insertGetId(['name' => 'subscriber-delete', 'guard_name' => 'web']);
+
         Schema::create($tableNames['roles'], function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
@@ -68,9 +77,9 @@ class CreatePermissionTables extends Migration
             $table->index([$columnNames['model_morph_key'], 'model_type'], 'model_has_permissions_model_id_model_type_index');
 
             $table->foreign('permission_id')
-                ->references('id')
-                ->on($tableNames['permissions'])
-                ->onDelete('cascade');
+                        ->references('id')
+                        ->on($tableNames['permissions'])
+                        ->onDelete('cascade');
 
             $table->primary(['permission_id', $columnNames['model_morph_key'], 'model_type'],
                     'model_has_permissions_permission_model_type_primary');
@@ -84,9 +93,9 @@ class CreatePermissionTables extends Migration
             $table->index([$columnNames['model_morph_key'], 'model_type'], 'model_has_roles_model_id_model_type_index');
 
             $table->foreign('role_id')
-                ->references('id')
-                ->on($tableNames['roles'])
-                ->onDelete('cascade');
+                    ->references('id')
+                    ->on($tableNames['roles'])
+                    ->onDelete('cascade');
 
             $table->primary(['role_id', $columnNames['model_morph_key'], 'model_type'],
                     'model_has_roles_role_model_type_primary');
@@ -97,14 +106,14 @@ class CreatePermissionTables extends Migration
             $table->unsignedBigInteger('role_id');
 
             $table->foreign('permission_id')
-                ->references('id')
-                ->on($tableNames['permissions'])
-                ->onDelete('cascade');
+                    ->references('id')
+                    ->on($tableNames['permissions'])
+                    ->onDelete('cascade');
 
             $table->foreign('role_id')
-                ->references('id')
-                ->on($tableNames['roles'])
-                ->onDelete('cascade');
+                    ->references('id')
+                    ->on($tableNames['roles'])
+                    ->onDelete('cascade');
 
             $table->primary(['permission_id', 'role_id'], 'role_has_permissions_permission_id_role_id_primary');
         });
@@ -130,6 +139,15 @@ class CreatePermissionTables extends Migration
         DB::table('role_has_permissions')->insert(['permission_id' => $city_edit, 'role_id' => $admin_role_id]);
         DB::table('role_has_permissions')->insert(['permission_id' => $city_view, 'role_id' => $admin_role_id]);
         DB::table('role_has_permissions')->insert(['permission_id' => $city_delete, 'role_id' => $admin_role_id]);
+
+        DB::table('role_has_permissions')->insert(['permission_id' => $agent_create, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $agent_edit, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $agent_view, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $agent_delete, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $subscriber_create, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $subscriber_edit, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $subscriber_view, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $subscriber_delete, 'role_id' => $admin_role_id]);
 
         $user = DB::table('users')->where(['email' => 'superadmin@newsapp.com'])->first();
         if($user){

@@ -74,14 +74,17 @@
                     /** City */
                         Route::any('city', 'CityController@index')->name('admin.city');
                         Route::get('city/create', 'CityController@create')->name('admin.city.create');
-                        Route::post('city/get-state', 'CityController@get_state')->name('admin.city.get_state');
                         Route::post('city/insert', 'CityController@insert')->name('admin.city.insert');
                         Route::get('city/view', 'CityController@view')->name('admin.city.view');
                         Route::get('city/edit', 'CityController@edit')->name('admin.city.edit');
                         Route::patch('city/update/{id?}', 'CityController@update')->name('admin.city.update');
                         Route::post('city/change_status', 'CityController@change_status')->name('admin.city.change.status');
+
+                        Route::post('city/get-state', 'CityController@get_state')->name('admin.city.get_state');
+                        Route::post('city/get-city', 'CityController@get_city')->name('admin.city.get_city');
                     /** City */
                 /** region */
+
 
                 /** Reporter */
                     Route::any('reporter', 'ReporterController@index')->name('admin.reporter');
@@ -94,6 +97,17 @@
                     Route::patch('reporter/update/{id?}', 'ReporterController@update')->name('admin.reporter.update');
                     Route::post('reporter/change_status', 'ReporterController@change_status')->name('admin.reporter.change.status');
                 /** Reporter */ 
+
+                /** subscriber */
+                    Route::any('subscriber', 'SubscriberController@index')->name('admin.subscriber');
+                    Route::get('subscriber/create', 'SubscriberController@create')->name('admin.subscriber.create');
+                    Route::post('subscriber/insert', 'SubscriberController@insert')->name('admin.subscriber.insert');
+                    Route::get('subscriber/edit', 'SubscriberController@edit')->name('admin.subscriber.edit');
+                    Route::patch('subscriber/update/{id?}', 'SubscriberController@update')->name('admin.subscriber.update');
+                    Route::get('subscriber/view', 'SubscriberController@view')->name('admin.subscriber.view');
+                    Route::post('subscriber/change_status', 'SubscriberController@change_status')->name('admin.subscriber.change.status');
+                /** subscriber */
+
             });
         });
 
