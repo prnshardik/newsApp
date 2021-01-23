@@ -302,7 +302,7 @@
                 $id = base64_decode($request->id);
                 $status = $request->status;
 
-                $update = Country::where(['id' => $id])->update(['status' => $status, 'updated_by' => auth()->user()->id]);
+                $update = Reporter::where(['id' => $id])->update(['status' => $status, 'updated_by' => auth()->user()->id]);
 
                 if($update)
                     return response()->json(['code' => 200]);
