@@ -85,22 +85,15 @@
                     /** City */
                 /** region */
 
-
                 /** Reporter */
                     Route::any('reporter', 'ReporterController@index')->name('admin.reporter');
                     Route::get('reporter/create', 'ReporterController@create')->name('admin.reporter.create');
-                    Route::post('reporter/get-state', 'ReporterController@get_state')->name('admin.reporter.get_state');
-                    Route::post('reporter/get-city', 'ReporterController@get_city')->name('admin.reporter.get_city');
-
-                    Route::post('reporter/state_pre_selected', 'ReporterController@state_pre_selected')->name('admin.reporter.state_pre_selected');
-                    Route::post('reporter/city_pre_selected', 'ReporterController@city_pre_selected')->name('admin.reporter.city_pre_selected');
-
                     Route::post('reporter/insert', 'ReporterController@insert')->name('admin.reporter.insert');
                     Route::get('reporter/view', 'ReporterController@view')->name('admin.reporter.view');
                     Route::get('reporter/edit', 'ReporterController@edit')->name('admin.reporter.edit');
                     Route::patch('reporter/update/{id?}', 'ReporterController@update')->name('admin.reporter.update');
                     Route::post('reporter/change_status', 'ReporterController@change_status')->name('admin.reporter.change.status');
-                /** Reporter */ 
+                /** Reporter */
 
                 /** subscriber */
                     Route::any('subscriber', 'SubscriberController@index')->name('admin.subscriber');

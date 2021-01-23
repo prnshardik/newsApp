@@ -72,12 +72,11 @@
                 </li>
             @endcanany
 
-
             @canany(['reporter-create', 'reporter-edit', 'reporter-view', 'reporter-delete'])
                 <li class="{{ Request::is('reporter*') ? 'active' : '' }}">
                     <a class="" href="{{ route('admin.reporter') }}">
                         <i class="sidebar-item-icon fa fa-user"></i>
-                        <span class="nav-label">Reporter</span>
+                        <span class="nav-label">Reporters</span>
                     </a>
                 </li>
             @endcanany

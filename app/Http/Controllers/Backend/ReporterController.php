@@ -24,10 +24,17 @@
 
         public function index(Request $request){
         	if($request->ajax()){
-                $data = DB::table('reporter AS r')
-                        ->select('r.*')
-                        ->orderBy('r.id' ,'DESC')
-                        ->get();
+                $data = DB::table('reporter as r')
+                            ->select('r.id', 'r.unique_id', 'r.phone_no', 'r.status',
+                                        DB::Raw("CONCAT(".'u.firstname'.", ' ', ".'u.lastname'.") as name"),
+                                        DB::Raw("CONCAT(".'r.receipt_book_start_no'.", ' ', ".'r.receipt_book_end_no'.") as receipt_book_no"),
+                                        'ct.name as city_name', 'st.name as state_name'
+                                    )
+                            ->join('users as u', 'u.id', 'r.user_id')
+                            ->join('state as st', 'st.id', 'r.state_id')
+                            ->join('city as ct', 'ct.id', 'r.city_id')
+                            ->orderBy('id', 'desc')
+                            ->get();
 
                 return Datatables::of($data)
                         ->addIndexColumn()
@@ -82,18 +89,18 @@
         }
 
         public function create(Request $request){
-            $country = DB::table('country')->where(['status' => 'active'])->get();
-            return view('backend.reporter.create')->with(['country' => $country]);
+            $countries = DB::table('country')->where(['status' => 'active'])->get();
+            return view('backend.reporter.create')->with(['countries' => $countries]);
         }
 
         public function insert(ReporterRequest $request){
             if($request->ajax()){ return true; }
 
-           $role_id = 2;
+            $role_id = 2;
             $crud = [
-                'firstname' => ucfirst($request->name),
-                'lastname' => NULL,
-                'email' => $request->email,
+                'firstname' => ucfirst($request->firstname),
+                'lastname' => ucfirst($request->lastname),
+                'email' => $request->email ?? NULL,
                 'role_id' => $role_id,
                 'status' => 'active',
                 'created_at' => date('Y-m-d H:i:s'),
@@ -109,11 +116,9 @@
                 if($user){
                     $reporter_crud = [
                         'user_id' => $user->id,
-                        'name' => $request->name,
                         'unique_id' => $request->unique_id,
                         'address' => $request->address,
                         'phone_no' => $request->phone_no,
-                        'email' => $request->email,
                         'country_id' => $request->country_id,
                         'state_id' => $request->state_id,
                         'city_id' => $request->city_id,
@@ -149,17 +154,25 @@
         }
 
         public function edit(Request $request){
-        	$id = base64_decode($request->id);
-            $data = DB::table('reporter')
-                            ->select('reporter.*' ,'state.name AS state_name' ,'city.name AS city_name')
-                            ->join('state' , 'reporter.state_id' ,'state.id')
-                            ->join('city' , 'reporter.city_id' ,'city.id')
-                            ->where(['reporter.id' => $id])
+            $id = base64_decode($request->id);
+            $countries = DB::table('country')->where(['status' => 'active'])->get();
+            $states = [];
+            $cities = [];
+
+            $data = DB::table('reporter as r')
+                            ->select('r.id', 'r.unique_id', 'r.address', 'r.phone_no', 'r.receipt_book_start_no', 'r.receipt_book_end_no', 'r.country_id', 'r.state_id',
+                                        'r.city_id', 'r.status', 'u.firstname', 'u.lastname', 'u.email'
+                                    )
+                            ->join('users as u', 'u.id', 'r.user_id')
+                            ->where(['r.id' => $id])
                             ->first();
 
-            $country = Country::all();
+            if(!empty($data)){
+                $states = DB::table('state')->select('id', 'name')->where(['country_id' => $data->country_id])->get()->toArray();
+                $cities = DB::table('city')->select('id', 'name')->where(['country_id' => $data->country_id, 'state_id' => $data->state_id])->get()->toArray();
+            }
 
-            return view('backend.reporter.edit')->with(['data' => $data ,'country' => $country]);
+            return view('backend.reporter.edit')->with(['data' => $data, 'countries' => $countries, 'states' => $states, 'cities' => $cities]);
         }
 
         public function update(ReporterRequest $request){
@@ -169,8 +182,8 @@
             $exst_rec = Reporter::where(['id' => $id])->first();
 
             $crud = [
-                'firstname' => ucfirst($request->ame),
-                'lastname' => NULL,
+                'firstname' => ucfirst($request->firstname),
+                'lastname' => ucfirst($request->lastname),
                 'email' => $request->email ?? NULL,
                 'updated_at' => date('Y-m-d H:i:s'),
                 'updated_by' => auth()->user()->id
@@ -182,11 +195,9 @@
 
                 if($update){
                     $reporter_crud = [
-                        'name' => $request->name,
                         'unique_id' => $request->unique_id,
                         'address' => $request->address,
                         'phone_no' => $request->phone_no,
-                        'email' => $request->email,
                         'country_id' => $request->country_id,
                         'state_id' => $request->state_id,
                         'city_id' => $request->city_id,
@@ -217,82 +228,25 @@
         }
 
         public function view(Request $request){
-        	$id = base64_decode($request->id);
-            $data = DB::table('reporter')
-                        ->select('reporter.*' ,'c.name AS country_name' ,'s.name AS state_name' ,'ct.name AS city_name')
-                        ->join('country AS c' , 'reporter.country_id' ,'c.id')
-                        ->join('state AS s' , 'reporter.state_id' ,'s.id')
-                        ->join('city AS ct' , 'reporter.city_id' ,'ct.id')
-                        ->where(['reporter.id' => $id])
-                        ->first();
+            $id = base64_decode($request->id);
+            $countries = DB::table('country')->where(['status' => 'active'])->get();
+            $states = [];
+            $cities = [];
 
-            return view('backend.reporter.view')->with(['data' => $data]);
-        }
+            $data = DB::table('reporter as r')
+                            ->select('r.id', 'r.unique_id', 'r.address', 'r.phone_no', 'r.receipt_book_start_no', 'r.receipt_book_end_no', 'r.country_id', 'r.state_id',
+                                        'r.city_id', 'r.status', 'u.firstname', 'u.lastname', 'u.email'
+                                    )
+                            ->join('users as u', 'u.id', 'r.user_id')
+                            ->where(['r.id' => $id])
+                            ->first();
 
-
-        public function get_state(Request $request){
-            $country_id = $request->country_id;
-            $data = State::select('id', 'name')->where(['country_id' => $country_id])->get();
-
-            if(isset($data) && $data->isNotEmpty()){
-                $html = '<option value="">select state</option>';
-                foreach($data as $row){
-                    $html .= "<option value='".$row->id."'>".$row->name."</option>";
-                }
-                return response()->json(['code' => 200, 'data' => $html]);
-            }else{
-                return response()->json(['code' => 201]);
+            if(!empty($data)){
+                $states = DB::table('state')->select('id', 'name')->where(['country_id' => $data->country_id])->get()->toArray();
+                $cities = DB::table('city')->select('id', 'name')->where(['country_id' => $data->country_id, 'state_id' => $data->state_id])->get()->toArray();
             }
-        }
 
-        public function state_pre_selected(Request $request){
-            $country_id = $request->country_id;
-            $state_id = $request->state_id ?? NULL;
-
-            $data = State::select('id', 'name')->where(['country_id' => $country_id])->get();
-
-            if(isset($data) && $data->isNotEmpty()){
-                $html = '<option value="">select state</option>';
-                foreach($data as $row){
-                    $html .= "<option value='".$row->id."' ".(isset($state_id) && $state_id == $row->id ?'selected':'').">".$row->name."</option>";
-                }
-                return response()->json(['code' => 200, 'data' => $html]);
-            }else{
-                return response()->json(['code' => 201]);
-            }
-        }
-
-        public function city_pre_selected(Request $request){
-            $state_id = $request->state_id;
-            $city_id = $request->city_id;
-
-            $data = City::select('id', 'name')->where(['state_id' => $state_id])->get();
-
-            if(isset($data) && $data->isNotEmpty()){
-                $html = '<option value="">select state</option>';
-                foreach($data as $row){
-                    $html .= "<option value='".$row->id."' ".(isset($city_id) && $city_id == $row->id ?'selected':'').">".$row->name."</option>";
-                }
-                return response()->json(['code' => 200, 'data' => $html]);
-            }else{
-                return response()->json(['code' => 201]);
-            }
-        }
-
-        public function get_city(Request $request){
-            $state_id = $request->state_id;
-
-            $data = City::select('id', 'name')->where(['state_id' => $state_id])->get();
-
-            if(isset($data) && $data->isNotEmpty()){
-                $html = '<option value="">select City</option>';
-                foreach($data as $row){
-                    $html .= "<option value='".$row->id."'>".$row->name."</option>";
-                }
-                return response()->json(['code' => 200, 'data' => $html]);
-            }else{
-                return response()->json(['code' => 201]);
-            }
+            return view('backend.reporter.view')->with(['data' => $data, 'countries' => $countries, 'states' => $states, 'cities' => $cities]);
         }
 
         public function change_status(Request $request){
@@ -302,12 +256,34 @@
                 $id = base64_decode($request->id);
                 $status = $request->status;
 
-                $update = Reporter::where(['id' => $id])->update(['status' => $status, 'updated_by' => auth()->user()->id]);
+                $reporter = Reporter::where(['id' => $id])->first();
 
-                if($update)
-                    return response()->json(['code' => 200]);
-                else
+                if(!empty($reporter)){
+                    DB::beginTransaction();
+                    try {
+                        $update = Reporter::where(['id' => $id])->update(['status' => $status, 'updated_by' => auth()->user()->id]);
+
+                        if($update){
+                            $update_user = User::where(['id' => $reporter->user_id])->update(['status' => $status, 'updated_by' => auth()->user()->id]);
+
+                            if($update_user){
+                                DB::commit();
+                                return response()->json(['code' => 200]);
+                            }else{
+                                DB::rollback();
+                                return response()->json(['code' => 201]);
+                            }
+                        }else{
+                            DB::rollback();
+                            return response()->json(['code' => 201]);
+                        }
+                    } catch (\Throwable $th) {
+                        DB::rollback();
+                        return response()->json(['code' => 201]);
+                    }
+                }else{
                     return response()->json(['code' => 201]);
+                }
             }else{
                 return response()->json(['code' => 201]);
             }

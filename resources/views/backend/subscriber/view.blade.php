@@ -110,8 +110,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                                <a href="{{ route('admin.subscriber') }}" class="btn btn-secondary">Cancel</a>
+                                <a href="{{ route('admin.subscriber') }}" class="btn btn-secondary">Back</a>
                             </div>
                         </form>
                     </div>

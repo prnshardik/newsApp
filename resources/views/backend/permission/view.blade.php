@@ -43,7 +43,6 @@
                                     <span class="kt-form__help error guard_name"></span>
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <a href="{{ route('admin.permission') }}" class="btn btn-secondary">Back</a>
                             </div>

@@ -144,7 +144,6 @@
                 return false;
             });
 
-
             $('#country').select2({
                 multiple: false,
             });

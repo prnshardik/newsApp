@@ -12,11 +12,12 @@
         public function rules(){
             if($this->method() == 'PATCH'){
                 return [
-                    'name' => 'required',
+                    'firstname' => 'required',
+                    'lastname' => 'required',
                     'unique_id' => 'required|unique:reporter,unique_id,'.$this->id,
                     'address' => 'required',
                     'phone_no' => 'required',
-                    'email' => 'required |email',
+                    'email' => 'required|email',
                     'country_id' => 'required ',
                     'state_id' => 'required ',
                     'city_id' => 'required',
@@ -25,11 +26,12 @@
                 ];
             }else{
                 return [
-                    'name' => 'required',
-                    'unique_id' => 'required | unique:reporter',
+                    'firstname' => 'required',
+                    'lastname' => 'required',
+                    'unique_id' => 'required|unique:reporter',
                     'address' => 'required',
                     'phone_no' => 'required',
-                    'email' => 'required |email',
+                    'email' => 'required|email',
                     'country_id' => 'required ',
                     'state_id' => 'required ',
                     'city_id' => 'required',
@@ -41,16 +43,17 @@
 
         public function messages(){
             return [
-                'name.required' => 'Please enter name',
+                'firstname.required' => 'Please enter firstname',
+                'lastname.required' => 'Please enter lastname',
                 'unique_id.required' => 'Please enter unique id',
-                'unique_id.unique' => 'This Unique Id is already registered',
+                'unique_id.unique' => 'This unique ID is already registered',
                 'address.required' => 'Please enter address',
                 'phone_no.required' => 'Please enter mobile number',
-                'email.required' => 'Please enter Email ID',
-                'email.email' => 'Please enter valid Email ID',
-                'country_id.required' => 'Please select Country',
-                'state_id.required' => 'Please select State',
-                'city_id.required' => 'Please select City',
+                'email.required' => 'Please enter email address',
+                'email.email' => 'Please enter valid email address',
+                'country_id.required' => 'Please select country',
+                'state_id.required' => 'Please select state',
+                'city_id.required' => 'Please select city',
                 'receipt_book_start_no.required' => 'Please enter receipt start no',
                 'receipt_book_end_no.required' => 'Please enter receipt end no',
             ];

@@ -4,7 +4,7 @@
 @endsection
 
 @section('title')
-    Reporter
+    Reporters
 @endsection
 
 @section('styles')
@@ -17,7 +17,7 @@
                 <a href="{{ route('admin.dashboard') }}">Dashboard</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.reporter') }}">Reporter</i></a>
+                <a href="{{ route('admin.reporter') }}">Reporters</i></a>
             </li>
             {{-- <li class="breadcrumb-item">Index</li> --}}
         </ol>
@@ -42,6 +42,9 @@
                                     <th>Unique Id</th>
                                     <th>Name</th>
                                     <th>Phone</th>
+                                    <th>State</th>
+                                    <th>City</th>
+                                    <th>Receipt Book No</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -111,6 +114,18 @@
                         {
                             data: 'phone_no',
                             name: 'phone_no'
+                        },
+                        {
+                            data: 'state_name',
+                            name: 'state_name'
+                        },
+                        {
+                            data: 'city_name',
+                            name: 'city_name'
+                        },
+                        {
+                            data: 'receipt_book_no',
+                            name: 'receipt_book_no'
                         },
                         {
                             data: 'status',

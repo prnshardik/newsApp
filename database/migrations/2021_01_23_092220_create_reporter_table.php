@@ -15,12 +15,10 @@ class CreateReporterTable extends Migration
     {
         Schema::create('reporter', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->string('name');
+            $table->bigInteger('user_id')->nullable()->unsigned();
             $table->string('unique_id');
             $table->text('address');
             $table->string('phone_no');
-            $table->string('email');
             $table->integer('country_id');
             $table->integer('state_id');
             $table->integer('city_id');
@@ -30,6 +28,8 @@ class CreateReporterTable extends Migration
             $table->timestamps();
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
