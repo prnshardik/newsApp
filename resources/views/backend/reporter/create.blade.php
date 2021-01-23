@@ -125,7 +125,16 @@
 
 @section('scripts')
     <script>
-    
+            $('#country_id').select2({
+                multiple:false,
+            });
+            $('#state_id').select2({
+                multiple:false,
+            });
+            $('#city_id').select2({
+                multiple:false,
+            });
+
         /** Contact Number Validation */
             $("#phone_no").keypress(function(e){
                 var keyCode = e.keyCode || e.which;

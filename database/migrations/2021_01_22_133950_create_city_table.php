@@ -72,7 +72,7 @@ class CreateCityTable extends Migration
         DB::table('city')->insert(
             array(
                 'country_id' => 2,
-                'state_id' => 1,
+                'state_id' => 3,
                 'name' => 'Gold Coast',
                 'status' => 'active',
                 'created_by' => 1,
@@ -83,7 +83,7 @@ class CreateCityTable extends Migration
         DB::table('city')->insert(
             array(
                 'country_id' => 2,
-                'state_id' => 1,
+                'state_id' => 3,
                 'name' => 'Townsville',
                 'status' => 'active',
                 'created_by' => 1,
@@ -94,7 +94,7 @@ class CreateCityTable extends Migration
         DB::table('city')->insert(
             array(
                 'country_id' => 2,
-                'state_id' => 2,
+                'state_id' => 4,
                 'name' => 'Melbourne',
                 'status' => 'active',
                 'created_by' => 1,
@@ -105,7 +105,7 @@ class CreateCityTable extends Migration
         DB::table('city')->insert(
             array(
                 'country_id' => 2,
-                'state_id' => 2,
+                'state_id' => 4,
                 'name' => 'Portland',
                 'status' => 'active',
                 'created_by' => 1,

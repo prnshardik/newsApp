@@ -13,7 +13,7 @@
             if($this->method() == 'PATCH'){
                 return [
                     'name' => 'required',
-                    'unique_id' => 'required | unique:reporter',
+                    'unique_id' => 'required|unique:reporter,unique_id,'.$this->id,
                     'address' => 'required',
                     'phone_no' => 'required',
                     'email' => 'required |email',
@@ -26,7 +26,7 @@
             }else{
                 return [
                     'name' => 'required',
-                    'unique_id' => 'required |unique:reporter,unique_id,' . $this->id,
+                    'unique_id' => 'required | unique:reporter',
                     'address' => 'required',
                     'phone_no' => 'required',
                     'email' => 'required |email',

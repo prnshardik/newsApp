@@ -74,14 +74,16 @@
 
 
             @canany(['reporter-create', 'reporter-edit', 'reporter-view', 'reporter-delete'])
-                <li>
-                    <a class="{{ Request::is('reporter*') ? 'active' : '' }}" href="{{ route('admin.reporter') }}">
+                <li class="{{ Request::is('reporter*') ? 'active' : '' }}">
+                    <a class="" href="{{ route('admin.reporter') }}">
                         <i class="sidebar-item-icon fa fa-user"></i>
                         <span class="nav-label">Reporter</span>
-
+                    </a>
+                </li>
+            @endcanany
             @canany(['subscriber-create', 'subscriber-edit', 'subscriber-view', 'subscriber-delete'])
-                <li>
-                    <a class="{{ Request::is('subscriber*') ? 'active' : '' }}" href="{{ route('admin.subscriber') }}"><i class="sidebar-item-icon fa fa-users"></i>
+                <li class="{{ Request::is('subscriber*') ? 'active' : '' }}">
+                    <a  href="{{ route('admin.subscriber') }}"><i class="sidebar-item-icon fa fa-users"></i>
                         <span class="nav-label">Subscribers</span>
 
                     </a>

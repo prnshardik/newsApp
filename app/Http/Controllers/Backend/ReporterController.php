@@ -5,10 +5,13 @@
     use App\Http\Controllers\Controller;
     use Illuminate\Http\Request;
     use App\Models\Reporter;
+    use App\Models\Country;
     use App\Models\State;
     use App\Models\City;
+    use App\Models\User;
     use App\Http\Requests\ReporterRequest;
     use DataTables, DB;
+    use Spatie\Permission\Models\Role;
 
     class ReporterController extends Controller{
 
@@ -32,13 +35,13 @@
                             $return = '<div class="btn-group">';
 
                             if(auth()->user()->can('reporter-view')){
-                                $return .=  '<a href="'.route('admin.country.view', ['id' => base64_encode($data->id)]).'" class="btn btn-default btn-xs">
+                                $return .=  '<a href="'.route('admin.reporter.view', ['id' => base64_encode($data->id)]).'" class="btn btn-default btn-xs">
                                                 <i class="fa fa-eye"></i>
                                             </a> &nbsp;';
                             }
 
                             if(auth()->user()->can('reporter-edit')){
-                                $return .= '<a href="'.route('admin.country.edit', ['id' => base64_encode($data->id)]).'" class="btn btn-default btn-xs">
+                                $return .= '<a href="'.route('admin.reporter.edit', ['id' => base64_encode($data->id)]).'" class="btn btn-default btn-xs">
                                                 <i class="fa fa-edit"></i>
                                             </a> &nbsp;';
                             }
@@ -86,17 +89,12 @@
         public function insert(ReporterRequest $request){
             if($request->ajax()){ return true; }
 
+           $role_id = 2;
             $crud = [
-                'name' => ucfirst($request->name),
-                'unique_id' => $request->unique_id,
-                'address' => $request->address,
-                'phone_no' => $request->phone_no,
+                'firstname' => ucfirst($request->name),
+                'lastname' => NULL,
                 'email' => $request->email,
-                'country_id' => $request->country_id,
-                'state_id' => $request->state_id,
-                'city_id' => $request->city_id,
-                'receipt_book_start_no' => $request->receipt_book_start_no,
-                'receipt_book_end_no' => $request->receipt_book_end_no,
+                'role_id' => $role_id,
                 'status' => 'active',
                 'created_at' => date('Y-m-d H:i:s'),
                 'created_by' => auth()->user()->id,
@@ -104,37 +102,118 @@
                 'updated_by' => auth()->user()->id
             ];
 
-            $last_id = Reporter::insertGetId($crud);
+            DB::beginTransaction();
+            try {
+                $user = User::create($crud);
 
-            if($last_id > 0)
-                return redirect()->route('admin.reporter')->with('success', 'Record inserted successfully.');
-            else
+                if($user){
+                    $reporter_crud = [
+                        'user_id' => $user->id,
+                        'name' => $request->name,
+                        'unique_id' => $request->unique_id,
+                        'address' => $request->address,
+                        'phone_no' => $request->phone_no,
+                        'email' => $request->email,
+                        'country_id' => $request->country_id,
+                        'state_id' => $request->state_id,
+                        'city_id' => $request->city_id,
+                        'receipt_book_start_no' => $request->receipt_book_start_no,
+                        'receipt_book_end_no' => $request->receipt_book_end_no,
+                        'status' => 'active',
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'created_by' => auth()->user()->id,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                        'updated_by' => auth()->user()->id
+                    ];
+
+                    $reporter_last_id = Reporter::insertGetId($reporter_crud);
+
+                    if($reporter_last_id > 0){
+                        $user->assignRole($role_id);
+
+                        DB::commit();
+                        return redirect()->route('admin.reporter')->with('success', 'Record inserted successfully.');
+                    }else{
+                        DB::rollback();
+                        return redirect()->back()->with('error', 'Failed to insert record in reporter.')->withInput();
+                    }
+                }else{
+                    DB::rollback();
+                    return redirect()->back()->with('error', 'Failed to insert record in user.')->withInput();
+                }
+            } catch (\Throwable $th) {
+                dd('by');
+                DB::rollback();
                 return redirect()->back()->with('error', 'Failed to insert record.')->withInput();
+            }
         }
 
         public function edit(Request $request){
         	$id = base64_decode($request->id);
-            $data = Country::find($id);
+            $data = DB::table('reporter')
+                            ->select('reporter.*' ,'state.name AS state_name' ,'city.name AS city_name')
+                            ->join('state' , 'reporter.state_id' ,'state.id')
+                            ->join('city' , 'reporter.city_id' ,'city.id')
+                            ->where(['reporter.id' => $id])
+                            ->first();
 
-            return view('backend.reporter.edit')->with(['data' => $data]);
+            $country = Country::all();
+
+            return view('backend.reporter.edit')->with(['data' => $data ,'country' => $country]);
         }
 
-        public function update(CountryRequest $request){
+        public function update(ReporterRequest $request){
         	if($request->ajax()){ return true ;}
 
+            $id = $request->id;
+            $exst_rec = Reporter::where(['id' => $id])->first();
+
             $crud = [
-                'name' => ucfirst($request->name),
-                'country_code' => $request->country_code,
+                'firstname' => ucfirst($request->ame),
+                'lastname' => NULL,
+                'email' => $request->email ?? NULL,
                 'updated_at' => date('Y-m-d H:i:s'),
                 'updated_by' => auth()->user()->id
             ];
 
-            $update = Reporter::where(['id' => $request->id])->update($crud);
+            DB::beginTransaction();
+            try {
+                $update = User::where(['id' => $exst_rec->user_id])->update($crud);
 
-            if($update)
-                return redirect()->route('admin.reporter')->with('success', 'Record updated successfully.');
-            else
-                return redirect()->back()->with('error', 'Failed to updated record.')->withInput();
+                if($update){
+                    $reporter_crud = [
+                        'name' => $request->name,
+                        'unique_id' => $request->unique_id,
+                        'address' => $request->address,
+                        'phone_no' => $request->phone_no,
+                        'email' => $request->email,
+                        'country_id' => $request->country_id,
+                        'state_id' => $request->state_id,
+                        'city_id' => $request->city_id,
+                        'receipt_book_start_no' => $request->receipt_book_start_no,
+                        'receipt_book_end_no' => $request->receipt_book_end_no,
+                        'status' => 'active',
+                        'updated_at' => date('Y-m-d H:i:s'),
+                        'updated_by' => auth()->user()->id
+                    ];
+
+                    $reporter_update = Reporter::where(['id' => $id])->update($reporter_crud);
+
+                    if($reporter_update){
+                        DB::commit();
+                        return redirect()->route('admin.reporter')->with('success', 'Record updated successfully.');
+                    }else{
+                        DB::rollback();
+                        return redirect()->back()->with('error', 'Failed to update record in reporter.')->withInput();
+                    }
+                }else{
+                    DB::rollback();
+                    return redirect()->back()->with('error', 'Failed to update record in user.')->withInput();
+                }
+            } catch (\Throwable $th) {
+                DB::rollback();
+                return redirect()->back()->with('error', 'Failed to update record.')->withInput();
+            }
         }
 
         public function view(Request $request){
@@ -143,7 +222,7 @@
                         ->select('reporter.*' ,'c.name AS country_name' ,'s.name AS state_name' ,'ct.name AS city_name')
                         ->join('country AS c' , 'reporter.country_id' ,'c.id')
                         ->join('state AS s' , 'reporter.state_id' ,'s.id')
-                        ->join('city AS c' , 'reporter.city_id' ,'c.id')
+                        ->join('city AS ct' , 'reporter.city_id' ,'ct.id')
                         ->where(['reporter.id' => $id])
                         ->first();
 
@@ -153,13 +232,46 @@
 
         public function get_state(Request $request){
             $country_id = $request->country_id;
-
             $data = State::select('id', 'name')->where(['country_id' => $country_id])->get();
 
             if(isset($data) && $data->isNotEmpty()){
                 $html = '<option value="">select state</option>';
                 foreach($data as $row){
                     $html .= "<option value='".$row->id."'>".$row->name."</option>";
+                }
+                return response()->json(['code' => 200, 'data' => $html]);
+            }else{
+                return response()->json(['code' => 201]);
+            }
+        }
+
+        public function state_pre_selected(Request $request){
+            $country_id = $request->country_id;
+            $state_id = $request->state_id ?? NULL;
+
+            $data = State::select('id', 'name')->where(['country_id' => $country_id])->get();
+
+            if(isset($data) && $data->isNotEmpty()){
+                $html = '<option value="">select state</option>';
+                foreach($data as $row){
+                    $html .= "<option value='".$row->id."' ".(isset($state_id) && $state_id == $row->id ?'selected':'').">".$row->name."</option>";
+                }
+                return response()->json(['code' => 200, 'data' => $html]);
+            }else{
+                return response()->json(['code' => 201]);
+            }
+        }
+
+        public function city_pre_selected(Request $request){
+            $state_id = $request->state_id;
+            $city_id = $request->city_id;
+
+            $data = City::select('id', 'name')->where(['state_id' => $state_id])->get();
+
+            if(isset($data) && $data->isNotEmpty()){
+                $html = '<option value="">select state</option>';
+                foreach($data as $row){
+                    $html .= "<option value='".$row->id."' ".(isset($city_id) && $city_id == $row->id ?'selected':'').">".$row->name."</option>";
                 }
                 return response()->json(['code' => 200, 'data' => $html]);
             }else{

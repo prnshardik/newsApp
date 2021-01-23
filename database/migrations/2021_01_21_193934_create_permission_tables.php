@@ -49,10 +49,11 @@ class CreatePermissionTables extends Migration
         $city_view = DB::table('permissions')->insertGetId(['name' => 'city-view', 'guard_name' => 'web']);
         $city_delete = DB::table('permissions')->insertGetId(['name' => 'city-delete', 'guard_name' => 'web']);
 
-        $agent_create = DB::table('permissions')->insertGetId(['name' => 'agent-create', 'guard_name' => 'web']);
-        $agent_edit = DB::table('permissions')->insertGetId(['name' => 'agent-edit', 'guard_name' => 'web']);
-        $agent_view = DB::table('permissions')->insertGetId(['name' => 'agent-view', 'guard_name' => 'web']);
-        $agent_delete = DB::table('permissions')->insertGetId(['name' => 'agent-delete', 'guard_name' => 'web']);
+        $reporter_create = DB::table('permissions')->insertGetId(['name' => 'reporter-create', 'guard_name' => 'web']);
+        $reporter_edit = DB::table('permissions')->insertGetId(['name' => 'reporter-edit', 'guard_name' => 'web']);
+        $reporter_view = DB::table('permissions')->insertGetId(['name' => 'reporter-view', 'guard_name' => 'web']);
+        $reporter_delete = DB::table('permissions')->insertGetId(['name' => 'reporter-delete', 'guard_name' => 'web']);
+        
         $subscriber_create = DB::table('permissions')->insertGetId(['name' => 'subscriber-create', 'guard_name' => 'web']);
         $subscriber_edit = DB::table('permissions')->insertGetId(['name' => 'subscriber-edit', 'guard_name' => 'web']);
         $subscriber_view = DB::table('permissions')->insertGetId(['name' => 'subscriber-view', 'guard_name' => 'web']);
@@ -140,10 +141,10 @@ class CreatePermissionTables extends Migration
         DB::table('role_has_permissions')->insert(['permission_id' => $city_view, 'role_id' => $admin_role_id]);
         DB::table('role_has_permissions')->insert(['permission_id' => $city_delete, 'role_id' => $admin_role_id]);
 
-        DB::table('role_has_permissions')->insert(['permission_id' => $agent_create, 'role_id' => $admin_role_id]);
-        DB::table('role_has_permissions')->insert(['permission_id' => $agent_edit, 'role_id' => $admin_role_id]);
-        DB::table('role_has_permissions')->insert(['permission_id' => $agent_view, 'role_id' => $admin_role_id]);
-        DB::table('role_has_permissions')->insert(['permission_id' => $agent_delete, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $reporter_create, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $reporter_edit, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $reporter_view, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $reporter_delete, 'role_id' => $admin_role_id]);
         DB::table('role_has_permissions')->insert(['permission_id' => $subscriber_create, 'role_id' => $admin_role_id]);
         DB::table('role_has_permissions')->insert(['permission_id' => $subscriber_edit, 'role_id' => $admin_role_id]);
         DB::table('role_has_permissions')->insert(['permission_id' => $subscriber_view, 'role_id' => $admin_role_id]);
