@@ -19,8 +19,8 @@
 
         public function messages(){
             return [
-                'firstname.required' => 'Please enter name',
-                'lastname.required' => 'Please select country'
+                'firstname.required' => 'Please Enter First Name',
+                'lastname.required' => 'Please Enter Last Name'
             ];
         }
     }

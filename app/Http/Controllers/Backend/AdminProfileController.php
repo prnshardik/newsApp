@@ -25,6 +25,16 @@
         }
 
         public function profile_update(AdminProfileRequest $request){
-            dd($request);
+            if($request->ajax()){ return true ;}
+
+            $crud = [
+                'firstname' => $request->firstname,
+                'lastname' => $request->lastname
+            ];
+            $update = User::where(['id' => $request->id])->update($crud);
+            if($update)
+                return redirect()->route('admin.profile',$request->id)->with('success', 'Record updated successfully.');
+            else
+                return redirect()->back()->with('error', 'Failed to updated record.')->withInput();
         }
     }
