@@ -12,7 +12,56 @@
     class DashboardController extends Controller{
 
         public function index(Request $request){
-            return view('backend.dashboard');
+            $total_reporters = DB::table('reporter as r')->select(DB::Raw("COUNT(".'r.id'.") as count"))->first();
+            $active_reporters = DB::table('reporter as r')->select(DB::Raw("COUNT(".'r.id'.") as count"))->where(['r.status' => 'active'])->first();
+
+            if(auth()->user()->role_id == 2){
+                $total_reporters = (object) [];
+                $total_reporters->count = 0;
+                $active_reporters = (object) [];
+                $active_reporters->count = 0;
+            }
+
+            $total_subscribers = DB::table('subscribers as s')->select(DB::Raw("COUNT(".'s.id'.") as count"))->first();
+            $active_subscribers = DB::table('subscribers as s')->select(DB::Raw("COUNT(".'s.id'.") as count"))->where(['s.status' => 'active'])->first();
+
+            if(auth()->user()->role_id == 2){
+                $total_subscribers = DB::table('subscribers as s')->select(DB::Raw("COUNT(".'s.id'.") as count"))->where(['s.created_by' => auth()->user()->id])->first();
+                $active_subscribers = DB::table('subscribers as s')->select(DB::Raw("COUNT(".'s.id'.") as count"))->where(['s.status' => 'active', 's.created_by' => auth()->user()->id])->first();
+            }
+
+            $agents = DB::table('reporter as r')
+                            ->join('users as u', 'r.user_id' , 'u.id')
+                            ->join('state as st', 'st.id', 'r.state_id')
+                            ->join('city as ct', 'ct.id', 'r.city_id')
+                            ->select('r.id', 'r.unique_id', 'r.phone_no', 'r.status',
+                                        DB::Raw("CONCAT(".'u.firstname'.", ' ', ".'u.lastname'.") as name"),
+                                        DB::Raw("CONCAT(".'r.receipt_book_start_no'.", ' - ', ".'r.receipt_book_end_no'.") as receipt_book_no"),
+                                        'ct.name as city_name', 'st.name as state_name'
+                                    )
+                            ->orderBy('id', 'desc')
+                            ->limit(5)
+                            ->get();
+
+            $subscribers_collections = DB::table('subscribers as s')
+                                            ->select('s.id', 's.receipt_no', 's.phone', 's.pincode', 's.status',
+                                                        DB::Raw("CONCAT(".'u.firstname'.", ' ', ".'u.lastname'.") as name"),
+                                                        'ct.name as city_name', 'st.name as state_name'
+                                                    )
+                                            ->join('users as u', 'u.id', 's.user_id')
+                                            ->join('state as st', 'st.id', 's.state')
+                                            ->join('city as ct', 'ct.id', 's.city');
+
+            if(auth()->user()->role_id != 1)
+                $subscribers_collections->where(['s.created_by' => auth()->user()->id]);
+
+            $subscribers = $subscribers_collections->orderBy('s.id', 'desc')->limit(5)->get();
+
+            return view('backend.dashboard', [
+                                                'total_reporters' => $total_reporters, 'active_reporters' => $active_reporters,
+                                                'total_subscribers' => $total_subscribers, 'active_subscribers' => $active_subscribers,
+                                                'agents' => $agents, 'subscribers' => $subscribers
+                                            ]);
         }
 
         public function profile(Request $request){

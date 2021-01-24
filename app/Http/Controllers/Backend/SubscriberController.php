@@ -108,7 +108,6 @@
                 if(empty($subscribers)){
                     $receipt_no = $reporter->receipt_book_start_no;
                 }else{
-                    // dd($subscribers->receipt_no, $reporter->receipt_book_start_no, $reporter->receipt_book_end_no);
                     if($subscribers->receipt_no >= $reporter->receipt_book_start_no && $subscribers->receipt_no < $reporter->receipt_book_end_no){
                         $receipt_no = $subscribers->receipt_no + 1;
                     }else{
