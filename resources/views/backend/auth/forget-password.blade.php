@@ -40,21 +40,21 @@
 @section('scripts')
     <script>
         $(function() {
-                $('#forgot-form').validate({
-                    errorClass: "help-block",
-                    rules: {
-                        email: {
-                            required: true,
-                            email: true
-                        },
+            $('#forgot-form').validate({
+                errorClass: "help-block",
+                rules: {
+                    email: {
+                        required: true,
+                        email: true
                     },
-                    highlight: function(e) {
-                        $(e).closest(".form-group").addClass("has-error")
-                    },
-                    unhighlight: function(e) {
-                        $(e).closest(".form-group").removeClass("has-error")
-                    },
-                });
+                },
+                highlight: function(e) {
+                    $(e).closest(".form-group").addClass("has-error")
+                },
+                unhighlight: function(e) {
+                    $(e).closest(".form-group").removeClass("has-error")
+                },
             });
+        });
     </script>
 @endsection

@@ -4,7 +4,7 @@
 
     use Illuminate\Foundation\Http\FormRequest;
 
-    class AdminProfileRequest extends FormRequest{
+    class ProfileRequest extends FormRequest{
 
         public function authorize(){
             return true;
@@ -19,8 +19,8 @@
 
         public function messages(){
             return [
-                'firstname.required' => 'Please Enter First Name',
-                'lastname.required' => 'Please Enter Last Name'
+                'firstname.required' => 'Please enter firstname',
+                'lastname.required' => 'Please enter lastname'
             ];
         }
     }
