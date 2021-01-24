@@ -110,14 +110,14 @@
                     Route::any('subscriber/filter', 'SubscriberController@filter')->name('admin.subscriber.filter');
                 /** subscriber */
 
-                /** Admin Profile */
+                /** profile */
                     Route::get('admin/profile', 'DashboardController@profile')->name('admin.profile');
                     Route::get('admin/profile-edit', 'DashboardController@profile_edit')->name('admin.profile.edit');
                     Route::PATCH('admin/profile-update', 'DashboardController@profile_update')->name('admin.profile.update');
 
                     Route::get('admin/profile-change-password', 'DashboardController@change_password')->name('admin.profile.change.password');
                     Route::post("admin/profile-reset-password", "DashboardController@reset_password")->name('admin.profile.reset.password');
-                /** Admin Profile */
+                /** profile */
             });
         });
 
