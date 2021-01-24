@@ -108,10 +108,16 @@
                     Route::post('subscriber/change_status', 'SubscriberController@change_status')->name('admin.subscriber.change.status');
                 /** subscriber */
 
+                /** Admin Profile */
+                    Route::get('admin/profile/{id?}', 'AdminProfileController@profile')->name('admin.profile');
+                    Route::get('admin/profile-edit/{id?}', 'AdminProfileController@profile_edit')->name('admin.profile_edit');
+                    Route::PATCH('admin/profile-update', 'AdminProfileController@profile_update')->name('admin.profile_update');
+                /** Admin Profile */
+
                 /** User Profile */
-                    // Route::get('subscriber/create', 'SubscriberController@create')->name('admin.subscriber.create');
-                    // Route::post('subscriber/insert', 'SubscriberController@insert')->name('admin.subscriber.insert');
-                    // Route::get('subscriber/edit', 'SubscriberController@edit')->name('admin.subscriber.edit');
+                    Route::get('user/profile/{id?}', 'UserProfileController@profile')->name('user.profile');
+                    Route::get('user/profile-edit/{id?}', 'UserProfileController@profile_edit')->name('user.profile_edit');
+                    Route::PATCH('user/profile-update', 'UserProfileController@profile_update')->name('user.profile_update');
                 /** User Profile */
 
             });

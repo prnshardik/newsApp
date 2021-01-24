@@ -9,12 +9,12 @@
             </div>
         </div>
         <ul class="side-menu metismenu">
-            @canany(['role-create', 'role-edit', 'role-view', 'role-delete', 'permission-create', 'permission-edit', 'permission-view', 'permission-delete'])
                 <li class="{{ Request::is('dashboard*') ? 'active' : '' }}">
                     <a class="active" href="{{ route('admin.dashboard') }}"><i class="sidebar-item-icon fa fa-th-large"></i>
                         <span class="nav-label">Dashboard</span>
                     </a>
                 </li>
+            @canany(['role-create', 'role-edit', 'role-view', 'role-delete', 'permission-create', 'permission-edit', 'permission-view', 'permission-delete'])
                 <li class="{{ (Request::is('role*') || Request::is('permission*')) ? 'active' : '' }}">
                     <a href="javascript:;"><i class="sidebar-item-icon fa fa-universal-access"></i>
                         <span class="nav-label">Access Control</span><i class="fa fa-angle-left arrow"></i>
