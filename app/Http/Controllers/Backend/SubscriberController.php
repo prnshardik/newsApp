@@ -350,8 +350,7 @@
             elseif($date)
                 $collection->whereDate('s.created_at', '=', $date);
 
-            $data = $collection->orderBy('u.firstname')
-                            ->get();
+            $data = $collection->orderBy('u.firstname')->get();
 
             return view('backend.subscriber.filter', ['data' => $data, 'cities' => $cities, 'reporters' => $reporters, 'pincode' => $pincode, 'city' => $city, 'reporter' => $reporter, 'date' => $date]);
         }
