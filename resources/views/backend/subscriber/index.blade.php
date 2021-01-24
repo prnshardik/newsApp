@@ -29,14 +29,56 @@
                     <div class="ibox-head">
                         <h1 class="ibox-title">Subscribers</h1>
                         <h1 class="pull-right">
-                            @if(auth()->user()->role_id == 1)
-
-                            @endif
                             @canany(['subscriber-create'])
-                            <a class="btn btn-primary pull-right" style="margin-top: 8px;margin-bottom: 5px" href="{{ route('admin.subscriber.create') }}">Add New</a>
+                                <a class="btn btn-primary pull-right ml-2" style="margin-top: 8px;margin-bottom: 5px" href="{{ route('admin.subscriber.create') }}">Add New</a>
                             @endcanany
+
+                            @if(auth()->user()->role_id == 1)
+                                <a class="btn btn-primary pull-right ibox-collapse text-white" style="margin-top: 8px;margin-bottom: 5px">Filters</a>
+                            @endif
                         </h1>
                     </div>
+
+                    <div class="ibox-body" style="display: none;">
+                        <form action="{{ route('admin.subscriber.filter') }}" name="form" id="form" method="post">
+                            @csrf
+                            @method('POST')
+
+                            <div class="row">
+                                <div class="col-sm-11">
+                                    <div class="row">
+                                        <div class="form-group col-sm-3">
+                                            <label for="pincode">Pincode</label>
+                                            <input type="text" name="pincode" id="pincode" class="form-control" placeholder="Plese enter pincode">
+                                            <span class="kt-form__help error pincode"></span>
+                                        </div>
+                                        <div class="form-group col-sm-3">
+                                            <label for="city">City</label>
+                                            <input type="text" name="city" id="city" class="form-control" placeholder="Plese enter city">
+                                            <span class="kt-form__help error city"></span>
+                                        </div>
+                                        <div class="form-group col-sm-3">
+                                            <label for="reporter">Reporter</label>
+                                            <input type="text" name="reporter" id="reporter" class="form-control" placeholder="Plese enter reporter">
+                                            <span class="kt-form__help error reporter"></span>
+                                        </div>
+                                        <div class="form-group col-sm-3">
+                                            <label for="date">Date</label>
+                                            <input type="text" name="date" id="date" class="form-control" placeholder="Plese enter date">
+                                            <span class="kt-form__help error date"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-1">
+                                    <div class="form-group">
+                                        <label for="filter">&nbsp;</label>
+                                        <button id="filter" class="btn btn-primary">Filter</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
                     <div class="dataTables_wrapper container-fluid dt-bootstrap4">
                         <table class="table table-bordered data-table" id="data-table">
                             <thead>

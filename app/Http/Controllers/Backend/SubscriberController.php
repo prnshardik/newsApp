@@ -314,4 +314,24 @@
                 return response()->json(['code' => 201]);
             }
         }
+
+        public function filter(Request $request){
+            if(auth()->user()->role_id != 1){
+                return redirect()->back()->with(['error' => 'you don\'t have permission.']);
+            }
+
+            $collections = DB::table('users as u')
+                            ->select('u.firstname', 'u.lastname', 'u.email',
+                                        's.address', 's.phone', 's.pincode',
+                                        'c.name as country_name', 'st.name as state_name', 'ct.name as city_name',
+                                    )
+                            ->join('subscribers as s', 'u.id', 's.user_id')
+                            ->join('country as c', 'c.id', 's.country')
+                            ->join('state as st', 'st.id', 's.state')
+                            ->join('city as ct', 'ct.id', 's.city');
+
+            $data = $collections->get();
+
+            return view('backend.subscriber.filter', ['data' => $data]);
+        }
     }
