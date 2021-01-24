@@ -86,7 +86,10 @@
                         ->make(true);
             }
 
-            return view('backend.subscriber.index');
+            $cities = DB::table('city')->select(['id', 'name'])->get();
+            $reporters = DB::table('reporter as r')->select(['r.id', 'u.firstname', 'u.lastname'])->leftjoin('users as u', 'u.id', 'r.user_id')->get();
+
+            return view('backend.subscriber.index', ['cities' => $cities, 'reporters' => $reporters]);
         }
 
         public function create(Request $request){
@@ -320,7 +323,15 @@
                 return redirect()->back()->with(['error' => 'you don\'t have permission.']);
             }
 
-            $collections = DB::table('users as u')
+            $pincode = $request->pincode ?? NULL;
+            $city = $request->city ?? NULL;
+            $reporter = $request->reporter ?? NULL;
+            $date = $request->date ?? NULL;
+
+            $cities = DB::table('city')->select(['id', 'name'])->get();
+            $reporters = DB::table('reporter as r')->select(['r.id', 'u.firstname', 'u.lastname'])->leftjoin('users as u', 'u.id', 'r.user_id')->get();
+
+            $collection = DB::table('users as u')
                             ->select('u.firstname', 'u.lastname', 'u.email',
                                         's.address', 's.phone', 's.pincode',
                                         'c.name as country_name', 'st.name as state_name', 'ct.name as city_name',
@@ -330,8 +341,18 @@
                             ->join('state as st', 'st.id', 's.state')
                             ->join('city as ct', 'ct.id', 's.city');
 
-            $data = $collections->get();
+            if($pincode)
+                $collection->where(['s.pincode' => $pincode]);
+            elseif($city)
+                $collection->where(['s.city' => $city]);
+            elseif($reporter)
+                $collection->where(['s.created_by' => $reporter]);
+            elseif($date)
+                $collection->whereDate('s.created_at', '=', $date);
 
-            return view('backend.subscriber.filter', ['data' => $data]);
+            $data = $collection->orderBy('u.firstname')
+                            ->get();
+
+            return view('backend.subscriber.filter', ['data' => $data, 'cities' => $cities, 'reporters' => $reporters, 'pincode' => $pincode, 'city' => $city, 'reporter' => $reporter, 'date' => $date]);
         }
     }

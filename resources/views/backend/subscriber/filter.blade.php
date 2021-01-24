@@ -41,23 +41,33 @@
                                             <div class="row">
                                                 <div class="form-group col-sm-3">
                                                     <label for="pincode">Pincode</label>
-                                                    <input type="text" name="pincode" id="pincode" class="form-control" placeholder="Plese enter pincode">
-                                                    <span class="kt-form__help error pincode"></span>
+                                                    <input type="text" name="pincode" id="pincode" class="form-control" placeholder="Plese enter pincode" value="{{ $pincode ?? NULL }}">
                                                 </div>
                                                 <div class="form-group col-sm-3">
                                                     <label for="city">City</label>
-                                                    <input type="text" name="city" id="city" class="form-control" placeholder="Plese enter city">
-                                                    <span class="kt-form__help error city"></span>
+                                                    <select name="city" id="city" class="form-control">
+                                                        <option value="">Select City</option>
+                                                        @if(isset($cities) && $cities->isNotEmpty())
+                                                            @foreach($cities as $row)
+                                                                <option value="{{ $row->id }}" @if($city != null && $city == $row->id) selected @endif>{{ $row->name }}</option>
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
                                                 </div>
                                                 <div class="form-group col-sm-3">
                                                     <label for="reporter">Reporter</label>
-                                                    <input type="text" name="reporter" id="reporter" class="form-control" placeholder="Plese enter reporter">
-                                                    <span class="kt-form__help error reporter"></span>
+                                                    <select name="reporter" id="reporter" class="form-control">
+                                                        <option value="">Select Reporter</option>
+                                                        @if(isset($reporters) && $reporters->isNotEmpty())
+                                                            @foreach($reporters as $row)
+                                                                <option value="{{ $row->id }}" @if($reporter != null && $reporter == $row->id) selected @endif>{{ $row->firstname }} {{ $row->lastname }}</option>
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
                                                 </div>
                                                 <div class="form-group col-sm-3">
                                                     <label for="date">Date</label>
-                                                    <input type="text" name="date" id="date" class="form-control" placeholder="Plese enter date">
-                                                    <span class="kt-form__help error date"></span>
+                                                    <input type="text" name="date" id="date" class="form-control" placeholder="Plese enter date" autocomplete="off" value="{{ $date ?? NULL }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -91,6 +101,12 @@
                                 @endforeach
                             @endif
                         </div>
+
+                        {{-- <div class="row mt-2">
+                            <div class="col-sm-12 text-right">
+                                <button class="btn btn-primary mr-5" id="pdf" onClick="printdiv('filterData');">PDF</button>
+                            </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -99,4 +115,14 @@
 @endsection
 
 @section('scripts')
+    <script>
+        $('#date').datepicker({
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true,
+            format: "yyyy/mm/dd"
+        });
+    </script>
 @endsection

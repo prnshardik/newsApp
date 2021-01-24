@@ -107,7 +107,7 @@
                     Route::get('subscriber/view', 'SubscriberController@view')->name('admin.subscriber.view');
                     Route::post('subscriber/change_status', 'SubscriberController@change_status')->name('admin.subscriber.change.status');
 
-                    Route::post('subscriber/filter', 'SubscriberController@filter')->name('admin.subscriber.filter');
+                    Route::any('subscriber/filter', 'SubscriberController@filter')->name('admin.subscriber.filter');
                 /** subscriber */
 
                 /** Admin Profile */

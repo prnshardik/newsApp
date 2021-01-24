@@ -11,6 +11,7 @@
 <script src="{{ asset('backend/js/toastr.js') }}" type="text/javascript"></script>
 <script src="{{ asset('backend/js/datatable.min.js') }}"></script>
 <script src="{{ asset('backend/js/select2.min.js') }}"></script>
+<script src="{{ asset('backend/vendors/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
 
 <script src="{{ asset('backend/vendors/jquery-validation/dist/jquery.validate.min.js') }}" type="text/javascript"></script>
 
