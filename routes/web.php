@@ -118,16 +118,6 @@
 
                     Route::any('subscriber/filter', 'SubscriberController@filter')->name('admin.subscriber.filter');
                 /** subscriber */
-
-                /** subscription */
-                    Route::any('subscription', 'SubscriptionController@index')->name('admin.subscription');
-                    Route::get('subscription/create', 'SubscriptionController@create')->name('admin.subscription.create');
-                    Route::post('subscription/insert', 'SubscriptionController@insert')->name('admin.subscription.insert');
-                    Route::get('subscription/edit', 'SubscriptionController@edit')->name('admin.subscription.edit');
-                    Route::patch('subscription/update/{id?}', 'SubscriptionController@update')->name('admin.subscription.update');
-                    Route::get('subscription/view', 'SubscriptionController@view')->name('admin.subscription.view');
-                    Route::post('subscription/change_status', 'SubscriptionController@change_status')->name('admin.subscription.change.status');
-                /** subscription */
             });
         });
 
