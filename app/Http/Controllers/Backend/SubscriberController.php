@@ -158,6 +158,7 @@
                         'country' => $request->country,
                         'state' => $request->state,
                         'city' => $request->city,
+                        'end_date' => date('Y-m-d', strtotime('+1 year')),
                         'status' => 'active',
                         'created_at' => date('Y-m-d H:i:s'),
                         'created_by' => auth()->user()->id,
@@ -292,7 +293,11 @@
                 if(!empty($subscriber)){
                     DB::beginTransaction();
                     try {
-                        $update = Subscriber::where(['id' => $id])->update(['status' => $status, 'updated_by' => auth()->user()->id]);
+                        if($status == 'active'){
+                            $update = Subscriber::where(['id' => $id])->update(['status' => $status, 'end_date' => date('Y-m-d', strtotime('+1 year')), 'updated_by' => auth()->user()->id]);
+                        }else{
+                            $update = Subscriber::where(['id' => $id])->update(['status' => $status, 'updated_by' => auth()->user()->id]);
+                        }
 
                         if($update){
                             $update_user = User::where(['id' => $subscriber->user_id])->update(['status' => $status, 'updated_by' => auth()->user()->id]);
