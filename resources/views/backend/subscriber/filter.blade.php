@@ -116,13 +116,35 @@
 
 @section('scripts')
     <script>
-        $('#date').datepicker({
-            todayBtn: "linked",
-            keyboardNavigation: false,
-            forceParse: false,
-            calendarWeeks: true,
-            autoclose: true,
-            format: "yyyy/mm/dd"
+        $(document).ready(function(){
+            $("#pincode").keypress(function(e){
+                var keyCode = e.keyCode || e.which;
+                var $this = $(this);
+                //Regex for Valid Characters i.e. Numbers.
+                var regex = new RegExp("^[0-9\b]+$");
+
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                // for 10 digit number only
+                if ($this.val().length > 5) {
+                    e.preventDefault();
+                    return false;
+                }
+
+                if (regex.test(str)) {
+                    return true;
+                }
+                e.preventDefault();
+                return false;
+            });
+
+            $('#date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "yyyy/mm/dd"
+            });
         });
     </script>
 @endsection

@@ -17,6 +17,7 @@
                 $table->integer('country')->nullable();
                 $table->integer('state')->nullable();
                 $table->integer('city')->nullable();
+                $table->date('end_date')->nullable();
                 $table->enum('status', ['active', 'inactive', 'deleted'])->default('inactive');
                 $table->timestamps();
                 $table->integer('created_by')->nullable();
