@@ -29,16 +29,16 @@
                     <div class="ibox-head">
                         <div class="ibox-title">Subscriber Filter</div>
                         <h1 class="pull-right">
-                            <?php 
-                                if(isset($pincode) && $pincode != NULL){
+                            <?php
+                                $prm = '';
+                                if(isset($pincode) && $pincode != NULL)
                                     $prm = "$pincode";
-                                }else if(isset($city) && $city != NULL){
+                                elseif(isset($city) && $city != NULL)
                                     $prm = "$city";
-                                }else if(isset($reporter) && $reporter != NULL){
+                                elseif(isset($reporter) && $reporter != NULL)
                                     $prm = "$reporter";
-                                }else if(isset($date) && $date != NULL){
+                                elseif(isset($date) && $date != NULL)
                                     $prm = "$date";
-                                }
                             ?>
                             @if(auth()->user()->role_id == 1)
                                 <a href="{{ URL::to('/subscriber/pdf/' .$prm) }}" class="btn btn-primary pull-right text-white" style="margin-top: 15px !important ;margin-bottom: 5px">Export TO PDF</a>
