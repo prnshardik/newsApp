@@ -35,8 +35,8 @@
                     'country_id' => 'required ',
                     'state_id' => 'required ',
                     'city_id' => 'required',
-                    'receipt_book_start_no' => 'required|unique:receipt_book_start_no',
-                    'receipt_book_end_no' => 'required|unique:receipt_book_end_no'
+                    'receipt_book_start_no' => 'required|unique:reporter,receipt_book_start_no',
+                    'receipt_book_end_no' => 'required|unique:reporter,receipt_book_end_no'
                 ];
             }
         }

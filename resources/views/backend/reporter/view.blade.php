@@ -43,14 +43,14 @@
                                     <span class="kt-form__help error lastname"></span>
                                 </div>
                                 <div class="form-group col-sm-6">
-                                    <label for="phone_no">Mobile Number</label>
-                                    <input type="text" name="phone_no" id="phone_no" class="form-control" placeholder="Plese enter country code" value="{{ $data->phone_no ?? '' }}" disabled>
-                                    <span class="kt-form__help error phone_no"></span>
-                                </div>
-                                <div class="form-group col-sm-6">
                                     <label for="email">Email</label>
                                     <input type="text" name="email" id="email" class="form-control" placeholder="Plese enter email address" value="{{ $data->email ?? '' }}" disabled>
                                     <span class="kt-form__help error email"></span>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="phone_no">Mobile Number</label>
+                                    <input type="text" name="phone_no" id="phone_no" class="form-control" placeholder="Plese enter country code" value="{{ $data->phone_no ?? '' }}" disabled>
+                                    <span class="kt-form__help error phone_no"></span>
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="unique_id">Unique ID</label>

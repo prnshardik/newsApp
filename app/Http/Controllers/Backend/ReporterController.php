@@ -96,7 +96,6 @@
 
         public function insert(ReporterRequest $request){
             if($request->ajax()){ return true; }
-
             $role_id = 2;
             $password = 'abcd1234';
 
@@ -116,7 +115,7 @@
                 'updated_at' => date('Y-m-d H:i:s'),
                 'updated_by' => auth()->user()->id
             ];
-            // dd($request);
+
             DB::beginTransaction();
             try {
                 $user = User::create($crud);
@@ -145,7 +144,7 @@
                         $user->assignRole($role_id);
 
                         DB::commit();
-                        return redirect()->route('admin.reporter')->with('success', 'Record inserted successfully.');
+                        return redirect()->route('admin.reporter')->with('success', 'Reporter inserted successfully.');
                     }else{
                         DB::rollback();
                         return redirect()->back()->with('error', 'Failed to insert record in reporter.')->withInput();
@@ -219,7 +218,7 @@
 
                     if($reporter_update){
                         DB::commit();
-                        return redirect()->route('admin.reporter')->with('success', 'Record updated successfully.');
+                        return redirect()->route('admin.reporter')->with('success', 'Reporter updated successfully.');
                     }else{
                         DB::rollback();
                         return redirect()->back()->with('error', 'Failed to update record in reporter.')->withInput();

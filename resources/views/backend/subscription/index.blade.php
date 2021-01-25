@@ -4,7 +4,7 @@
 @endsection
 
 @section('title')
-    Subscribers
+    Subscriptions
 @endsection
 
 @section('styles')
@@ -17,7 +17,7 @@
                 <a href="{{ route('admin.dashboard') }}">Dashboard</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.subscriber') }}">Subscribers</i></a>
+                <a href="{{ route('admin.subscription') }}">Subscriptions</i></a>
             </li>
             {{-- <li class="breadcrumb-item">Index</li> --}}
         </ol>
@@ -27,79 +27,21 @@
             <div class="col-lg-12">
                 <div class="ibox">
                     <div class="ibox-head">
-                        <h1 class="ibox-title">Subscribers</h1>
+                        <h1 class="ibox-title">Subscriptions</h1>
                         <h1 class="pull-right">
-                            @canany(['subscriber-create'])
-                                <a class="btn btn-primary pull-right ml-2" style="margin-top: 8px;margin-bottom: 5px" href="{{ route('admin.subscriber.create') }}">Add New</a>
+                            @canany(['subscription-create'])
+                                <a class="btn btn-primary pull-right ml-2" style="margin-top: 8px;margin-bottom: 5px" href="{{ route('admin.subscription.create') }}">Add New</a>
                             @endcanany
-
-                            @if(auth()->user()->role_id == 1)
-                                <a class="btn btn-primary pull-right ibox-collapse text-white" style="margin-top: 8px;margin-bottom: 5px">Filters</a>
-                            @endif
                         </h1>
                     </div>
-
-                    <div class="ibox-body" style="display: none;">
-                        <form action="{{ route('admin.subscriber.filter') }}" name="form" id="form" method="post">
-                            @csrf
-                            @method('POST')
-
-                            <div class="row">
-                                <div class="col-sm-11">
-                                    <div class="row">
-                                        <div class="form-group col-sm-3">
-                                            <label for="pincode">Pincode</label>
-                                            <input type="text" name="pincode" id="pincode" class="form-control" placeholder="Plese enter pincode" value="{{ $pincode ?? NULL }}">
-                                        </div>
-                                        <div class="form-group col-sm-3">
-                                            <label for="city">City</label>
-                                            <select name="city" id="city" class="form-control">
-                                                <option value="">Select City</option>
-                                                @if(isset($cities) && $cities->isNotEmpty())
-                                                    @foreach($cities as $row)
-                                                        <option value="{{ $row->id }}">{{ $row->name }}</option>
-                                                    @endforeach
-                                                @endif
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-sm-3">
-                                            <label for="reporter">Reporter</label>
-                                            <select name="reporter" id="reporter" class="form-control">
-                                                <option value="">Select Reporter</option>
-                                                @if(isset($reporters) && $reporters->isNotEmpty())
-                                                    @foreach($reporters as $row)
-                                                        <option value="{{ $row->id }}">{{ $row->firstname }} {{ $row->lastname }}</option>
-                                                    @endforeach
-                                                @endif
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-sm-3">
-                                            <label for="date">Date</label>
-                                            <input type="text" name="date" id="date" class="form-control" placeholder="Plese enter date" autocomplete="off" value="{{ $date ?? NULL }}">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-1">
-                                    <div class="form-group">
-                                        <label for="filter">&nbsp;</label>
-                                        <button id="filter" class="btn btn-primary">Filter</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-
                     <div class="dataTables_wrapper container-fluid dt-bootstrap4">
                         <table class="table table-bordered data-table" id="data-table">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Name</th>
-                                    <th>Receipt No</th>
-                                    <th>Phone</th>
-                                    <th>Pincode</th>
-                                    <th>State</th>
-                                    <th>City</th>
+                                    <th>Subscriber</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -141,7 +83,7 @@
                     lengthChange: false,
 
                     "ajax":{
-                        "url": "{{ route('admin.subscriber') }}",
+                        "url": "{{ route('admin.subscription') }}",
                         "type": "POST",
                         "dataType": "json",
                         "data":{
@@ -159,28 +101,16 @@
                             name: 'DT_RowIndex'
                         },
                         {
-                            data: 'name',
-                            name: 'name'
+                            data: 'subscriber',
+                            name: 'subscriber'
                         },
                         {
-                            data: 'receipt_no',
-                            name: 'receipt_no'
+                            data: 'start_date',
+                            name: 'start_date'
                         },
                         {
-                            data: 'phone',
-                            name: 'phone'
-                        },
-                        {
-                            data: 'pincode',
-                            name: 'pincode'
-                        },
-                        {
-                            data: 'state_name',
-                            name: 'state_name'
-                        },
-                        {
-                            data: 'city_name',
-                            name: 'city_name'
+                            data: 'end_date',
+                            name: 'end_date'
                         },
                         {
                             data: 'status',
@@ -194,23 +124,6 @@
                     ]
                 });
             }
-
-            // $('#reporter').select2({
-            //     multiple: false,
-            // });
-
-            // $('#city').select2({
-            //     multiple: false,
-            // });
-
-            $('#date').datepicker({
-                todayBtn: "linked",
-                keyboardNavigation: false,
-                forceParse: false,
-                calendarWeeks: true,
-                autoclose: true,
-                format: "yyyy/mm/dd"
-            });
         });
 
         function change_status(object){
@@ -219,7 +132,7 @@
 
             if (confirm('Are you sure?')) {
                 $.ajax({
-                    "url": "{!! route('admin.subscriber.change.status') !!}",
+                    "url": "{!! route('admin.subscription.change.status') !!}",
                     "dataType": "json",
                     "type": "POST",
                     "data":{
