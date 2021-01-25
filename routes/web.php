@@ -117,7 +117,7 @@
 
                     Route::get('admin/profile-change-password', 'DashboardController@change_password')->name('admin.profile.change.password');
                     Route::post("admin/profile-reset-password", "DashboardController@reset_password")->name('admin.profile.reset.password');
-                /** a-profile */
+                /** profile */
             });
         });
 
