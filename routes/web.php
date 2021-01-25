@@ -117,6 +117,7 @@
                     Route::post('subscriber/change_status', 'SubscriberController@change_status')->name('admin.subscriber.change.status');
 
                     Route::any('subscriber/filter', 'SubscriberController@filter')->name('admin.subscriber.filter');
+                    Route::get('subscriber/pdf/{pincode?}{city?}{reporter?}/{date?}', 'SubscriberController@createPDF')->name('admin.subscriber.pdf');
                 /** subscriber */
             });
         });

@@ -8,7 +8,7 @@
     use App\Models\User;
     use App\Models\Country;
     use App\Http\Requests\SubscriberRequest;
-    use DataTables, DB;
+    use DataTables, DB ,PDF;
     use Spatie\Permission\Models\Role;
 
     class SubscriberController extends Controller{
@@ -362,5 +362,48 @@
             $data = $collection->orderBy('u.firstname')->get();
 
             return view('backend.subscriber.filter', ['data' => $data, 'cities' => $cities, 'reporters' => $reporters, 'pincode' => $pincode, 'city' => $city, 'reporter' => $reporter, 'date' => $date]);
+        }
+
+        public function createPDF(Request $request) {
+          // retreive all records from db
+            $pincode = $request->pincode ?? NULL;
+            $city = $request->city ?? NULL;
+            $reporter = $request->reporter ?? NULL;
+            $date = $request->date ?? NULL;
+
+            $cities = DB::table('city')->select(['id', 'name'])->get();
+            $reporters = DB::table('reporter as r')->select(['u.id', 'u.firstname', 'u.lastname'])
+                                ->leftjoin('users as u', 'u.id', 'r.user_id')
+                                ->get();
+
+            $collection = DB::table('users as u')
+                            ->select('u.firstname', 'u.lastname', 'u.email',
+                                        's.address', 's.phone', 's.pincode',
+                                        'c.name as country_name', 'st.name as state_name', 'ct.name as city_name',
+                                    )
+                            ->join('subscribers as s', 'u.id', 's.user_id')
+                            ->join('country as c', 'c.id', 's.country')
+                            ->join('state as st', 'st.id', 's.state')
+                            ->join('city as ct', 'ct.id', 's.city');
+
+            if($pincode)
+                $collection->where(['s.pincode' => $pincode]);
+            elseif($city)
+                $collection->where(['s.city' => $city]);
+            elseif($reporter)
+                $collection->where(['s.created_by' => $reporter]);
+            elseif($date)
+                $collection->whereDate('s.created_at', '=', $date);
+
+            $newdata = $collection->orderBy('u.firstname')->get();
+
+          // share data to view
+            $data = ['data'=>$newdata];
+            $pdf = PDF::loadView('backend.pdf.pdf_view', $data);
+  
+        return $pdf->download('NewsApp.pdf');
+
+          // download PDF file with download method
+          return $pdf->download('pdf_file.pdf');
         }
     }
