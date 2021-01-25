@@ -58,6 +58,10 @@ class CreatePermissionTables extends Migration
         $subscriber_edit = DB::table('permissions')->insertGetId(['name' => 'subscriber-edit', 'guard_name' => 'web']);
         $subscriber_view = DB::table('permissions')->insertGetId(['name' => 'subscriber-view', 'guard_name' => 'web']);
         $subscriber_delete = DB::table('permissions')->insertGetId(['name' => 'subscriber-delete', 'guard_name' => 'web']);
+        $subscription_create = DB::table('permissions')->insertGetId(['name' => 'subscription-create', 'guard_name' => 'web']);
+        $subscription_edit = DB::table('permissions')->insertGetId(['name' => 'subscription-edit', 'guard_name' => 'web']);
+        $subscription_view = DB::table('permissions')->insertGetId(['name' => 'subscription-view', 'guard_name' => 'web']);
+        $subscription_delete = DB::table('permissions')->insertGetId(['name' => 'subscription-delete', 'guard_name' => 'web']);
 
         Schema::create($tableNames['roles'], function (Blueprint $table) {
             $table->bigIncrements('id');
@@ -145,10 +149,15 @@ class CreatePermissionTables extends Migration
         DB::table('role_has_permissions')->insert(['permission_id' => $reporter_edit, 'role_id' => $admin_role_id]);
         DB::table('role_has_permissions')->insert(['permission_id' => $reporter_view, 'role_id' => $admin_role_id]);
         DB::table('role_has_permissions')->insert(['permission_id' => $reporter_delete, 'role_id' => $admin_role_id]);
+
         DB::table('role_has_permissions')->insert(['permission_id' => $subscriber_create, 'role_id' => $admin_role_id]);
         DB::table('role_has_permissions')->insert(['permission_id' => $subscriber_edit, 'role_id' => $admin_role_id]);
         DB::table('role_has_permissions')->insert(['permission_id' => $subscriber_view, 'role_id' => $admin_role_id]);
         DB::table('role_has_permissions')->insert(['permission_id' => $subscriber_delete, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $subscription_create, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $subscription_edit, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $subscription_view, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $subscription_delete, 'role_id' => $admin_role_id]);
 
         $user = DB::table('users')->where(['email' => 'superadmin@newsapp.com'])->first();
         if($user){
