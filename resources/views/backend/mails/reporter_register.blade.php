@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <title>NewApp</title>
+    <title>NewsApp</title>
 
     <style type="text/css" rel="stylesheet" media="all">
         @import url("https://fonts.googleapis.com/css?family=Nunito+Sans:400,700&display=swap");
@@ -412,15 +412,26 @@
                                         </center>
                                         <br>
                                         <div class="f-fallback">
-                                            <h1>Hey, User! </h1>
-                                            <p>We are recieved reset password request for this email address.</p>
-                                            <p>If you dont made this request, please ignor this.</p>
+                                            <h1>Welcome, User! </h1>
+                                            <p>Thanks for using NewsApp. We’re thrilled to have you on board.</p>
 
-                                            <p>For reference, here's your reset password link:</p>
+                                            <p>For reference, here's your login information:</p>
                                             <table class="attributes" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                                                 <tr>
                                                     <td class="attributes_content">
                                                         <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                                                            <tr>
+                                                                <td class="attributes_item">
+                                                                    <span class="f-fallback">
+                                                                        <strong>Login Id:</strong>  {{ $data['email'] ?? '' }}
+                                                                    </span>
+                                                                </td>
+                                                                <td class="attributes_item">
+                                                                    <span class="f-fallback">
+                                                                        <strong>Password:</strong>  {{ $data['password'] ?? '' }}
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
                                                             <tr>
                                                                 <td class="attributes_item">
                                                                     <span class="f-fallback">
@@ -448,7 +459,7 @@
                                                 </tr>
                                             </table>
                                             <div class="wrapper">
-                                                <p>Thank you for being with us.</p>
+                                                <p>Thank you for joining us. Please use this Credentials.</p>
                                             </div>
                                             <p>Regards,<br> NewsApp
                                         </div>

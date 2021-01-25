@@ -4,12 +4,10 @@
 
     use App\Http\Controllers\Controller;
     use Illuminate\Http\Request;
-    use Auth;
-    use Validator;
     use App\Models\User;
     use Illuminate\Support\Str;
     use App\Mail\ForgetPassword;
-    use DB, Mail;
+    use Auth, Validator, DB, Mail;
 
     class AuthController extends Controller{
 
