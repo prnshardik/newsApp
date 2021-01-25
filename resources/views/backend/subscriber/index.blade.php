@@ -50,6 +50,7 @@
                                         <div class="form-group col-sm-3">
                                             <label for="pincode">Pincode</label>
                                             <input type="text" name="pincode" id="pincode" class="form-control" placeholder="Plese enter pincode" value="{{ $pincode ?? NULL }}">
+                                            <span class="kt-form__help error pincode"></span>
                                         </div>
                                         <div class="form-group col-sm-3">
                                             <label for="city">City</label>
@@ -116,6 +117,7 @@
 @section('scripts')
     <script type="text/javascript">
         var datatable;
+
 
         $(document).ready(function() {
             if($('#data-table').length > 0){
