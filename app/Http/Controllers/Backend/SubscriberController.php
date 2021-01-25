@@ -87,7 +87,9 @@
             }
 
             $cities = DB::table('city')->select(['id', 'name'])->get();
-            $reporters = DB::table('reporter as r')->select(['r.id', 'u.firstname', 'u.lastname'])->leftjoin('users as u', 'u.id', 'r.user_id')->get();
+            $reporters = DB::table('reporter as r')->select(['u.id', 'u.firstname', 'u.lastname'])
+                                ->leftjoin('users as u', 'u.id', 'r.user_id')
+                                ->get();
 
             return view('backend.subscriber.index', ['cities' => $cities, 'reporters' => $reporters]);
         }
@@ -329,7 +331,9 @@
             $date = $request->date ?? NULL;
 
             $cities = DB::table('city')->select(['id', 'name'])->get();
-            $reporters = DB::table('reporter as r')->select(['r.id', 'u.firstname', 'u.lastname'])->leftjoin('users as u', 'u.id', 'r.user_id')->get();
+            $reporters = DB::table('reporter as r')->select(['u.id', 'u.firstname', 'u.lastname'])
+                                ->leftjoin('users as u', 'u.id', 'r.user_id')
+                                ->get();
 
             $collection = DB::table('users as u')
                             ->select('u.firstname', 'u.lastname', 'u.email',
