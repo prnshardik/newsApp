@@ -6,10 +6,14 @@
 
     class PreventBackHistory{
         public function handle($request, Closure $next){
-            $response = $next($request);
+            $handle = $next($request);
 
-            return $response->header('Cache-Control','nocache, no-store, max-age=0, must-revalidate')
-                            ->header('Pragma','no-cache')
-                            ->header('Expires','Sat, 26 Jul 1997 05:00:00 GMT');
+            if(method_exists($handle, 'header')){
+                $handle->header('Access-Control-Allow-Origin' , '*')
+                        ->header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT, DELETE')
+                        ->header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, X-Requested-With, Application');
+            }
+
+            return $handle;
         }
     }

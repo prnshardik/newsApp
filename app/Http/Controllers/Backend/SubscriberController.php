@@ -10,6 +10,8 @@
     use App\Http\Requests\SubscriberRequest;
     use DataTables, DB ,PDF;
     use Spatie\Permission\Models\Role;
+    use App\Exports\SubscriberExport;
+    use Maatwebsite\Excel\Facades\Excel;
 
     class SubscriberController extends Controller{
 
@@ -365,16 +367,10 @@
         }
 
         public function createPDF(Request $request) {
-          // retreive all records from db
             $pincode = $request->pincode ?? NULL;
             $city = $request->city ?? NULL;
             $reporter = $request->reporter ?? NULL;
             $date = $request->date ?? NULL;
-
-            $cities = DB::table('city')->select(['id', 'name'])->get();
-            $reporters = DB::table('reporter as r')->select(['u.id', 'u.firstname', 'u.lastname'])
-                                ->leftjoin('users as u', 'u.id', 'r.user_id')
-                                ->get();
 
             $collection = DB::table('users as u')
                             ->select('u.firstname', 'u.lastname', 'u.email',
@@ -397,13 +393,28 @@
 
             $newdata = $collection->orderBy('u.firstname')->get();
 
-          // share data to view
-            $data = ['data'=>$newdata];
-            $pdf = PDF::loadView('backend.pdf.pdf_view', $data);
+            return view('backend.pdf.pdf', ['data' => $newdata, 'pincode' => $pincode, 'city' => $city, 'reporter' => $reporter, 'date' => $date]);
+            // $data = ['data' => $newdata];
+            // $pdf = PDF::loadView('backend.pdf.pdf', $data);
 
-            return $pdf->download('NewsApp.pdf');
+            // return $pdf->download('NewsApp.pdf');
+        }
 
-          // download PDF file with download method
-          return $pdf->download('pdf_file.pdf');
+        public function excel(Request $request) {
+            $pincode = $request->pincode ?? null;
+            $city = $request->city ?? null;
+            $reporter = $request->reporter ?? null;
+            $date = $request->date ?? null;
+
+            $filter = [
+                        'pincode' => $pincode,
+                        'city' => $city,
+                        'reporter' => $reporter,
+                        'date' => $date
+                    ];
+
+            return Excel::download(new SubscriberExport($filter), 'subscriber.xlsx');
         }
     }
+
+
