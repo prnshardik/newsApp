@@ -2,14 +2,29 @@
     <tbody>
         @if(isset($data) && !empty($data))
             @foreach($data as $key => $val)
-                <tr>
+                <tr style="height:300px ; margin-top:5px">
                     @foreach($val as $row)
-                        <td>
-                            To.<br/>
-                            {{ $row->pincode }}<br/>
-                            {{ $row->firstname }} {{ $row->lastname }}<br/>
-                            {{ $row->address }}<br/>
-                            {{ $row->city_name }} - {{ $row->pincode }}<br/>
+                        <td style="width:21px; height:120px">
+                            <div>
+                                To.
+                            </div>
+                                <br/>
+                            <div>
+                                {{ $row->pincode }}
+                            </div>
+                            <br/>
+                            <div>
+                                {{ $row->firstname }} {{ $row->lastname }}
+                            </div>
+                            <br/>
+                            <div>
+                                {{ $row->address }}
+                            </div>
+                            <br/>
+                            <div>
+                                {{ $row->city_name }} - {{ $row->pincode }}
+                            </div>
+
                         </td>
                     @endforeach
                 </tr>

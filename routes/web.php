@@ -117,7 +117,6 @@
                     Route::post('subscriber/change_status', 'SubscriberController@change_status')->name('admin.subscriber.change.status');
 
                     Route::any('subscriber/filter', 'SubscriberController@filter')->name('admin.subscriber.filter');
-                    Route::get('subscriber/pdf/{filter?}', 'SubscriberController@createPDF')->name('admin.subscriber.pdf');
                     Route::get('subscriber/excel/{filter?}', 'SubscriberController@excel')->name('admin.subscriber.excel');
                 /** subscriber */
             });

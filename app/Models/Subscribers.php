@@ -42,7 +42,7 @@
             elseif($date != '' && $date != null)
                 $collection->whereDate('s.created_at', '=', $date);
 
-            $newdata = $collection->orderBy('u.firstname')->get();
+            $newdata = $collection->where('u.status','active')->orderBy('u.firstname')->get();
             return $newdata;
         }
     }

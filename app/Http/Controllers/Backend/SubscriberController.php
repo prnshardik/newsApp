@@ -366,43 +366,6 @@
             return view('backend.subscriber.filter', ['data' => $data, 'cities' => $cities, 'reporters' => $reporters, 'pincode' => $pincode, 'city' => $city, 'reporter' => $reporter, 'date' => $date]);
         }
 
-        public function createPDF(Request $request) {
-            $pincode = $request->pincode ?? NULL;
-            $city = $request->city ?? NULL;
-            $reporter = $request->reporter ?? NULL;
-            $date = $request->date ?? NULL;
-
-            $collection = DB::table('users as u')
-                            ->select('u.firstname', 'u.lastname', 'u.email',
-                                        's.address', 's.phone', 's.pincode',
-                                        'c.name as country_name', 'st.name as state_name', 'ct.name as city_name',
-                                    )
-                            ->join('subscribers as s', 'u.id', 's.user_id')
-                            ->join('country as c', 'c.id', 's.country')
-                            ->join('state as st', 'st.id', 's.state')
-                            ->join('city as ct', 'ct.id', 's.city');
-
-            if($pincode)
-                $collection->where(['s.pincode' => $pincode]);
-            elseif($city)
-                $collection->where(['s.city' => $city]);
-            elseif($reporter)
-                $collection->where(['s.created_by' => $reporter]);
-            elseif($date)
-                $collection->whereDate('s.created_at', '=', $date);
-
-            $newdata = $collection->orderBy('u.firstname')->get();
-
-            return view('backend.pdf.pdf', ['data' => $newdata, 'pincode' => $pincode, 'city' => $city, 'reporter' => $reporter, 'date' => $date]);
-            // $data = ['data' => $newdata];
-            // $pdf = PDF::loadView('backend.pdf.pdf', $data);
-
-
-            // return $pdf->download('NewsApp.pdf');
-          // download PDF file with download method
-
-            // return $pdf->download('NewsApp.pdf');
-        }
 
         public function excel(Request $request) {
             $pincode = $request->pincode ?? null;

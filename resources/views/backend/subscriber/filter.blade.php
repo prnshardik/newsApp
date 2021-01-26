@@ -52,20 +52,6 @@
             }
         }
     </style>
-
-    <style>
-        @media print {
-            /* Hide everything in the body when printing... */
-            body.printing * { display: none; }
-            /* ...except our special div. */
-            body.printing #print-me { display: block; }
-        }
-
-        @media screen {
-            /* Hide the special layer from the screen. */
-            #print-me { display: none; }
-        }
-    </style>
 @endsection
 
 @section('content')
@@ -96,7 +82,7 @@
                                                 'date' => $date
                                             ];
                                 @endphp
-                                <a href="{{ route('admin.subscriber.excel', $filter) }}" class="btn btn-primary pull-right text-white" style="margin-top: 15px !important ;margin-bottom: 5px">Export TO PDF</a>
+                                <a href="{{ route('admin.subscriber.excel', $filter) }}" class="btn btn-primary pull-right text-white" style="margin-top: 15px !important ;margin-bottom: 5px">Export TO Excel</a>
                             @endif
                         </h1>
                     </div>
@@ -175,16 +161,6 @@
                                 @endif
                             </div>
                         </div>
-
-                        <div class="row mt-2">
-                            <div class="col-sm-12 text-right">
-                                {{-- <button class="btn btn-primary mr-5" id="getPDF" onclick="getPDF()">PDF</button> --}}
-                                <a href="{{ route('admin.subscriber.pdf', $filter) }}" class="btn btn-primary pull-right text-white" style="margin-top: 15px !important ;margin-bottom: 5px">Export TO PDF</a>
-                            </div>
-                            <div class="col-sm-12">
-                                <div id="parent"></div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -193,8 +169,6 @@
 @endsection
 
 @section('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js" integrity="sha512-jzL0FvPiDtXef2o2XZJWgaEpVAihqquZT/tT89qCVaxVuHwJ/1DFcJ+8TBMXplSJXE8gLbVAUv+Lj20qHpGx+A==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
     <script>
         $(document).ready(function(){
             $("#pincode").keypress(function(e){
@@ -257,43 +231,5 @@
                 });
             });
         });
-
-        function getPDF(){
-            var div = $("#filterData")[0];
-            var rect = div.getBoundingClientRect();
-
-            var canvas = document.createElement("canvas");
-            canvas.width = rect.width;
-            canvas.height = rect.height;
-
-            var ctx = canvas.getContext("2d");
-            ctx.translate(-rect.left,-rect.top);
-
-            html2canvas(div, {
-                canvas:canvas,
-                height:rect.height,
-                width:rect.width,
-                onrendered: function(canvas) {
-                    var image = canvas.toDataURL("image/png");
-                    var pHtml = "<img src="+image+" />";
-                    $("#parent").append(pHtml);
-                    // var doc = new jsPDF("p");
-                    // doc.addImage(image);
-                    // doc.save('sample-file.pdf');
-                    // printDiv()
-                }
-            });
-        }
-
-        // function printDiv(){
-        //     var printContents = document.getElementById('parent').innerHTML;
-        //     var originalContents = document.body.innerHTML;
-
-        //     document.body.innerHTML = printContents;
-
-        //     window.print();
-
-        //     document.body.innerHTML = originalContents;
-        // }
     </script>
 @endsection
