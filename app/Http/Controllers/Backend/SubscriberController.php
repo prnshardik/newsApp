@@ -402,8 +402,6 @@
             $pdf = PDF::loadView('backend.pdf.pdf_view', $data);
 
             return $pdf->download('NewsApp.pdf');
-
           // download PDF file with download method
-          return $pdf->download('pdf_file.pdf');
         }
     }
