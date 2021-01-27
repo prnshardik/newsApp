@@ -19,7 +19,7 @@
                 $table->integer('state')->nullable();
                 $table->integer('city')->nullable();
                 $table->date('end_date')->nullable();
-                $table->enum('status', ['active', 'inactive', 'deleted'])->default('inactive');
+                $table->enum('status', ['active', 'inactive', 'deleted', 'block'])->default('inactive');
                 $table->timestamps();
                 $table->integer('created_by')->nullable();
                 $table->integer('updated_by')->nullable();
