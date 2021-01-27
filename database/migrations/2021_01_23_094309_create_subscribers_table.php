@@ -14,6 +14,7 @@
                 $table->text('address')->nullable();
                 $table->string('phone')->nullable();
                 $table->string('pincode')->nullable();
+                $table->string('magazine')->nullable();
                 $table->integer('country')->nullable();
                 $table->integer('state')->nullable();
                 $table->integer('city')->nullable();
