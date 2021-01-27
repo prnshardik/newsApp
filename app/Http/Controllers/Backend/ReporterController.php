@@ -121,7 +121,6 @@
             DB::beginTransaction();
             try {
                 $user = User::create($crud);
-
                 if($user){
                     $reporter_crud = [
                         'user_id' => $user->id,
@@ -145,9 +144,10 @@
                     if($reporter_last_id > 0){
                         $user->assignRole($role_id);
 
-                        $link = \URL::to('/');
-                        $mailData = array('from_email' => config('constants.from_email'), 'email' => $request->email, 'link' => $link, 'password' => $password, 'logo' => url('/backend/img/image.jpg'));
-                        Mail::to($request->email)->send(new ReporterRegister($mailData));
+                        // $link = \URL::to('/');
+                        // $mailData = array('from_email' => config('constants.from_email'), 'email' => $request->email, 'link' => $link, 'password' => $password, 'logo' => url('/backend/img/image.jpg'));
+                        // Mail::to($request->email)->send(new ReporterRegister($mailData));
+
 
                         DB::commit();
                         return redirect()->route('admin.reporter')->with('success', 'Reporter inserted successfully.');
