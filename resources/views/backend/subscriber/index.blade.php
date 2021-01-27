@@ -249,8 +249,21 @@
         function change_status(object){
             var id = $(object).data("id");
             var status = $(object).data("status");
+            var old_status = $(object).data("old_status");
 
-            if (confirm('Are you sure?')) {
+            if(old_status == 'block' && status == 'active'){
+                var msg = "Are you Sure You Want To Active This Record?"; 
+            }else if(old_status == 'block' && status == 'block'){
+                var msg = "Are you Sure You Want To Block This Record?";
+            }else if(old_status == 'block' && status == 'deleted'){
+                var msg = "Are you Sure You Want To Delete This Record?";
+            }else if(old_status == 'inactive' && status == 'active'){
+                var msg = "Are you Sure You Want To Reactive This Record?";
+            }else{
+                var msg = "Are you Sure?"; 
+            }
+            
+            if (confirm(msg)) {
                 $.ajax({
                     "url": "{!! route('admin.subscriber.change.status') !!}",
                     "dataType": "json",

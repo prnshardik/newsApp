@@ -181,6 +181,7 @@
 @section('scripts')
     <script>
         $(document).ready(function(){
+
             $("#pincode").keypress(function(e){
                 var keyCode = e.keyCode || e.which;
                 var $this = $(this);

@@ -61,9 +61,11 @@
                                                 <i class="fa fa-bars"></i>
                                             </a> &nbsp;
                                             <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="active" data-id="'.base64_encode($data->id).'">Active</a></li>
-                                                <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="inactive" data-id="'.base64_encode($data->id).'">Inactive</a></li>
-                                                <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="deleted" data-id="'.base64_encode($data->id).'">Delete</a></li>
+                                                <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="active" data-old_status="'.$data->status.'" data-id="'.base64_encode($data->id).'">Active</a></li>
+                                                
+                                                <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="block" data-old_status="'.$data->status.'" data-id="'.base64_encode($data->id).'">Block</a></li>
+                                                
+                                                <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="deleted" data-old_status="'.$data->status.'" data-id="'.base64_encode($data->id).'">Delete</a></li>
                                             </ul>';
                             }
 
@@ -76,9 +78,11 @@
                             if($data->status == 'active'){
                                 return '<span class="badge badge-pill badge-success">Active</span>';
                             }else if($data->status == 'inactive'){
-                                return '<span class="badge badge-pill badge-warning">Inactive</span>';
+                                return '<span class="badge badge-pill badge-primary">Inactive</span>';
                             }else if($data->status == 'deleted'){
                                 return '<span class="badge badge-pill badge-danger">Delete</span>';
+                            }else if($data->status == 'block'){
+                                return '<span class="badge badge-pill badge-warning">Block</span>';
                             }else{
                                 return '-';
                             }
@@ -304,14 +308,19 @@
                         }
 
                         if($update){
-                            $update_user = User::where(['id' => $subscriber->user_id])->update(['status' => $status, 'updated_by' => auth()->user()->id]);
+                            if($status != 'block'){
+                                $update_user = User::where(['id' => $subscriber->user_id])->update(['status' => $status, 'updated_by' => auth()->user()->id]);
 
-                            if($update_user){
+                                if($update_user){
+                                    DB::commit();
+                                    return response()->json(['code' => 200]);
+                                }else{
+                                    DB::rollback();
+                                    return response()->json(['code' => 201]);
+                                }
+                            }else{
                                 DB::commit();
                                 return response()->json(['code' => 200]);
-                            }else{
-                                DB::rollback();
-                                return response()->json(['code' => 201]);
                             }
                         }else{
                             DB::rollback();
