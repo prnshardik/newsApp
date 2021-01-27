@@ -85,6 +85,15 @@
                                     <span class="kt-form__help error pincode"></span>
                                 </div>
                                 <div class="form-group col-sm-6">
+                                    <label for="magazine">Magazine</label>
+                                    <select name="magazine" id="magazine" class="form-control">
+                                        <option value="" hidden>Select Magazine</option>
+                                        <option value="shixan_sudha">Shixan Sudha</option>
+                                        <option value="arogya_sudha">Arogya Sudha</option>
+                                    </select>
+                                    <span class="kt-form__help error magazine"></span>
+                                </div>
+                                <div class="form-group col-sm-6">
                                     <label for="country">Country</label>
                                     <select name="country" id="country" class="form-control">
                                         <option value="" hidden>Select Country</option>
@@ -151,6 +160,10 @@
                 }
                 e.preventDefault();
                 return false;
+            });
+
+            $('#magazine').select2({
+                multiple: false,
             });
 
             $('#country').select2({

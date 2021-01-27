@@ -79,7 +79,8 @@
                                                 'pincode' => $pincode,
                                                 'city' => $city,
                                                 'reporter' => $reporter,
-                                                'date' => $date
+                                                'date' => $date,
+                                                'magazine' => $magazine
                                             ];
                                 @endphp
                                 <a href="{{ route('admin.subscriber.excel', $filter) }}" class="btn btn-primary pull-right text-white" style="margin-top: 15px !important ;margin-bottom: 5px">Export TO Excel</a>
@@ -125,6 +126,15 @@
                                                 <div class="form-group col-sm-3">
                                                     <label for="date">Date</label>
                                                     <input type="text" name="date" id="date" class="form-control" placeholder="Plese enter date" autocomplete="off" value="{{ $date ?? NULL }}">
+                                                </div>
+
+                                                <div class="form-group col-sm-3">
+                                                    <label for="date">Magazine</label>
+                                                    <select name="magazine" class="form-control">
+                                                        <option value="">Select Magazine</option>
+                                                        <option value="shixan_sudha"  @if($magazine != null && $magazine == 'shixan_sudha') selected @endif>Shixan Sudha</option>
+                                                        <option value="arogya_sudha" @if($magazine != null && $magazine == 'arogya_sudha') selected @endif>Arogya Sudha</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>

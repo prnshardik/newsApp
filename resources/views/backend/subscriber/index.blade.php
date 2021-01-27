@@ -78,6 +78,15 @@
                                             <label for="date">Date</label>
                                             <input type="text" name="date" id="date" class="form-control" placeholder="Plese enter date" autocomplete="off" value="{{ $date ?? NULL }}">
                                         </div>
+
+                                        <div class="form-group col-sm-3">
+                                            <label for="date">Magazine</label>
+                                            <select name="magazine" class="form-control">
+                                                <option value="">Select Magazine</option>
+                                                <option value="shixan_sudha">Shixan Sudha</option>
+                                                <option value="arogya_sudha">Arogya Sudha</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-1">

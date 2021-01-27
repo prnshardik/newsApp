@@ -15,13 +15,14 @@
         protected $reporter;
         protected $date;
 
-        protected $fillable = ['receipt_no', 'description', 'address', 'phone', 'status', 'pincode', 'country', 'state', 'city'];
+        protected $fillable = ['receipt_no', 'description', 'address', 'phone', 'status', 'pincode', 'magazine', 'country', 'state', 'city'];
 
         public function getData($filter){
             $pincode = $filter['pincode'];
             $city = $filter['city'];
             $reporter = $filter['reporter'];
             $date = $filter['date'];
+            $magazine = $filter['magazine'];
 
             $collection = DB::table('users as u')
                             ->select('u.firstname', 'u.lastname', 'u.email',
@@ -41,6 +42,8 @@
                 $collection->where(['s.created_by' => $reporter]);
             elseif($date != '' && $date != null)
                 $collection->whereDate('s.created_at', '=', $date);
+            elseif($magazine != '' && $magazine != null)
+                $collection->where('s.magazine', '=', $magazine);
 
             $newdata = $collection->where('u.status','active')->orderBy('u.firstname')->get();
             return $newdata;

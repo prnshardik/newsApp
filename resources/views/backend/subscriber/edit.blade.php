@@ -79,6 +79,15 @@
                                     <span class="kt-form__help error pincode"></span>
                                 </div>
                                 <div class="form-group col-sm-6">
+                                    <label for="magazine">Magazine</label>
+                                    <select name="magazine" id="magazine" class="form-control">
+                                        <option value="" hidden>Select Magazine</option>
+                                        <option value="shixan_sudha" @if(isset($data) && $data->magazine == 'shixan_sudha') selected @endif >Shixan Sudha</option>
+                                        <option value="arogya_sudha" @if(isset($data) && $data->magazine == 'arogya_sudha') selected @endif >Arogya Sudha</option>
+                                    </select>
+                                    <span class="kt-form__help error magazine"></span>
+                                </div>
+                                <div class="form-group col-sm-6">
                                     <label for="country">Country</label>
                                     <select name="country" id="country" class="form-control">
                                         <option value="" hidden>Select Country</option>

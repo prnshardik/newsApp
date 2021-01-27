@@ -157,6 +157,7 @@
                         'address' => $request->address,
                         'phone' => $request->phone,
                         'pincode' => $request->pincode,
+                        'magazine' => $request->magazine,
                         'country' => $request->country,
                         'state' => $request->state,
                         'city' => $request->city,
@@ -196,7 +197,7 @@
             $cities = [];
 
             $data = DB::table('subscribers as s')
-                            ->select('s.id', 's.receipt_no', 's.description', 's.address', 's.phone', 's.pincode', 's.country', 's.state', 's.city', 's.status',
+                            ->select('s.id', 's.magazine', 's.receipt_no', 's.description', 's.address', 's.phone', 's.pincode', 's.country', 's.state', 's.city', 's.status',
                                         'u.firstname', 'u.lastname', 'u.email'
                                     )
                             ->join('users as u', 'u.id', 's.user_id')
@@ -235,6 +236,7 @@
                         'address' => $request->address,
                         'phone' => $request->phone,
                         'pincode' => $request->pincode,
+                        'magazine' => $request->magazine,
                         'country' => $request->country,
                         'state' => $request->state,
                         'city' => $request->city,
@@ -336,6 +338,7 @@
             $city = $request->city ?? NULL;
             $reporter = $request->reporter ?? NULL;
             $date = $request->date ?? NULL;
+            $magazine = $request->magazine ?? NULL;
 
             $cities = DB::table('city')->select(['id', 'name'])->get();
             $reporters = DB::table('reporter as r')->select(['u.id', 'u.firstname', 'u.lastname'])
@@ -360,10 +363,12 @@
                 $collection->where(['s.created_by' => $reporter]);
             elseif($date)
                 $collection->whereDate('s.created_at', '=', $date);
+            elseif($magazine)
+                $collection->where('s.magazine', '=', $magazine);
 
             $data = $collection->orderBy('u.firstname')->get();
 
-            return view('backend.subscriber.filter', ['data' => $data, 'cities' => $cities, 'reporters' => $reporters, 'pincode' => $pincode, 'city' => $city, 'reporter' => $reporter, 'date' => $date]);
+            return view('backend.subscriber.filter', ['data' => $data, 'cities' => $cities, 'reporters' => $reporters, 'pincode' => $pincode, 'city' => $city, 'reporter' => $reporter, 'date' => $date ,'magazine' => $magazine]);
         }
 
 
@@ -372,12 +377,14 @@
             $city = $request->city ?? null;
             $reporter = $request->reporter ?? null;
             $date = $request->date ?? null;
-
+            $magazine = $request->magazine ?? null;
+        
             $filter = [
                         'pincode' => $pincode,
                         'city' => $city,
                         'reporter' => $reporter,
-                        'date' => $date
+                        'date' => $date,
+                        'magazine' => $magazine
                     ];
 
             return Excel::download(new SubscriberExport($filter), 'subscriber.xlsx');
