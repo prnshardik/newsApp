@@ -45,14 +45,14 @@
                             @method('POST')
 
                             <div class="row">
-                                <div class="col-sm-11">
+                                <div class="col-sm-12">
                                     <div class="row">
-                                        <div class="form-group col-sm-3">
+                                        <div class="form-group col-sm-2">
                                             <label for="pincode">Pincode</label>
                                             <input type="text" name="pincode" id="pincode" class="form-control" placeholder="Plese enter pincode" value="{{ $pincode ?? NULL }}">
                                             <span class="kt-form__help error pincode"></span>
                                         </div>
-                                        <div class="form-group col-sm-3">
+                                        <div class="form-group col-sm-2">
                                             <label for="city">City</label>
                                             <select name="city" id="city" class="form-control">
                                                 <option value="">Select City</option>
@@ -63,7 +63,7 @@
                                                 @endif
                                             </select>
                                         </div>
-                                        <div class="form-group col-sm-3">
+                                        <div class="form-group col-sm-2">
                                             <label for="reporter">Reporter</label>
                                             <select name="reporter" id="reporter" class="form-control">
                                                 <option value="">Select Reporter</option>
@@ -74,12 +74,12 @@
                                                 @endif
                                             </select>
                                         </div>
-                                        <div class="form-group col-sm-3">
+                                        <div class="form-group col-sm-2">
                                             <label for="date">Date</label>
                                             <input type="text" name="date" id="date" class="form-control" placeholder="Plese enter date" autocomplete="off" value="{{ $date ?? NULL }}">
                                         </div>
 
-                                        <div class="form-group col-sm-3">
+                                        <div class="form-group col-sm-2">
                                             <label for="date">Magazine</label>
                                             <select name="magazine" class="form-control">
                                                 <option value="">Select Magazine</option>
@@ -87,12 +87,10 @@
                                                 <option value="arogya_sudha">Arogya Sudha</option>
                                             </select>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-1">
-                                    <div class="form-group">
-                                        <label for="filter">&nbsp;</label>
-                                        <button id="filter" class="btn btn-primary">Filter</button>
+                                        <div class="form-group col-sm-2 mt-4">    
+                                            <label for="filter">&nbsp;</label>
+                                            <button id="filter" class="btn btn-primary">Filter</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

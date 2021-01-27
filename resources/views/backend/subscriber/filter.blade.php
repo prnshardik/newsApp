@@ -83,7 +83,11 @@
                                                 'magazine' => $magazine
                                             ];
                                 @endphp
-                                <a href="{{ route('admin.subscriber.excel', $filter) }}" class="btn btn-primary pull-right text-white" style="margin-top: 15px !important ;margin-bottom: 5px">Export TO Excel</a>
+                                @if(isset($data) && $data->isNotEmpty())
+                                    <a href="{{ route('admin.subscriber.excel', $filter) }}" class="btn btn-primary pull-right text-white" style="margin-top: 15px !important ;margin-bottom: 5px">Export To Excel</a>
+                                @else
+                                    <a href="javascript:void(0);" class="btn btn-primary pull-right text-white disabled" style="margin-top: 15px !important ;margin-bottom: 5px" disabled>Export To Excel</a>
+                                @endif
                             @endif
                         </h1>
                     </div>
@@ -95,13 +99,13 @@
                                     @method('POST')
 
                                     <div class="row">
-                                        <div class="col-sm-11">
+                                        <div class="col-sm-12">
                                             <div class="row">
-                                                <div class="form-group col-sm-3">
+                                                <div class="form-group col-sm-2">
                                                     <label for="pincode">Pincode</label>
                                                     <input type="text" name="pincode" id="pincode" class="form-control" placeholder="Plese enter pincode" value="{{ $pincode ?? NULL }}">
                                                 </div>
-                                                <div class="form-group col-sm-3">
+                                                <div class="form-group col-sm-2">
                                                     <label for="city">City</label>
                                                     <select name="city" id="city" class="form-control">
                                                         <option value="">Select City</option>
@@ -112,7 +116,7 @@
                                                         @endif
                                                     </select>
                                                 </div>
-                                                <div class="form-group col-sm-3">
+                                                <div class="form-group col-sm-2">
                                                     <label for="reporter">Reporter</label>
                                                     <select name="reporter" id="reporter" class="form-control">
                                                         <option value="">Select Reporter</option>
@@ -123,12 +127,12 @@
                                                         @endif
                                                     </select>
                                                 </div>
-                                                <div class="form-group col-sm-3">
+                                                <div class="form-group col-sm-2">
                                                     <label for="date">Date</label>
                                                     <input type="text" name="date" id="date" class="form-control" placeholder="Plese enter date" autocomplete="off" value="{{ $date ?? NULL }}">
                                                 </div>
 
-                                                <div class="form-group col-sm-3">
+                                                <div class="form-group col-sm-2">
                                                     <label for="date">Magazine</label>
                                                     <select name="magazine" class="form-control">
                                                         <option value="">Select Magazine</option>
@@ -136,12 +140,10 @@
                                                         <option value="arogya_sudha" @if($magazine != null && $magazine == 'arogya_sudha') selected @endif>Arogya Sudha</option>
                                                     </select>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-1">
-                                            <div class="form-group">
-                                                <label for="filter">&nbsp;</label>
-                                                <button id="filter" class="btn btn-primary">Filter</button>
+                                                <div class="col-sm-2 form-group mt-4">
+                                                    <label for="filter">&nbsp;</label>
+                                                    <button id="filter" class="btn btn-primary">Filter</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -168,6 +170,8 @@
                                             </ul>
                                         </div>
                                     @endforeach
+                                @else
+                                    <div class="col-sm-12"><h1 class="text-center">No Data Found...!!!</h1></div>
                                 @endif
                             </div>
                         </div>
