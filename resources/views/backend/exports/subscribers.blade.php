@@ -6,23 +6,24 @@
                     @foreach($val as $row)
                         <td style="width:21px; height:120px">
                             <div>
-                                To.
+                                <b>To, {{ $row->city_name ?? '' }}</b>
                             </div>
                                 <br/>
+                                <br/>
                             <div>
-                                {{ $row->pincode }}
+                                <b>{{ $row->firstname ?? '' }} {{ $row->lastname ?? '' }}</b>
                             </div>
                             <br/>
                             <div>
-                                {{ $row->firstname }} {{ $row->lastname }}
+                                <b>{{ $row->address ?? '' }}</b>
                             </div>
                             <br/>
                             <div>
-                                {{ $row->address }}
+                                <b>{{ $row->city_name ?? '' }} - {{ $row->pincode ?? '' }}</b>
                             </div>
                             <br/>
                             <div>
-                                {{ $row->city_name }} - {{ $row->pincode }}
+                                <b>{{ $row->state_name ?? '' }} {{ $row->country_name ?? '' }}</b>
                             </div>
 
                         </td>

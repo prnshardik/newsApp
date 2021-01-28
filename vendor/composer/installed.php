@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'ceca0a924039e8176ba5ee47192fb8c5441a8f57',
+    'reference' => '7aa0b9882243e3b7da5a2d6a742b4419fcfa996d',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -472,7 +472,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'ceca0a924039e8176ba5ee47192fb8c5441a8f57',
+      'reference' => '7aa0b9882243e3b7da5a2d6a742b4419fcfa996d',
     ),
     'laravel/sail' => 
     array (
@@ -638,6 +638,15 @@
       ),
       'reference' => '943b5d70cc5ae7483f6aff6ff43d7e34592ca0f5',
     ),
+    'pclzip/pclzip' => 
+    array (
+      'pretty_version' => '2.8.2',
+      'version' => '2.8.2.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '19dd1de9d3f5fc4d7d70175b4c344dee329f45fd',
+    ),
     'phar-io/manifest' => 
     array (
       'pretty_version' => '2.0.1',
@@ -701,6 +710,15 @@
       ),
       'reference' => '6a467b8989322d92aa1c8bf2bebcc6e5c2ba55c0',
     ),
+    'phpoffice/common' => 
+    array (
+      'pretty_version' => '0.2.9',
+      'version' => '0.2.9.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'edb5d32b1e3400a35a5c91e2539ed6f6ce925e4d',
+    ),
     'phpoffice/phpspreadsheet' => 
     array (
       'pretty_version' => '1.16.0',
@@ -709,6 +727,15 @@
       array (
       ),
       'reference' => '76d4323b85129d0c368149c831a07a3e258b2b50',
+    ),
+    'phpoffice/phpword' => 
+    array (
+      'pretty_version' => '0.17.0',
+      'version' => '0.17.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'b8346af548d399acd9e30fc76ab0c55c2fec03a5',
     ),
     'phpoption/phpoption' => 
     array (
@@ -1405,6 +1432,15 @@
       array (
       ),
       'reference' => 'e0b416d8b7d4472b16217c40e74284074cc34dde',
+    ),
+    'zendframework/zend-escaper' => 
+    array (
+      'pretty_version' => '2.6.1',
+      'version' => '2.6.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '3801caa21b0ca6aca57fa1c42b08d35c395ebd5f',
     ),
   ),
 );

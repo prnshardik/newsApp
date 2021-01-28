@@ -4,7 +4,7 @@
 <link href="{{ asset('backend/vendors/jvectormap/jquery-jvectormap-2.0.3.css') }}" rel="stylesheet" />
 <link href="{{ asset('backend/css/main.min.css') }}" rel="stylesheet" />
 <link href="{{ asset('backend/css/toastr.css') }}" rel="stylesheet" />
-<link href="{{ asset('backend/css/datatable.min.css') }}" rel="stylesheet" />
+<link href="{{ asset('backend/vendors/DataTables/datatables.min.css') }}" rel="stylesheet" />
 <link href="{{ asset('backend/css/datatable.bootstrap4.min.css') }}" rel="stylesheet" />
 <link href="{{ asset('backend/css/select2.min.css') }}" rel="stylesheet" />
 <link href="{{ asset('backend/vendors/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />

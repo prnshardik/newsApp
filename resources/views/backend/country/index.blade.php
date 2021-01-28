@@ -79,7 +79,7 @@
                     // "scrollCollapse": false,
                     // scrollCollapse: true,
 
-                    lengthChange: false,
+                    // lengthChange: false,
 
                     "ajax":{
                         "url": "{{ route('admin.country') }}",

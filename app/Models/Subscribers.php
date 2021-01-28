@@ -45,7 +45,7 @@
             elseif($magazine != '' && $magazine != null)
                 $collection->where('s.magazine', '=', $magazine);
 
-            $newdata = $collection->where('u.status','active')->orderBy('u.firstname')->get();
+            $newdata = $collection->where('s.status','active')->orderBy('s.pincode')->get();
             return $newdata;
         }
     }
