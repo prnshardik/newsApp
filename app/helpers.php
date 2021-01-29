@@ -12,6 +12,37 @@
         }
     }
 
+    if(!function_exists('_site_logo')){
+        function _site_logo(){
+            return \URL('/backend/img/logo.png');
+        }
+    }
+
+    if(!function_exists('_user_profile')){
+        function _user_profile(){
+            if(auth()->user()->role_id == 1){
+                $profile =  \URL('/backend/img/admin-avatar.png');
+                return $profile;
+            }elseif(auth()->user()->role_id == 2){
+                $path = URL('/uploads/reporter').'/';
+                $data = \DB::table('reporter')
+                                ->select(
+                                    DB::Raw("CASE
+                                            WHEN ".'profile'." != '' THEN CONCAT("."'".$path."'".", ".'profile'.")
+                                            ELSE CONCAT("."'".$path."'".", 'default.png')
+                                        END as profile")
+                                    )
+                                ->where(['user_id' => auth()->user()->id])
+                                ->first();
+                return $data->profile;
+            }else{
+                $profile =  \URL('/backend/img/admin-avatar.png');
+                return $profile;
+            }
+        }
+    }
+
+    // {{ asset('backend/img/admin-avatar.png') }}
 
     if(!function_exists('_get_role_name')){
         function _get_role_name(){

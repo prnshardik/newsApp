@@ -2,18 +2,18 @@
     <div id="sidebar-collapse">
         <div class="admin-block d-flex">
             <div>
-                <img src="{{ asset('backend/img/admin-avatar.png') }}" width="45px" />
+                <img src="{{ _user_profile() }}" alt="{{ _site_name() }}" class="img-circle" height="45px" width="45px" />
             </div>
             <div class="admin-info">
                 <div class="font-strong">{{ auth()->user()->firstname.' '.auth()->user()->lastname }}</div><small>{{ _get_role_name() }}</small>
             </div>
         </div>
         <ul class="side-menu metismenu">
-                <li class="{{ Request::is('dashboard*') ? 'active' : '' }}">
-                    <a class="active" href="{{ route('admin.dashboard') }}"><i class="sidebar-item-icon fa fa-th-large"></i>
-                        <span class="nav-label">Dashboard</span>
-                    </a>
-                </li>
+            <li class="{{ Request::is('dashboard*') ? 'active' : '' }}">
+                <a class="active" href="{{ route('admin.dashboard') }}"><i class="sidebar-item-icon fa fa-th-large"></i>
+                    <span class="nav-label">Dashboard</span>
+                </a>
+            </li>
             @canany(['role-create', 'role-edit', 'role-view', 'role-delete', 'permission-create', 'permission-edit', 'permission-view', 'permission-delete'])
                 <li class="{{ (Request::is('role*') || Request::is('permission*')) ? 'active' : '' }}">
                     <a href="javascript:;"><i class="sidebar-item-icon fa fa-universal-access"></i>

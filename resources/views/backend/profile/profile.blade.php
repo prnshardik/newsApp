@@ -28,7 +28,7 @@
                 <div class="ibox">
                     <div class="ibox-body text-center">
                         <div class="m-t-20">
-                            <img class="img-circle" src="{{ asset('backend/img/admin-avatar.png') }}"" />
+                            <img src="{{ _user_profile() }}" alt="{{ _site_name() }}" class="img-circle" height="80px" width="80px" />
                         </div>
                         <h5 class="font-strong m-b-10 m-t-10">{{ $data->firstname }} {{ $data->lastname }}</h5>
                         <div class="m-b-20 text-muted">{{ _get_role_name(auth()->user()->role_id) }}</div>

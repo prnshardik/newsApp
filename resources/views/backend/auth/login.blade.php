@@ -16,7 +16,8 @@
 @section('content')
     <div class="content mt-5">
         <div class="brand">
-            <a class="link" href="javascript:void(0);">{{ _site_name() }}</a>
+            {{-- <a class="link" href="javascript:void(0);">{{ _site_name() }}</a> --}}
+            <img src="{{ _site_logo() }}" alt="{{ _site_name() }}" height="100" width="100">
         </div>
 
         <form id="form" action="{{ route('admin.signin') }}" method="post">
