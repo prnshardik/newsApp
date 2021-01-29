@@ -110,7 +110,7 @@
                                 <div class="form-group col-sm-6">
                                     <label for="city_id">City</label>
                                     <select name="city_id" id="city_id" class="form-control">
-                                        <option value="" hidden>Select City</option>
+                                        <option value="null" hidden>Select City</option>
                                     </select>
                                     <span class="kt-form__help error city_id"></span>
                                 </div>
@@ -160,6 +160,13 @@
                 }
                 e.preventDefault();
                 return false;
+            });
+
+            $('#city_id').change(function(){
+                var pincode = $("#city_id option:selected").data('id');
+                if(pincode != ''){
+                    $('#pincode').val(pincode);
+                }
             });
 
             $('#magazine').select2({

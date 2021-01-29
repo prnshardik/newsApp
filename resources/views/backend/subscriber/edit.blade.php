@@ -166,6 +166,13 @@
                 return false;
             });
         });
+
+        $('#city_id').change(function(){
+            var pincode = $("#city_id option:selected").data('id');
+            if(pincode != ''){
+                $('#pincode').val(pincode);
+            }
+        });
     </script>
 
     <script>

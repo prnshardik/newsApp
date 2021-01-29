@@ -198,12 +198,12 @@
         public function get_cities(Request $request){
             $taluka_id = $request->taluka_id;
 
-            $data = Cities::select('id', 'name')->where(['taluka_id' => $taluka_id])->get();
+            $data = Cities::select('id', 'name', 'pincode')->where(['taluka_id' => $taluka_id])->get();
 
             if(isset($data) && $data->isNotEmpty()){
                 $html = '<option value="">Select City</option>';
                 foreach($data as $row){
-                    $html .= "<option value='".$row->id."'>".$row->name."</option>";
+                    $html .= "<option value='".$row->id."' data-id='".$row->pincode."'>".$row->name."</option>";
                 }
                 return response()->json(['code' => 200, 'data' => $html]);
             }else{
