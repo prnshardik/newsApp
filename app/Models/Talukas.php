@@ -5,10 +5,10 @@
     use Illuminate\Database\Eloquent\Factories\HasFactory;
     use Illuminate\Database\Eloquent\Model;
 
-    class Cities extends Model{
+    class Talukas extends Model{
         use HasFactory;
 
-        protected $table = 'cities';
+        protected $table = 'talukas';
 
-        protected $fillable = ['name', 'pincode', 'district_id', 'taluka_id', 'status'];
+        protected $fillable = ['name', 'district_id', 'status'];
     }

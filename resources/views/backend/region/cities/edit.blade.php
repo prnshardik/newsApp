@@ -38,13 +38,37 @@
 
                             <div class="row">
                                 <div class="form-group col-sm-6">
+                                    <label for="district_id">District</label>
+                                    <select name="district_id" id="district_id" class="form-control">
+                                        <option value="" hidden>Select District</option>
+                                        @if(isset($districts) && $districts->isNotEmpty())
+                                            @foreach($districts as $row)
+                                                <option value="{{ $row->id }}" @if(isset($data) && $data->district_id == $row->id) selected @endif>{{ $row->name }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <span class="kt-form__help error district_id"></span>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="taluka_id">District</label>
+                                    <select name="taluka_id" id="taluka_id" class="form-control">
+                                        <option value="" hidden>Select Taluka</option>
+                                        @if(isset($talukas) && !empty($talukas))
+                                            @foreach($talukas as $row)
+                                                <option value="{{ $row['id'] }}" @if(isset($data) && $data['taluka_id'] == $data->taluka_id) selected @endif>{{ $row['name'] }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <span class="kt-form__help error taluka_id"></span>
+                                </div>
+                                <div class="form-group col-sm-6">
                                     <label for="name">Name</label>
-                                    <input type="text" name="name" id="name" class="form-control" placeholder="Plese enter name" value="{{ $data->name ?? '' }}">
+                                    <input type="text" name="name" id="name" class="form-control" value="{{ $data->name ?? '' }}" placeholder="Plese enter name" value="{{ @old('name') }}">
                                     <span class="kt-form__help error name"></span>
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="pincode">Pincode</label>
-                                    <input type="text" name="pincode" id="pincode" class="form-control" placeholder="Plese enter pincode" value="{{ $data->pincode ?? '' }}">
+                                    <input type="text" name="pincode" id="pincode" class="form-control" value="{{ $data->pincode ?? '' }}" placeholder="Plese enter pincode" value="{{ @old('pincode') }}">
                                     <span class="kt-form__help error pincode"></span>
                                 </div>
                             </div>
@@ -61,11 +85,64 @@
 @endsection
 
 @section('scripts')
-    <script type="text/javascript">
+    <script>
         $(document).ready(function(){
-            $('#pincode').keypress(function(e){
-                if (/\D/g.test(this.value)){
-                    this.value = this.value.replace(/\D/g, '');
+            $("#pincode").keypress(function(e){
+                var keyCode = e.keyCode || e.which;
+                var $this = $(this);
+                //Regex for Valid Characters i.e. Numbers.
+                var regex = new RegExp("^[0-9\b]+$");
+
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                // for 10 digit number only
+                if ($this.val().length > 5) {
+                    e.preventDefault();
+                    return false;
+                }
+
+                if (regex.test(str)) {
+                    return true;
+                }
+                e.preventDefault();
+                return false;
+            });
+
+            $('#district_id').select2({
+                multiple: false,
+            });
+
+            $('#taluka_id').select2({
+                multiple: false,
+            });
+
+            $('#district_id').change(function(){
+                var district_id = $(this).val();
+
+                if(district_id.length > 0){
+                    $.ajax({
+                        url : "{{ route('admin.city.get.talukas') }}",
+                        type : "post",
+                        data : {
+                            _token: "{{ csrf_token() }}",
+                            district_id: district_id
+                        },
+                        success : function(response){
+                            $('#taluka_id').html('');
+
+                            if(response.code == 200){
+                                $('#taluka_id').html(response.data);
+                            }else{
+                                $('#taluka_id').html('<option value="">select Taluka</option>');
+                            }
+                        },
+                        error: function(json){
+                            $('#taluka_id').html('');
+                            $('#taluka_id').html('<option value="">select Taluka</option>');
+                        }
+                    });
+                }else{
+                    $('#taluka_id').html('');
+                    $('#taluka_id').html('<option>Select Taluka</option>');
                 }
             });
         });

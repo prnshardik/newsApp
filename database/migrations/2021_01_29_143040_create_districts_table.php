@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCitiesTable extends Migration
+class CreateDistrictsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,17 @@ class CreateCitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('cities', function (Blueprint $table) {
+        Schema::create('districts', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('district_id')->nullable()->unsigned();
-            $table->bigInteger('taluka_id')->nullable()->unsigned();
             $table->string('name')->nullable();
-            $table->string('pincode')->nullable();
             $table->enum('status', ['active', 'inactive', 'deleted'])->default('inactive');
             $table->timestamps();
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
-
-            $table->foreign('district_id')->references('id')->on('districts')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('taluka_id')->references('id')->on('talukas')->onDelete('cascade')->onUpdate('cascade');
         });
+
+        DB::table('districts')->insert(['name' => 'Ahmedabad', 'status' => 'active', 'created_at' => date('Y-m-d H:s:i'), 'created_by' => 1, 'updated_at' => date('Y-m-d H:s:i'), 'updated_by' => 1]);
+        DB::table('districts')->insert(['name' => 'Rajkot', 'status' => 'active', 'created_at' => date('Y-m-d H:s:i'), 'created_by' => 1, 'updated_at' => date('Y-m-d H:s:i'), 'updated_by' => 1]);
     }
 
     /**
@@ -36,6 +33,6 @@ class CreateCitiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cities');
+        Schema::dropIfExists('districts');
     }
 }

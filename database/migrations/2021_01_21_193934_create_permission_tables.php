@@ -36,6 +36,14 @@ class CreatePermissionTables extends Migration
         $permission_view = DB::table('permissions')->insertGetId(['name' => 'permission-view', 'guard_name' => 'web']);
         $permission_delete = DB::table('permissions')->insertGetId(['name' => 'permission-delete', 'guard_name' => 'web']);
 
+        $district_create = DB::table('permissions')->insertGetId(['name' => 'district-create', 'guard_name' => 'web']);
+        $district_edit = DB::table('permissions')->insertGetId(['name' => 'district-edit', 'guard_name' => 'web']);
+        $district_view = DB::table('permissions')->insertGetId(['name' => 'district-view', 'guard_name' => 'web']);
+        $district_delete = DB::table('permissions')->insertGetId(['name' => 'district-delete', 'guard_name' => 'web']);
+        $taluka_create = DB::table('permissions')->insertGetId(['name' => 'taluka-create', 'guard_name' => 'web']);
+        $taluka_edit = DB::table('permissions')->insertGetId(['name' => 'taluka-edit', 'guard_name' => 'web']);
+        $taluka_view = DB::table('permissions')->insertGetId(['name' => 'taluka-view', 'guard_name' => 'web']);
+        $taluka_delete = DB::table('permissions')->insertGetId(['name' => 'taluka-delete', 'guard_name' => 'web']);
         $city_create = DB::table('permissions')->insertGetId(['name' => 'city-create', 'guard_name' => 'web']);
         $city_edit = DB::table('permissions')->insertGetId(['name' => 'city-edit', 'guard_name' => 'web']);
         $city_view = DB::table('permissions')->insertGetId(['name' => 'city-view', 'guard_name' => 'web']);
@@ -124,6 +132,14 @@ class CreatePermissionTables extends Migration
         DB::table('role_has_permissions')->insert(['permission_id' => $permission_view, 'role_id' => $admin_role_id]);
         DB::table('role_has_permissions')->insert(['permission_id' => $permission_delete, 'role_id' => $admin_role_id]);
 
+        DB::table('role_has_permissions')->insert(['permission_id' => $district_create, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $district_edit, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $district_view, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $district_delete, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $taluka_create, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $taluka_edit, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $taluka_view, 'role_id' => $admin_role_id]);
+        DB::table('role_has_permissions')->insert(['permission_id' => $taluka_delete, 'role_id' => $admin_role_id]);
         DB::table('role_has_permissions')->insert(['permission_id' => $city_create, 'role_id' => $admin_role_id]);
         DB::table('role_has_permissions')->insert(['permission_id' => $city_edit, 'role_id' => $admin_role_id]);
         DB::table('role_has_permissions')->insert(['permission_id' => $city_view, 'role_id' => $admin_role_id]);

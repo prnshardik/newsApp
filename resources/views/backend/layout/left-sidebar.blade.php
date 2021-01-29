@@ -38,12 +38,28 @@
                 </li>
             @endcanany
 
-            @canany(['city-create', 'city-edit', 'city-view', 'city-delete'])
-                <li class="{{ (Request::is('city*')) ? 'active' : '' }}">
+            @canany(['district-create', 'district-edit', 'district-view', 'district-delete', 'taluka-create', 'taluka-edit', 'taluka-view', 'taluka-delete', 'city-create', 'city-edit', 'city-view', 'city-delete'])
+                <li class="{{ (Request::is('city*') || Request::is('district*')) ? 'active' : '' }}">
                     <a href="javascript:;"><i class="sidebar-item-icon fa fa-globe"></i>
                         <span class="nav-label">Region</span><i class="fa fa-angle-left arrow"></i>
                     </a>
                     <ul class="nav-2-level collapse">
+                        @canany(['district-create', 'district-edit', 'district-view', 'district-delete'])
+                            <li>
+                                <a class="{{ Request::is('district*') ? 'active' : '' }}" href="{{ route('admin.district') }}">
+                                    <i class="sidebar-item-icon fa fa-globe"></i>
+                                    <span class="nav-label">Districts</span>
+                                </a>
+                            </li>
+                        @endcanany
+                        @canany(['taluka-create', 'taluka-edit', 'taluka-view', 'taluka-delete'])
+                            <li>
+                                <a class="{{ Request::is('taluka*') ? 'active' : '' }}" href="{{ route('admin.taluka') }}">
+                                    <i class="sidebar-item-icon fa fa-globe"></i>
+                                    <span class="nav-label">Talukas</span>
+                                </a>
+                            </li>
+                        @endcanany
                         @canany(['city-create', 'city-edit', 'city-view', 'city-delete'])
                             <li>
                                 <a class="{{ Request::is('city*') ? 'active' : '' }}" href="{{ route('admin.city') }}">

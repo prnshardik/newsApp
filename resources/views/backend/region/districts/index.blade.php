@@ -4,7 +4,7 @@
 @endsection
 
 @section('title')
-    Cities
+    Districts
 @endsection
 
 @section('styles')
@@ -17,7 +17,7 @@
                 <a href="{{ route('admin.dashboard') }}"><span class="text-dark font-weight-bold">Dashboard</span></a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.city') }}"><span class="text-dark font-weight-bold">Cities</span></a>
+                <a href="{{ route('admin.district') }}"><span class="text-dark font-weight-bold">Districts</span></a>
             </li>
             {{-- <li class="breadcrumb-item"><span class="text-dark font-weight-bold">Index</span></li> --}}
         </ol>
@@ -27,10 +27,10 @@
             <div class="col-lg-12">
                 <div class="ibox">
                     <div class="ibox-head">
-                        <h1 class="ibox-title">Cities</h1>
+                        <h1 class="ibox-title">Districts</h1>
                         <h1 class="pull-right">
-                            @canany(['city-create'])
-                                <a class="btn btn-primary pull-right" style="margin-top: 8px;margin-bottom: 5px" href="{{ route('admin.city.create') }}">Add New</a>
+                            @canany(['district-create'])
+                                <a class="btn btn-primary pull-right" style="margin-top: 8px;margin-bottom: 5px" href="{{ route('admin.district.create') }}">Add New</a>
                             @endcanany
                         </h1>
                     </div>
@@ -81,7 +81,7 @@
                     // lengthChange: false,
 
                     "ajax":{
-                        "url": "{{ route('admin.city') }}",
+                        "url": "{{ route('admin.district') }}",
                         "type": "POST",
                         "dataType": "json",
                         "data":{
@@ -122,7 +122,7 @@
 
             if (confirm('Are you sure?')) {
                 $.ajax({
-                    "url": "{!! route('admin.city.change.status') !!}",
+                    "url": "{!! route('admin.district.change.status') !!}",
                     "dataType": "json",
                     "type": "POST",
                     "data":{

@@ -63,6 +63,26 @@
                 /** access control */
 
                 /** region */
+                    /** District */
+                        Route::any('district', 'DistrictsController@index')->name('admin.district');
+                        Route::get('district/create', 'DistrictsController@create')->name('admin.district.create');
+                        Route::post('district/insert', 'DistrictsController@insert')->name('admin.district.insert');
+                        Route::get('district/edit', 'DistrictsController@edit')->name('admin.district.edit');
+                        Route::patch('district/update/{id?}', 'DistrictsController@update')->name('admin.district.update');
+                        Route::get('district/view', 'DistrictsController@view')->name('admin.district.view');
+                        Route::post('district/change_status', 'DistrictsController@change_status')->name('admin.district.change.status');
+                    /** District */
+
+                    /** Taluka */
+                        Route::any('taluka', 'TalukasController@index')->name('admin.taluka');
+                        Route::get('taluka/create', 'TalukasController@create')->name('admin.taluka.create');
+                        Route::post('taluka/insert', 'TalukasController@insert')->name('admin.taluka.insert');
+                        Route::get('taluka/edit', 'TalukasController@edit')->name('admin.taluka.edit');
+                        Route::patch('taluka/update/{id?}', 'TalukasController@update')->name('admin.taluka.update');
+                        Route::get('taluka/view', 'TalukasController@view')->name('admin.taluka.view');
+                        Route::post('taluka/change_status', 'TalukasController@change_status')->name('admin.taluka.change.status');
+                    /** Taluka */
+
                     /** City */
                         Route::any('city', 'CitiesController@index')->name('admin.city');
                         Route::get('city/create', 'CitiesController@create')->name('admin.city.create');
@@ -71,6 +91,9 @@
                         Route::patch('city/update/{id?}', 'CitiesController@update')->name('admin.city.update');
                         Route::get('city/view', 'CitiesController@view')->name('admin.city.view');
                         Route::post('city/change_status', 'CitiesController@change_status')->name('admin.city.change.status');
+
+                        Route::post('city/get/talukas', 'CitiesController@get_talukas')->name('admin.city.get.talukas');
+                        Route::post('city/get/cities', 'CitiesController@get_cities')->name('admin.city.get.cities');
                     /** City */
                 /** region */
 
