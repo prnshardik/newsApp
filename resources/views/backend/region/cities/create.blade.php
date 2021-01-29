@@ -14,12 +14,12 @@
     <div class="page-heading mt-4">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+                <a href="{{ route('admin.dashboard') }}"><span class="text-dark font-weight-bold">Dashboard</span></a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.city') }}">Cities</i></a>
+                <a href="{{ route('admin.city') }}"><span class="text-dark font-weight-bold">Cities</span></a>
             </li>
-            <li class="breadcrumb-item">Create</li>
+            <li class="breadcrumb-item"><span class="text-dark font-weight-bold">Create</span></li>
         </ol>
     </div>
     <div class="page-content fade-in-up">

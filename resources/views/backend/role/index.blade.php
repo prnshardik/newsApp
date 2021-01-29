@@ -14,12 +14,12 @@
     <div class="page-heading mt-4">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+                <a href="{{ route('admin.dashboard') }}"><span class="text-dark font-weight-bold">Dashboard</span></a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.role') }}">Roles</i></a>
+                <a href="{{ route('admin.role') }}"><span class="text-dark font-weight-bold">Roles</span></a>
             </li>
-            {{-- <li class="breadcrumb-item">Index</li> --}}
+            {{-- <li class="breadcrumb-item"><span class="text-dark font-weight-bold">Index</span></li> --}}
         </ol>
     </div>
     <div class="page-content fade-in-up">
