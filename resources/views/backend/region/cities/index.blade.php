@@ -40,6 +40,9 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Name</th>
+                                    <th>Pincode</th>
+                                    <th>Taluka</th>
+                                    <th>District</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -101,6 +104,18 @@
                         {
                             data: 'name',
                             name: 'name'
+                        },
+                        {
+                            data: 'pincode',
+                            name: 'pincode'
+                        },
+                        {
+                            data: 'taluka_name',
+                            name: 'taluka_name'
+                        },
+                        {
+                            data: 'district_name',
+                            name: 'district_name'
                         },
                         {
                             data: 'status',

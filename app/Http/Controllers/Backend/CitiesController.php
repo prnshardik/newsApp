@@ -21,7 +21,11 @@
 
         public function index(Request $request){
         	if($request->ajax()){
-                $data = Cities::all();
+                $data = DB::table('cities as c')
+                                ->select('c.id', 'c.name', 'c.pincode', 'c.status', 't.name as taluka_name', 'd.name as district_name')
+                                ->leftjoin('districts as d', 'd.id', 'c.district_id')
+                                ->leftjoin('talukas as t', 't.id', 'c.taluka_id')
+                                ->get();
 
                 return Datatables::of($data)
                         ->addIndexColumn()
