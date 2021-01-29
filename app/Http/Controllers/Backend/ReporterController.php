@@ -14,7 +14,7 @@
     use Spatie\Permission\Models\Role;
     use App\Mail\ReporterRegister;
     use Illuminate\Support\Str;
-    use Auth, Hash, Validator, DB, Mail;
+    use Auth, Hash, Validator, File, DB, Mail;
 
     class ReporterController extends Controller{
 
@@ -117,7 +117,7 @@
                 'updated_at' => date('Y-m-d H:i:s'),
                 'updated_by' => auth()->user()->id
             ];
-
+            
             DB::beginTransaction();
             try {
                 $user = User::create($crud);
@@ -139,6 +139,24 @@
                         'updated_by' => auth()->user()->id
                     ];
 
+                    if(!empty($request->file('profile'))){
+                        $file = $request->file('profile');
+                        $filenameWithExtension = $request->file('profile')->getClientOriginalName();
+                        $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
+                        $extension = $request->file('profile')->getClientOriginalExtension();
+                        $filenameToStore = time()."_".$filename.'.'.$extension;
+        
+                        $folder_to_upload = public_path().'/uploads/reporter/';
+        
+                        if (!\File::exists($folder_to_upload)) {
+                            \File::makeDirectory($folder_to_upload, 0777, true, true);
+                        }
+        
+                        $reporter_crud["profile"] = $filenameToStore;
+                    }else{
+                        $reporter_crud["profile"] = 'default.png';
+                    }
+
                     $reporter_last_id = Reporter::insertGetId($reporter_crud);
 
                     if($reporter_last_id > 0){
@@ -148,6 +166,9 @@
                         // $mailData = array('from_email' => config('constants.from_email'), 'email' => $request->email, 'link' => $link, 'password' => $password, 'logo' => url('/backend/img/image.jpg'));
                         // Mail::to($request->email)->send(new ReporterRegister($mailData));
 
+                        if(!empty($request->file('profile'))){
+                            $file->move($folder_to_upload, $filenameToStore);
+                        }
 
                         DB::commit();
                         return redirect()->route('admin.reporter')->with('success', 'Reporter inserted successfully.');
@@ -170,10 +191,15 @@
             $countries = DB::table('country')->where(['status' => 'active'])->get();
             $states = [];
             $cities = [];
+            $path = URL('/uploads/reporter').'/';
 
             $data = DB::table('reporter as r')
                             ->select('r.id', 'r.unique_id', 'r.address', 'r.phone_no', 'r.receipt_book_start_no', 'r.receipt_book_end_no', 'r.country_id', 'r.state_id',
-                                        'r.city_id', 'r.status', 'u.firstname', 'u.lastname', 'u.email'
+                                        'r.city_id', 'r.status', 'u.firstname', 'u.lastname', 'u.email',
+                                        DB::Raw("CASE
+                                                    WHEN ".'profile'." != '' THEN CONCAT("."'".$path."'".", ".'profile'.")
+                                                    ELSE CONCAT("."'".$path."'".", 'default.png')
+                                                END as profile")
                                     )
                             ->join('users as u', 'u.id', 'r.user_id')
                             ->where(['r.id' => $id])
@@ -220,9 +246,31 @@
                         'updated_by' => auth()->user()->id
                     ];
 
+                    if(!empty($request->file('profile'))){
+                        $file = $request->file('profile');
+                        $filenameWithExtension = $request->file('profile')->getClientOriginalName();
+                        $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
+                        $extension = $request->file('profile')->getClientOriginalExtension();
+                        $filenameToStore = time()."_".$filename.'.'.$extension;
+        
+                        $folder_to_upload = public_path().'/uploads/reporter/';
+        
+                        if (!\File::exists($folder_to_upload)) {
+                            \File::makeDirectory($folder_to_upload, 0777, true, true);
+                        }
+        
+                        $reporter_crud["profile"] = $filenameToStore;
+                    }else{
+                        $reporter_crud["profile"] = $exst_rec->profile;
+                    }
+
                     $reporter_update = Reporter::where(['id' => $id])->update($reporter_crud);
 
                     if($reporter_update){
+                        if(!empty($request->file('profile'))){
+                            $file->move($folder_to_upload, $filenameToStore);
+                        }
+
                         DB::commit();
                         return redirect()->route('admin.reporter')->with('success', 'Reporter updated successfully.');
                     }else{
@@ -244,10 +292,15 @@
             $countries = DB::table('country')->where(['status' => 'active'])->get();
             $states = [];
             $cities = [];
+            $path = URL('/uploads/reporter').'/';
 
             $data = DB::table('reporter as r')
                             ->select('r.id', 'r.unique_id', 'r.address', 'r.phone_no', 'r.receipt_book_start_no', 'r.receipt_book_end_no', 'r.country_id', 'r.state_id',
-                                        'r.city_id', 'r.status', 'u.firstname', 'u.lastname', 'u.email'
+                                        'r.city_id', 'r.status', 'u.firstname', 'u.lastname', 'u.email',
+                                        DB::Raw("CASE
+                                                    WHEN ".'profile'." != '' THEN CONCAT("."'".$path."'".", ".'profile'.")
+                                                    ELSE CONCAT("."'".$path."'".", 'default.png')
+                                                END as profile")
                                     )
                             ->join('users as u', 'u.id', 'r.user_id')
                             ->where(['r.id' => $id])
@@ -292,6 +345,40 @@
                     } catch (\Throwable $th) {
                         DB::rollback();
                         return response()->json(['code' => 201]);
+                    }
+                }else{
+                    return response()->json(['code' => 201]);
+                }
+            }else{
+                return response()->json(['code' => 201]);
+            }
+        }
+
+        public function profile_remove(Request $request){
+            if(!$request->ajax()){ exit('No direct script access allowed'); }
+
+            if(!empty($request->all())){
+                $id = base64_decode($request->id);
+                $data = DB::table('reporter')->find($id);
+
+                if($data){
+                    if($data->profile != ''){
+                        $file_path = public_path().'/uploads/reporter/'.$data->profile;
+
+                        if(File::exists($file_path) && $file_path != ''){
+                            if($data->profile != 'default.png'){
+                                unlink($file_path);
+                            }
+                        }
+
+                        $update = DB::table('reporter')->where(['id' => $id])->limit(1)->update(['profile' => '']);
+
+                        if($update)
+                            return response()->json(['code' => 200]);
+                        else
+                            return response()->json(['code' => 201]);
+                    }else{
+                        return response()->json(['code' => 200]);
                     }
                 }else{
                     return response()->json(['code' => 201]);

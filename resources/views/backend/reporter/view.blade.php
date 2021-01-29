@@ -8,6 +8,8 @@
 @endsection
 
 @section('styles')
+    <link href="{{ asset('backend/css/dropify.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('backend/css/sweetalert2.bundle.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -109,6 +111,11 @@
                                     <input type="text" name="receipt_book_end_no" id="receipt_book_end_no" class="form-control" value="{{ $data->receipt_book_end_no ?? '' }}" placeholder="Please enter receipt book end no." disabled>
                                     <span class="kt-form__help error receipt_book_end_no"></span>
                                 </div>
+                                <div class="form-group col-sm-12">
+                                    <label for="profile">Profile</label>
+                                    <input type="file" class="form-control dropify" id="profile" name="profile" data-default-file="{{ $data->profile ?? '' }}" data-show-remove="false">
+                                    <span class="kt-form__help error profile"></span>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <a href="{{ route('admin.reporter') }}" class="btn btn-secondary">Back</a>
@@ -122,6 +129,18 @@
 @endsection
 
 @section('scripts')
+    <script src="{{ asset('backend/js/dropify.min.js') }}"></script>
+    <script src="{{ asset('backend/js/promise.min.js') }}"></script>
+    <script src="{{ asset('backend/js/sweetalert2.bundle.js') }}"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('.dropify').dropify();
+
+            var drEvent = $('.dropify').dropify();
+        });
+    </script>
+
     <script>
         $(document).ready(function(){
             $("#phone_no").keypress(function(e){

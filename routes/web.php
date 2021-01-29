@@ -105,6 +105,7 @@
                     Route::get('reporter/edit', 'ReporterController@edit')->name('admin.reporter.edit');
                     Route::patch('reporter/update/{id?}', 'ReporterController@update')->name('admin.reporter.update');
                     Route::post('reporter/change_status', 'ReporterController@change_status')->name('admin.reporter.change.status');
+                    Route::post("reporter/profile-remove", "ReporterController@profile_remove")->name('admin.reporter.profile.remove');
                 /** Reporter */
 
                 /** subscriber */
