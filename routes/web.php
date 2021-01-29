@@ -119,6 +119,8 @@
 
                     Route::any('subscriber/filter', 'SubscriberController@filter')->name('admin.subscriber.filter');
                     Route::get('subscriber/excel/{filter?}', 'SubscriberController@excel')->name('admin.subscriber.excel');
+
+                    Route::get('subscriber/doc/{filter?}', 'SubscriberController@doc')->name('admin.subscriber.doc');
                 /** subscriber */
             });
         });

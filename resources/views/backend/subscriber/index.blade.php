@@ -75,16 +75,16 @@
                                             </select>
                                         </div>
                                         <div class="form-group col-sm-2">
-                                            <label for="date">Date</label>
-                                            <input type="text" name="date" id="date" class="form-control" placeholder="Plese enter date" autocomplete="off" value="{{ $date ?? NULL }}">
-                                        </div>
-                                        <div class="form-group col-sm-2">
                                             <label for="date">Magazine</label>
                                             <select name="magazine" class="form-control">
                                                 <option value="">Select Magazine</option>
                                                 <option value="shixan_sudha">Shixan Sudha</option>
                                                 <option value="arogya_sudha">Arogya Sudha</option>
                                             </select>
+                                        </div>
+                                        <div class="form-group col-sm-2">
+                                            <label for="date">Date</label>
+                                            <input type="text" name="date" id="date" class="form-control" placeholder="Plese enter date" autocomplete="off" value="{{ $date ?? NULL }}">
                                         </div>
                                         <div class="form-group col-sm-2 mt-4">
                                             <label for="filter">&nbsp;</label>
