@@ -42,6 +42,7 @@
                                     <th>Unique Id</th>
                                     <th>Name</th>
                                     <th>Phone</th>
+                                    <th>City</th>
                                     <th>Receipt Book No</th>
                                     <th>Status</th>
                                     <th>Action</th>
@@ -112,6 +113,10 @@
                         {
                             data: 'phone_no',
                             name: 'phone_no'
+                        },
+                        {
+                            data: 'city_name',
+                            name: 'city_name'
                         },
                         {
                             data: 'receipt_book_no',

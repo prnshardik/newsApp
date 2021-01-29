@@ -10,5 +10,5 @@
 
     	public $table = 'reporter';
 
-        protected $fillable = ['unique_id', 'address', 'phone_no', 'receipt_book_start_no', 'receipt_book_end_no', 'profile', 'status'];
+        protected $fillable = ['unique_id', 'address', 'phone_no', 'receipt_book_start_no', 'receipt_book_end_no', 'district_id', 'taluka_id', 'city_id', 'profile', 'status'];
     }

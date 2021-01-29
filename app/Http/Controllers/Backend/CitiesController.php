@@ -195,7 +195,7 @@
             }
         }
 
-        public function get_city(Request $request){
+        public function get_cities(Request $request){
             $taluka_id = $request->taluka_id;
 
             $data = Cities::select('id', 'name')->where(['taluka_id' => $taluka_id])->get();

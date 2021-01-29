@@ -71,6 +71,42 @@
                                 </div>
                                 <div class="form-group col-sm-6"></div>
                                 <div class="form-group col-sm-6">
+                                    <label for="district_id">District</label>
+                                    <select name="district_id" id="district_id" class="form-control">
+                                        <option value="" hidden>Select District</option>
+                                        @if(isset($districts) && $districts->isNotEmpty())
+                                            @foreach($districts AS $row)
+                                                <option value="{{ $row->id }}"  @if(isset($data) && $data->district_id == $row->id) selected @endif >{{ $row->name }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <span class="kt-form__help error district_id"></span>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="taluka_id">Taluka</label>
+                                    <select name="taluka_id" id="taluka_id" class="form-control">
+                                        <option value="" hidden>Select Taluka</option>
+                                        @if(isset($talukas) && !empty($talukas))
+                                            @foreach($talukas as $row)
+                                                <option value="{{ $row['id'] }}" @if(isset($data) && $data->taluka_id == $row['id']) selected @endif>{{ $row['name'] }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <span class="kt-form__help error taluka_id"></span>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="city_id">City</label>
+                                    <select name="city_id" id="city_id" class="form-control">
+                                        <option value="" hidden>Select City</option>
+                                        @if(isset($cities) && !empty($cities))
+                                            @foreach($cities as $row)
+                                                <option value="{{ $row['id'] }}" @if(isset($data) && $data->city_id == $row['id']) selected @endif>{{ $row['name'] }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <span class="kt-form__help error city_id"></span>
+                                </div>
+                                <div class="form-group col-sm-6">
                                     <label for="receipt_book_start_no">Receipt Book Start</label>
                                     <input type="text" name="receipt_book_start_no" id="receipt_book_start_no" class="form-control" value="{{ $data->receipt_book_start_no ?? '' }}" placeholder="Please enter receipt book start no.">
                                     <span class="kt-form__help error receipt_book_start_no"></span>

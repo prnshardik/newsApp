@@ -32,9 +32,11 @@
             $agents = DB::table('reporter as r')
                             ->select('r.id', 'r.unique_id', 'r.phone_no', 'r.status',
                                         DB::Raw("CONCAT(".'u.firstname'.", ' ', ".'u.lastname'.") as name"),
-                                        DB::Raw("CONCAT(".'r.receipt_book_start_no'.", ' - ', ".'r.receipt_book_end_no'.") as receipt_book_no")
+                                        DB::Raw("CONCAT(".'r.receipt_book_start_no'.", ' - ', ".'r.receipt_book_end_no'.") as receipt_book_no"),
+                                        'c.name as city_name'
                                     )
                             ->join('users as u', 'r.user_id' , 'u.id')
+                            ->join('cities as c', 'c.id' , 'r.city_id')
                             ->orderBy('id', 'desc')
                             ->limit(5)
                             ->get();

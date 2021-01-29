@@ -21,6 +21,9 @@ class CreateReporterTable extends Migration
             $table->string('phone_no');
             $table->string('receipt_book_start_no');
             $table->string('receipt_book_end_no');
+            $table->string('district_id');
+            $table->string('taluka_id');
+            $table->string('city_id');
             $table->text('profile')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('inactive');
             $table->timestamps();

@@ -19,7 +19,10 @@
                     'phone_no' => 'required',
                     'email' => 'required|email',
                     'receipt_book_start_no' => 'required|unique:reporter,receipt_book_start_no,'.$this->id,
-                    'receipt_book_end_no' => 'required|unique:reporter,receipt_book_end_no,'.$this->id
+                    'receipt_book_end_no' => 'required|unique:reporter,receipt_book_end_no,'.$this->id,
+                    'district_id' => 'required',
+                    'taluka_id' => 'required',
+                    'city_id' => 'required'
                 ];
             }else{
                 return [
@@ -30,7 +33,10 @@
                     'phone_no' => 'required',
                     'email' => 'required|email',
                     'receipt_book_start_no' => 'required|unique:reporter,receipt_book_start_no',
-                    'receipt_book_end_no' => 'required|unique:reporter,receipt_book_end_no'
+                    'receipt_book_end_no' => 'required|unique:reporter,receipt_book_end_no',
+                    'district_id' => 'required',
+                    'taluka_id' => 'required',
+                    'city_id' => 'required'
                 ];
             }
         }
@@ -47,6 +53,9 @@
                 'email.email' => 'Please enter valid email address',
                 'receipt_book_start_no.required' => 'Please enter receipt start no',
                 'receipt_book_end_no.required' => 'Please enter receipt end no',
+                'district_id.required' => 'Please enter district',
+                'taluka_id.required' => 'Please enter taluka',
+                'city_id.required' => 'Please select city',
             ];
         }
     }
