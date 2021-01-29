@@ -67,8 +67,6 @@
                                         <th>Unique Id</th>
                                         <th>Name</th>
                                         <th>Phone</th>
-                                        <th>State</th>
-                                        <th>City</th>
                                         <th>Receipt Book No</th>
                                     </tr>
                                 </thead>
@@ -81,8 +79,6 @@
                                                 <td>{{ $row->unique_id ?? '' }}</td>
                                                 <td>{{ $row->name ?? '' }}</td>
                                                 <td>{{ $row->phone_no ?? '' }}</td>
-                                                <td>{{ $row->state_name ?? '' }}</td>
-                                                <td>{{ $row->city_name ?? '' }}</td>
                                                 <td>{{ $row->receipt_book_no ?? '' }}</td>
                                                 @php $i++; @endphp
                                             </tr>
@@ -114,8 +110,6 @@
                                     <th>Receipt No</th>
                                     <th>Phone</th>
                                     <th>Pincode</th>
-                                    <th>State</th>
-                                    <th>City</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -128,8 +122,6 @@
                                             <td>{{ $row->receipt_no ?? '' }}</td>
                                             <td>{{ $row->phone ?? '' }}</td>
                                             <td>{{ $row->pincode ?? '' }}</td>
-                                            <td>{{ $row->state_name ?? '' }}</td>
-                                            <td>{{ $row->city_name ?? '' }}</td>
                                             @php $i++; @endphp
                                         </tr>
                                     @endforeach

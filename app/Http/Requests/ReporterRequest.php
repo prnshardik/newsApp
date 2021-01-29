@@ -18,9 +18,6 @@
                     'address' => 'required',
                     'phone_no' => 'required',
                     'email' => 'required|email',
-                    'country_id' => 'required ',
-                    'state_id' => 'required ',
-                    'city_id' => 'required',
                     'receipt_book_start_no' => 'required|unique:reporter,receipt_book_start_no,'.$this->id,
                     'receipt_book_end_no' => 'required|unique:reporter,receipt_book_end_no,'.$this->id
                 ];
@@ -32,9 +29,6 @@
                     'address' => 'required',
                     'phone_no' => 'required',
                     'email' => 'required|email',
-                    'country_id' => 'required ',
-                    'state_id' => 'required ',
-                    'city_id' => 'required',
                     'receipt_book_start_no' => 'required|unique:reporter,receipt_book_start_no',
                     'receipt_book_end_no' => 'required|unique:reporter,receipt_book_end_no'
                 ];
@@ -51,9 +45,6 @@
                 'phone_no.required' => 'Please enter mobile number',
                 'email.required' => 'Please enter email address',
                 'email.email' => 'Please enter valid email address',
-                'country_id.required' => 'Please select country',
-                'state_id.required' => 'Please select state',
-                'city_id.required' => 'Please select city',
                 'receipt_book_start_no.required' => 'Please enter receipt start no',
                 'receipt_book_end_no.required' => 'Please enter receipt end no',
             ];

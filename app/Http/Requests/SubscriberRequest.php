@@ -19,10 +19,7 @@
                     'address' => 'required',
                     'phone' => 'required|digits:10',
                     'pincode' => 'required',
-                    'magazine' => 'required',
-                    'country' => 'required',
-                    'state' => 'required',
-                    'city' => 'required'
+                    'magazine' => 'required'
                 ];
             }else{
                 return [
@@ -32,10 +29,7 @@
                     'address' => 'required',
                     'phone' => 'required|digits:10',
                     'pincode' => 'required',
-                    'magazine' => 'required',
-                    'country' => 'required',
-                    'state' => 'required',
-                    'city' => 'required'
+                    'magazine' => 'required'
                 ];
             }
         }
@@ -46,10 +40,7 @@
                 'address.required' => 'Please enter address',
                 'phone.required' => 'Please enter phone',
                 'pincode.required' => 'Please enter pincode',
-                'magazine.required' => 'Please select magazine',
-                'country.required' => 'Please select country',
-                'state.required' => 'Please select state',
-                'city.required' => 'Please select city'
+                'magazine.required' => 'Please select magazine'
             ];
         }
     }

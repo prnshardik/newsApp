@@ -28,14 +28,11 @@
         public function index(Request $request){
         	if($request->ajax()){
                 $data = DB::table('reporter as r')
-                            ->join('users as u', 'r.user_id' , 'u.id')
-                            ->join('state as st', 'st.id', 'r.state_id')
-                            ->join('city as ct', 'ct.id', 'r.city_id')
                             ->select('r.id', 'r.unique_id', 'r.phone_no', 'r.status',
-                                        DB::Raw("CONCAT(".'u.firstname'.", ' ', ".'u.lastname'.") as name"),
-                                        DB::Raw("CONCAT(".'r.receipt_book_start_no'.", ' - ', ".'r.receipt_book_end_no'.") as receipt_book_no"),
-                                        'ct.name as city_name', 'st.name as state_name'
-                                    )
+                                DB::Raw("CONCAT(".'u.firstname'.", ' ', ".'u.lastname'.") as name"),
+                                DB::Raw("CONCAT(".'r.receipt_book_start_no'.", ' - ', ".'r.receipt_book_end_no'.") as receipt_book_no")
+                            )
+                            ->join('users as u', 'r.user_id' , 'u.id')
                             ->orderBy('id', 'desc')
                             ->get();
 
@@ -92,8 +89,7 @@
         }
 
         public function create(Request $request){
-            $countries = DB::table('country')->where(['status' => 'active'])->get();
-            return view('backend.reporter.create')->with(['countries' => $countries]);
+            return view('backend.reporter.create');
         }
 
         public function insert(ReporterRequest $request){
@@ -117,7 +113,7 @@
                 'updated_at' => date('Y-m-d H:i:s'),
                 'updated_by' => auth()->user()->id
             ];
-            
+
             DB::beginTransaction();
             try {
                 $user = User::create($crud);
@@ -127,9 +123,6 @@
                         'unique_id' => $request->unique_id,
                         'address' => $request->address,
                         'phone_no' => $request->phone_no,
-                        'country_id' => $request->country_id,
-                        'state_id' => $request->state_id,
-                        'city_id' => $request->city_id,
                         'receipt_book_start_no' => $request->receipt_book_start_no,
                         'receipt_book_end_no' => $request->receipt_book_end_no,
                         'status' => 'active',
@@ -145,13 +138,13 @@
                         $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
                         $extension = $request->file('profile')->getClientOriginalExtension();
                         $filenameToStore = time()."_".$filename.'.'.$extension;
-        
+
                         $folder_to_upload = public_path().'/uploads/reporter/';
-        
+
                         if (!\File::exists($folder_to_upload)) {
                             \File::makeDirectory($folder_to_upload, 0777, true, true);
                         }
-        
+
                         $reporter_crud["profile"] = $filenameToStore;
                     }else{
                         $reporter_crud["profile"] = 'default.png';
@@ -188,14 +181,11 @@
 
         public function edit(Request $request){
             $id = base64_decode($request->id);
-            $countries = DB::table('country')->where(['status' => 'active'])->get();
-            $states = [];
-            $cities = [];
             $path = URL('/uploads/reporter').'/';
 
             $data = DB::table('reporter as r')
-                            ->select('r.id', 'r.unique_id', 'r.address', 'r.phone_no', 'r.receipt_book_start_no', 'r.receipt_book_end_no', 'r.country_id', 'r.state_id',
-                                        'r.city_id', 'r.status', 'u.firstname', 'u.lastname', 'u.email',
+                            ->select('r.id', 'r.unique_id', 'r.address', 'r.phone_no', 'r.receipt_book_start_no', 'r.receipt_book_end_no', 'r.status',
+                                        'u.firstname', 'u.lastname', 'u.email',
                                         DB::Raw("CASE
                                                     WHEN ".'profile'." != '' THEN CONCAT("."'".$path."'".", ".'profile'.")
                                                     ELSE CONCAT("."'".$path."'".", 'default.png')
@@ -205,12 +195,7 @@
                             ->where(['r.id' => $id])
                             ->first();
 
-            if(!empty($data)){
-                $states = DB::table('state')->select('id', 'name')->where(['country_id' => $data->country_id])->get()->toArray();
-                $cities = DB::table('city')->select('id', 'name')->where(['country_id' => $data->country_id, 'state_id' => $data->state_id])->get()->toArray();
-            }
-
-            return view('backend.reporter.edit')->with(['data' => $data, 'countries' => $countries, 'states' => $states, 'cities' => $cities]);
+            return view('backend.reporter.edit')->with(['data' => $data]);
         }
 
         public function update(ReporterRequest $request){
@@ -236,9 +221,6 @@
                         'unique_id' => $request->unique_id,
                         'address' => $request->address,
                         'phone_no' => $request->phone_no,
-                        'country_id' => $request->country_id,
-                        'state_id' => $request->state_id,
-                        'city_id' => $request->city_id,
                         'receipt_book_start_no' => $request->receipt_book_start_no,
                         'receipt_book_end_no' => $request->receipt_book_end_no,
                         'status' => 'active',
@@ -252,13 +234,13 @@
                         $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
                         $extension = $request->file('profile')->getClientOriginalExtension();
                         $filenameToStore = time()."_".$filename.'.'.$extension;
-        
+
                         $folder_to_upload = public_path().'/uploads/reporter/';
-        
+
                         if (!\File::exists($folder_to_upload)) {
                             \File::makeDirectory($folder_to_upload, 0777, true, true);
                         }
-        
+
                         $reporter_crud["profile"] = $filenameToStore;
                     }else{
                         $reporter_crud["profile"] = $exst_rec->profile;
@@ -289,14 +271,11 @@
 
         public function view(Request $request){
             $id = base64_decode($request->id);
-            $countries = DB::table('country')->where(['status' => 'active'])->get();
-            $states = [];
-            $cities = [];
             $path = URL('/uploads/reporter').'/';
 
             $data = DB::table('reporter as r')
-                            ->select('r.id', 'r.unique_id', 'r.address', 'r.phone_no', 'r.receipt_book_start_no', 'r.receipt_book_end_no', 'r.country_id', 'r.state_id',
-                                        'r.city_id', 'r.status', 'u.firstname', 'u.lastname', 'u.email',
+                            ->select('r.id', 'r.unique_id', 'r.address', 'r.phone_no', 'r.receipt_book_start_no', 'r.receipt_book_end_no', 'r.status',
+                                        'u.firstname', 'u.lastname', 'u.email',
                                         DB::Raw("CASE
                                                     WHEN ".'profile'." != '' THEN CONCAT("."'".$path."'".", ".'profile'.")
                                                     ELSE CONCAT("."'".$path."'".", 'default.png')
@@ -306,12 +285,7 @@
                             ->where(['r.id' => $id])
                             ->first();
 
-            if(!empty($data)){
-                $states = DB::table('state')->select('id', 'name')->where(['country_id' => $data->country_id])->get()->toArray();
-                $cities = DB::table('city')->select('id', 'name')->where(['country_id' => $data->country_id, 'state_id' => $data->state_id])->get()->toArray();
-            }
-
-            return view('backend.reporter.view')->with(['data' => $data, 'countries' => $countries, 'states' => $states, 'cities' => $cities]);
+            return view('backend.reporter.view')->with(['data' => $data]);
         }
 
         public function change_status(Request $request){

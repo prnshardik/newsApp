@@ -36,19 +36,6 @@ class CreatePermissionTables extends Migration
         $permission_view = DB::table('permissions')->insertGetId(['name' => 'permission-view', 'guard_name' => 'web']);
         $permission_delete = DB::table('permissions')->insertGetId(['name' => 'permission-delete', 'guard_name' => 'web']);
 
-        $country_create = DB::table('permissions')->insertGetId(['name' => 'country-create', 'guard_name' => 'web']);
-        $country_edit = DB::table('permissions')->insertGetId(['name' => 'country-edit', 'guard_name' => 'web']);
-        $country_view = DB::table('permissions')->insertGetId(['name' => 'country-view', 'guard_name' => 'web']);
-        $country_delete = DB::table('permissions')->insertGetId(['name' => 'country-delete', 'guard_name' => 'web']);
-        $state_create = DB::table('permissions')->insertGetId(['name' => 'state-create', 'guard_name' => 'web']);
-        $state_edit = DB::table('permissions')->insertGetId(['name' => 'state-edit', 'guard_name' => 'web']);
-        $state_view = DB::table('permissions')->insertGetId(['name' => 'state-view', 'guard_name' => 'web']);
-        $state_delete = DB::table('permissions')->insertGetId(['name' => 'state-delete', 'guard_name' => 'web']);
-        $city_create = DB::table('permissions')->insertGetId(['name' => 'city-create', 'guard_name' => 'web']);
-        $city_edit = DB::table('permissions')->insertGetId(['name' => 'city-edit', 'guard_name' => 'web']);
-        $city_view = DB::table('permissions')->insertGetId(['name' => 'city-view', 'guard_name' => 'web']);
-        $city_delete = DB::table('permissions')->insertGetId(['name' => 'city-delete', 'guard_name' => 'web']);
-
         $reporter_create = DB::table('permissions')->insertGetId(['name' => 'reporter-create', 'guard_name' => 'web']);
         $reporter_edit = DB::table('permissions')->insertGetId(['name' => 'reporter-edit', 'guard_name' => 'web']);
         $reporter_view = DB::table('permissions')->insertGetId(['name' => 'reporter-view', 'guard_name' => 'web']);
@@ -131,19 +118,6 @@ class CreatePermissionTables extends Migration
         DB::table('role_has_permissions')->insert(['permission_id' => $permission_edit, 'role_id' => $admin_role_id]);
         DB::table('role_has_permissions')->insert(['permission_id' => $permission_view, 'role_id' => $admin_role_id]);
         DB::table('role_has_permissions')->insert(['permission_id' => $permission_delete, 'role_id' => $admin_role_id]);
-
-        DB::table('role_has_permissions')->insert(['permission_id' => $country_create, 'role_id' => $admin_role_id]);
-        DB::table('role_has_permissions')->insert(['permission_id' => $country_edit, 'role_id' => $admin_role_id]);
-        DB::table('role_has_permissions')->insert(['permission_id' => $country_view, 'role_id' => $admin_role_id]);
-        DB::table('role_has_permissions')->insert(['permission_id' => $country_delete, 'role_id' => $admin_role_id]);
-        DB::table('role_has_permissions')->insert(['permission_id' => $state_create, 'role_id' => $admin_role_id]);
-        DB::table('role_has_permissions')->insert(['permission_id' => $state_edit, 'role_id' => $admin_role_id]);
-        DB::table('role_has_permissions')->insert(['permission_id' => $state_view, 'role_id' => $admin_role_id]);
-        DB::table('role_has_permissions')->insert(['permission_id' => $state_delete, 'role_id' => $admin_role_id]);
-        DB::table('role_has_permissions')->insert(['permission_id' => $city_create, 'role_id' => $admin_role_id]);
-        DB::table('role_has_permissions')->insert(['permission_id' => $city_edit, 'role_id' => $admin_role_id]);
-        DB::table('role_has_permissions')->insert(['permission_id' => $city_view, 'role_id' => $admin_role_id]);
-        DB::table('role_has_permissions')->insert(['permission_id' => $city_delete, 'role_id' => $admin_role_id]);
 
         DB::table('role_has_permissions')->insert(['permission_id' => $reporter_create, 'role_id' => $admin_role_id]);
         DB::table('role_has_permissions')->insert(['permission_id' => $reporter_edit, 'role_id' => $admin_role_id]);

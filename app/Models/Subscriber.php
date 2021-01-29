@@ -10,5 +10,5 @@
 
         protected $table = 'subscribers';
 
-        protected $fillable = ['receipt_no', 'description', 'address', 'phone', 'status', 'pincode', 'country', 'state', 'city'];
+        protected $fillable = ['receipt_no', 'description', 'address', 'phone', 'status', 'pincode'];
     }

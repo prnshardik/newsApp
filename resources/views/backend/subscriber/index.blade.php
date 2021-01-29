@@ -53,17 +53,6 @@
                                             <span class="kt-form__help error pincode"></span>
                                         </div>
                                         <div class="form-group col-sm-2">
-                                            <label for="city">City</label>
-                                            <select name="city" id="city" class="form-control">
-                                                <option value="">Select City</option>
-                                                @if(isset($cities) && $cities->isNotEmpty())
-                                                    @foreach($cities as $row)
-                                                        <option value="{{ $row->id }}">{{ $row->name }}</option>
-                                                    @endforeach
-                                                @endif
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-sm-2">
                                             <label for="reporter">Reporter</label>
                                             <select name="reporter" id="reporter" class="form-control">
                                                 <option value="">Select Reporter</option>
@@ -87,7 +76,7 @@
                                                 <option value="arogya_sudha">Arogya Sudha</option>
                                             </select>
                                         </div>
-                                        <div class="form-group col-sm-2 mt-4">    
+                                        <div class="form-group col-sm-2 mt-4">
                                             <label for="filter">&nbsp;</label>
                                             <button id="filter" class="btn btn-primary">Filter</button>
                                         </div>
@@ -106,8 +95,6 @@
                                     <th>Receipt No</th>
                                     <th>Phone</th>
                                     <th>Pincode</th>
-                                    <th>State</th>
-                                    <th>City</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -206,14 +193,6 @@
                             name: 'pincode'
                         },
                         {
-                            data: 'state_name',
-                            name: 'state_name'
-                        },
-                        {
-                            data: 'city_name',
-                            name: 'city_name'
-                        },
-                        {
                             data: 'status',
                             name: 'status'
                         },
@@ -250,7 +229,7 @@
             var old_status = $(object).data("old_status");
 
             if(old_status == 'block' && status == 'active'){
-                var msg = "Are you Sure You Want To Active This Record?"; 
+                var msg = "Are you Sure You Want To Active This Record?";
             }else if(old_status == 'block' && status == 'block'){
                 var msg = "Are you Sure You Want To Block This Record?";
             }else if(old_status == 'block' && status == 'deleted'){
@@ -258,9 +237,9 @@
             }else if(old_status == 'inactive' && status == 'active'){
                 var msg = "Are you Sure You Want To Reactive This Record?";
             }else{
-                var msg = "Are you Sure?"; 
+                var msg = "Are you Sure?";
             }
-            
+
             if (confirm(msg)) {
                 $.ajax({
                     "url": "{!! route('admin.subscriber.change.status') !!}",

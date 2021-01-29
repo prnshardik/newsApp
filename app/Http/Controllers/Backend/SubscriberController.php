@@ -26,12 +26,9 @@
         	if($request->ajax()){
                 $collections = DB::table('subscribers as s')
                                     ->select('s.id', 's.receipt_no', 's.phone', 's.pincode', 's.status',
-                                                DB::Raw("CONCAT(".'u.firstname'.", ' ', ".'u.lastname'.") as name"),
-                                                'ct.name as city_name', 'st.name as state_name'
+                                                DB::Raw("CONCAT(".'u.firstname'.", ' ', ".'u.lastname'.") as name")
                                             )
-                                    ->join('users as u', 'u.id', 's.user_id')
-                                    ->join('state as st', 'st.id', 's.state')
-                                    ->join('city as ct', 'ct.id', 's.city');
+                                    ->join('users as u', 'u.id', 's.user_id');
 
                 if(auth()->user()->role_id != 1)
                     $collections->where(['s.created_by' => auth()->user()->id]);
@@ -62,9 +59,9 @@
                                             </a> &nbsp;
                                             <ul class="dropdown-menu">
                                                 <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="active" data-old_status="'.$data->status.'" data-id="'.base64_encode($data->id).'">Active</a></li>
-                                                
+
                                                 <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="block" data-old_status="'.$data->status.'" data-id="'.base64_encode($data->id).'">Block</a></li>
-                                                
+
                                                 <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="deleted" data-old_status="'.$data->status.'" data-id="'.base64_encode($data->id).'">Delete</a></li>
                                             </ul>';
                             }
@@ -92,16 +89,14 @@
                         ->make(true);
             }
 
-            $cities = DB::table('city')->select(['id', 'name'])->get();
             $reporters = DB::table('reporter as r')->select(['u.id', 'u.firstname', 'u.lastname'])
                                 ->leftjoin('users as u', 'u.id', 'r.user_id')
                                 ->get();
 
-            return view('backend.subscriber.index', ['cities' => $cities, 'reporters' => $reporters]);
+            return view('backend.subscriber.index', ['reporters' => $reporters]);
         }
 
         public function create(Request $request){
-            $countries = Country::get();
             $receipt_no = '';
 
             if(auth()->user()->id != 1){
@@ -131,7 +126,7 @@
                 }
             }
 
-            return view('backend.subscriber.create', ['countries' => $countries, 'receipt_no' => $receipt_no]);
+            return view('backend.subscriber.create', ['receipt_no' => $receipt_no]);
         }
 
         public function insert(SubscriberRequest $request){
@@ -162,9 +157,6 @@
                         'phone' => $request->phone,
                         'pincode' => $request->pincode,
                         'magazine' => $request->magazine,
-                        'country' => $request->country,
-                        'state' => $request->state,
-                        'city' => $request->city,
                         'end_date' => date('Y-m-d', strtotime('+1 year')),
                         'status' => 'active',
                         'created_at' => date('Y-m-d H:i:s'),
@@ -196,24 +188,16 @@
 
         public function edit(Request $request){
         	$id = base64_decode($request->id);
-            $countries = Country::get();
-            $states = [];
-            $cities = [];
 
             $data = DB::table('subscribers as s')
-                            ->select('s.id', 's.magazine', 's.receipt_no', 's.description', 's.address', 's.phone', 's.pincode', 's.country', 's.state', 's.city', 's.status',
-                                        'u.firstname', 'u.lastname', 'u.email'
+                            ->select('s.id', 's.receipt_no', 's.description', 's.address', 's.phone', 's.pincode', 's.status',
+                                        'u.firstname', 'u.lastname', 'u.email', 's.magazine'
                                     )
                             ->join('users as u', 'u.id', 's.user_id')
                             ->where(['s.id' => $id])
                             ->first();
 
-            if(!empty($data)){
-                $states = DB::table('state')->select('id', 'name')->where(['country_id' => $data->country])->get()->toArray();
-                $cities = DB::table('city')->select('id', 'name')->where(['country_id' => $data->country, 'state_id' => $data->state])->get()->toArray();
-            }
-
-            return view('backend.subscriber.edit')->with(['data' => $data, 'countries' => $countries, 'states' => $states, 'cities' => $cities]);
+            return view('backend.subscriber.edit')->with(['data' => $data]);
         }
 
         public function update(SubscriberRequest $request){
@@ -241,9 +225,6 @@
                         'phone' => $request->phone,
                         'pincode' => $request->pincode,
                         'magazine' => $request->magazine,
-                        'country' => $request->country,
-                        'state' => $request->state,
-                        'city' => $request->city,
                         'updated_at' => date('Y-m-d H:i:s'),
                         'updated_by' => auth()->user()->id
                     ];
@@ -269,24 +250,16 @@
 
         public function view(Request $request){
         	$id = base64_decode($request->id);
-            $countries = Country::get();
-            $states = [];
-            $cities = [];
 
             $data = DB::table('subscribers as s')
-                            ->select('s.id', 's.receipt_no', 's.description', 's.address', 's.phone', 's.pincode', 's.country', 's.state', 's.city', 's.status',
-                                        'u.firstname', 'u.lastname', 'u.email'
+                            ->select('s.id', 's.receipt_no', 's.description', 's.address', 's.phone', 's.pincode', 's.status',
+                                        'u.firstname', 'u.lastname', 'u.email', 's.magazine'
                                     )
                             ->join('users as u', 'u.id', 's.user_id')
                             ->where(['s.id' => $id])
                             ->first();
 
-            if(!empty($data)){
-                $states = DB::table('state')->select('id', 'name')->where(['country_id' => $data->country])->get()->toArray();
-                $cities = DB::table('city')->select('id', 'name')->where(['country_id' => $data->country, 'state_id' => $data->state])->get()->toArray();
-            }
-
-            return view('backend.subscriber.view')->with(['data' => $data, 'countries' => $countries, 'states' => $states, 'cities' => $cities]);
+            return view('backend.subscriber.view')->with(['data' => $data]);
         }
 
         public function change_status(Request $request){
@@ -344,30 +317,22 @@
             }
 
             $pincode = $request->pincode ?? NULL;
-            $city = $request->city ?? NULL;
             $reporter = $request->reporter ?? NULL;
             $date = $request->date ?? NULL;
             $magazine = $request->magazine ?? NULL;
 
-            $cities = DB::table('city')->select(['id', 'name'])->get();
             $reporters = DB::table('reporter as r')->select(['u.id', 'u.firstname', 'u.lastname'])
                                 ->leftjoin('users as u', 'u.id', 'r.user_id')
                                 ->get();
 
             $collection = DB::table('users as u')
                             ->select('u.firstname', 'u.lastname', 'u.email',
-                                        's.address', 's.phone', 's.pincode',
-                                        'c.name as country_name', 'st.name as state_name', 'ct.name as city_name',
+                                        's.address', 's.phone', 's.pincode'
                                     )
-                            ->join('subscribers as s', 'u.id', 's.user_id')
-                            ->join('country as c', 'c.id', 's.country')
-                            ->join('state as st', 'st.id', 's.state')
-                            ->join('city as ct', 'ct.id', 's.city');
+                            ->join('subscribers as s', 'u.id', 's.user_id');
 
             if($pincode)
                 $collection->where(['s.pincode' => $pincode]);
-            elseif($city)
-                $collection->where(['s.city' => $city]);
             elseif($reporter)
                 $collection->where(['s.created_by' => $reporter]);
             elseif($date)
@@ -377,27 +342,24 @@
 
             $data = $collection->orderBy('u.firstname')->get();
 
-            return view('backend.subscriber.filter', ['data' => $data, 'cities' => $cities, 'reporters' => $reporters, 'pincode' => $pincode, 'city' => $city, 'reporter' => $reporter, 'date' => $date ,'magazine' => $magazine]);
+            return view('backend.subscriber.filter', ['data' => $data, 'reporters' => $reporters, 'pincode' => $pincode, 'reporter' => $reporter, 'date' => $date ,'magazine' => $magazine]);
         }
 
 
         public function excel(Request $request) {
             $pincode = $request->pincode ?? null;
-            $city = $request->city ?? null;
             $reporter = $request->reporter ?? null;
             $date = $request->date ?? null;
             $magazine = $request->magazine ?? null;
-        
+
             $filter = [
                         'pincode' => $pincode,
-                        'city' => $city,
                         'reporter' => $reporter,
                         'date' => $date,
                         'magazine' => $magazine
                     ];
 
             return Excel::download(new SubscriberExport($filter), 'subscriber.xlsx');
-
         }
     }
 

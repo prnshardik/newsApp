@@ -15,9 +15,6 @@
                 $table->string('phone')->nullable();
                 $table->string('pincode')->nullable();
                 $table->string('magazine')->nullable();
-                $table->integer('country')->nullable();
-                $table->integer('state')->nullable();
-                $table->integer('city')->nullable();
                 $table->date('end_date')->nullable();
                 $table->enum('status', ['active', 'inactive', 'deleted', 'block'])->default('inactive');
                 $table->timestamps();

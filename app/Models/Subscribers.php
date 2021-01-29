@@ -15,11 +15,10 @@
         protected $reporter;
         protected $date;
 
-        protected $fillable = ['receipt_no', 'description', 'address', 'phone', 'status', 'pincode', 'magazine', 'country', 'state', 'city'];
+        protected $fillable = ['receipt_no', 'description', 'address', 'phone', 'status', 'pincode', 'magazine'];
 
         public function getData($filter){
             $pincode = $filter['pincode'];
-            $city = $filter['city'];
             $reporter = $filter['reporter'];
             $date = $filter['date'];
             $magazine = $filter['magazine'];
@@ -36,8 +35,6 @@
 
             if($pincode != '' && $pincode != null)
                 $collection->where(['s.pincode' => $pincode]);
-            elseif($city != '' && $city != null)
-                $collection->where(['s.city' => $city]);
             elseif($reporter != '' && $reporter != null)
                 $collection->where(['s.created_by' => $reporter]);
             elseif($date != '' && $date != null)

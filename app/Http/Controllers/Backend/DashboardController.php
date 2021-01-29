@@ -31,26 +31,20 @@
             }
 
             $agents = DB::table('reporter as r')
-                            ->join('users as u', 'r.user_id' , 'u.id')
-                            ->join('state as st', 'st.id', 'r.state_id')
-                            ->join('city as ct', 'ct.id', 'r.city_id')
                             ->select('r.id', 'r.unique_id', 'r.phone_no', 'r.status',
                                         DB::Raw("CONCAT(".'u.firstname'.", ' ', ".'u.lastname'.") as name"),
-                                        DB::Raw("CONCAT(".'r.receipt_book_start_no'.", ' - ', ".'r.receipt_book_end_no'.") as receipt_book_no"),
-                                        'ct.name as city_name', 'st.name as state_name'
+                                        DB::Raw("CONCAT(".'r.receipt_book_start_no'.", ' - ', ".'r.receipt_book_end_no'.") as receipt_book_no")
                                     )
+                            ->join('users as u', 'r.user_id' , 'u.id')
                             ->orderBy('id', 'desc')
                             ->limit(5)
                             ->get();
 
             $subscribers_collections = DB::table('subscribers as s')
                                             ->select('s.id', 's.receipt_no', 's.phone', 's.pincode', 's.status',
-                                                        DB::Raw("CONCAT(".'u.firstname'.", ' ', ".'u.lastname'.") as name"),
-                                                        'ct.name as city_name', 'st.name as state_name'
+                                                        DB::Raw("CONCAT(".'u.firstname'.", ' ', ".'u.lastname'.") as name")
                                                     )
-                                            ->join('users as u', 'u.id', 's.user_id')
-                                            ->join('state as st', 'st.id', 's.state')
-                                            ->join('city as ct', 'ct.id', 's.city');
+                                            ->join('users as u', 'u.id', 's.user_id');
 
             if(auth()->user()->role_id != 1)
                 $subscribers_collections->where(['s.created_by' => auth()->user()->id]);

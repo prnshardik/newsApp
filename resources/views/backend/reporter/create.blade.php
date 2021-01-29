@@ -68,32 +68,6 @@
                                     <span class="kt-form__help error address"></span>
                                 </div>
                                 <div class="form-group col-sm-6">
-                                    <label for="country_id">Country</label>
-                                    <select name="country_id" id="country_id" class="form-control">
-                                        <option value="" hidden>Select Country</option>
-                                        @if(isset($countries) && $countries->isNotEmpty())
-                                            @foreach($countries AS $row)
-                                                <option value="{{ $row->id }}">{{ $row->name }}</option>
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                    <span class="kt-form__help error country_id"></span>
-                                </div>
-                                <div class="form-group col-sm-6">
-                                    <label for="state_id">State</label>
-                                    <select name="state_id" id="state_id" class="form-control">
-                                        <option value="" hidden>Select State</option>
-                                    </select>
-                                    <span class="kt-form__help error state_id"></span>
-                                </div>
-                                <div class="form-group col-sm-6">
-                                    <label for="city_id">City</label>
-                                    <select name="city_id" id="city_id" class="form-control">
-                                        <option value="" hidden>Select City</option>
-                                    </select>
-                                    <span class="kt-form__help error city_id"></span>
-                                </div>
-                                <div class="form-group col-sm-6">
                                     <label for="password">Password</label>
                                     <input type="password" name="password" id="password" class="form-control" placeholder="Please Enter Password">
                                     <span class="kt-form__help error password"></span>
@@ -239,85 +213,6 @@
                 }
                 e.preventDefault();
                 return false;
-            });
-
-            $('#country_id').select2({
-                multiple: false,
-            });
-
-            $('#state_id').select2({
-                multiple: false,
-            });
-
-            $('#city_id').select2({
-                multiple: false,
-            });
-
-            $('#country_id').change(function(){
-                var country_id = $(this).val();
-
-                if(country_id.length > 0){
-                    $.ajax({
-                        url : "{{ route('admin.city.get_state') }}",
-                        type : "post",
-                        data : {
-                            _token: "{{ csrf_token() }}",
-                            country_id: country_id
-                        },
-                        success : function(response){
-                            $('#state_id').html('');
-
-                            if(response.code == 200){
-                                $('#state_id').html(response.data);
-                                $('#city_id').html('<option value="">select City</option>');
-                            }else{
-                                $('#state_id').html('<option value="">select State</option>');
-                                $('#city_id').html('<option value="">select City</option>');
-                            }
-                        },
-                        error: function(json){
-                            $('#state_id').html('');
-                            $('#state_id').html('<option value="">select State</option>');
-                            $('#city_id').html('');
-                            $('#city_id').html('<option value="">select City</option>');
-                        }
-                    });
-                }else{
-                    $('#state_id').html('<option>Select State</option>');
-                    $('#city_id').html('<option>Select City</option>');
-                }
-            });
-
-            $('#state_id').change(function(){
-                var state_id = $(this).val();
-                var country_id = $("#country_id option:selected").val();
-
-                if(state_id.length > 0){
-                    $.ajax({
-                        url : "{{ route('admin.city.get_city') }}",
-                        type : "post",
-                        data : {
-                            _token: "{{ csrf_token() }}",
-                            state_id: state_id,
-                            country_id: country_id
-                        },
-                        success : function(response){
-                            $('#city_id').html('');
-
-                            if(response.code == 200){
-                                $('#city_id').html(response.data);
-                            }else{
-                                $('#city_id').html('<option value="">select City</option>');
-                            }
-                        },
-                        error: function(json){
-                            $('#city_id').html('');
-                            $('#city_id').html('<option value="">select City</option>');
-                        }
-                    });
-                }else{
-                    $('#city_id').html('<option>Select City</option>');
-                }
             });
         });
     </script>

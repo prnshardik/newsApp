@@ -93,32 +93,6 @@
                                     </select>
                                     <span class="kt-form__help error magazine"></span>
                                 </div>
-                                <div class="form-group col-sm-6">
-                                    <label for="country">Country</label>
-                                    <select name="country" id="country" class="form-control">
-                                        <option value="" hidden>Select Country</option>
-                                        @if(isset($countries) && $countries->isNotEmpty())
-                                            @foreach($countries AS $row)
-                                                <option value="{{ $row->id }}">{{ $row->name }}</option>
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                    <span class="kt-form__help error country"></span>
-                                </div>
-                                <div class="form-group col-sm-6">
-                                    <label for="state">State</label>
-                                    <select name="state" id="state" class="form-control">
-                                        <option value="" hidden>Select State</option>
-                                    </select>
-                                    <span class="kt-form__help error state"></span>
-                                </div>
-                                <div class="form-group col-sm-6">
-                                    <label for="city">City</label>
-                                    <select name="city" id="city" class="form-control">
-                                        <option value="" hidden>Select City</option>
-                                    </select>
-                                    <span class="kt-form__help error city"></span>
-                                </div>
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -164,85 +138,6 @@
 
             $('#magazine').select2({
                 multiple: false,
-            });
-
-            $('#country').select2({
-                multiple: false,
-            });
-
-            $('#state').select2({
-                multiple: false,
-            });
-
-            $('#city').select2({
-                multiple: false,
-            });
-
-            $('#country').change(function(){
-                var country_id = $(this).val();
-
-                if(country_id.length > 0){
-                    $.ajax({
-                        url : "{{ route('admin.city.get_state') }}",
-                        type : "post",
-                        data : {
-                            _token: "{{ csrf_token() }}",
-                            country_id: country_id
-                        },
-                        success : function(response){
-                            $('#state').html('');
-
-                            if(response.code == 200){
-                                $('#state').html(response.data);
-                                $('#city').html('<option value="">select City</option>');
-                            }else{
-                                $('#state').html('<option value="">select State</option>');
-                                $('#city').html('<option value="">select City</option>');
-                            }
-                        },
-                        error: function(json){
-                            $('#state').html('');
-                            $('#state').html('<option value="">select State</option>');
-                            $('#city').html('');
-                            $('#city').html('<option value="">select City</option>');
-                        }
-                    });
-                }else{
-                    $('#state').html('<option>Select State</option>');
-                    $('#city').html('<option>Select City</option>');
-                }
-            });
-
-            $('#state').change(function(){
-                var state_id = $(this).val();
-                var country_id = $("#country option:selected").val();
-
-                if(state_id.length > 0){
-                    $.ajax({
-                        url : "{{ route('admin.city.get_city') }}",
-                        type : "post",
-                        data : {
-                            _token: "{{ csrf_token() }}",
-                            state_id: state_id,
-                            country_id: country_id
-                        },
-                        success : function(response){
-                            $('#city').html('');
-
-                            if(response.code == 200){
-                                $('#city').html(response.data);
-                            }else{
-                                $('#city').html('<option value="">select City</option>');
-                            }
-                        },
-                        error: function(json){
-                            $('#city').html('');
-                            $('#city').html('<option value="">select City</option>');
-                        }
-                    });
-                }else{
-                    $('#city').html('<option>Select City</option>');
-                }
             });
         });
     </script>

@@ -77,7 +77,6 @@
                                 @php
                                     $filter = [
                                                 'pincode' => $pincode,
-                                                'city' => $city,
                                                 'reporter' => $reporter,
                                                 'date' => $date,
                                                 'magazine' => $magazine
@@ -104,17 +103,6 @@
                                                 <div class="form-group col-sm-2">
                                                     <label for="pincode">Pincode</label>
                                                     <input type="text" name="pincode" id="pincode" class="form-control" placeholder="Plese enter pincode" value="{{ $pincode ?? NULL }}">
-                                                </div>
-                                                <div class="form-group col-sm-2">
-                                                    <label for="city">City</label>
-                                                    <select name="city" id="city" class="form-control">
-                                                        <option value="">Select City</option>
-                                                        @if(isset($cities) && $cities->isNotEmpty())
-                                                            @foreach($cities as $row)
-                                                                <option value="{{ $row->id }}" @if($city != null && $city == $row->id) selected @endif>{{ $row->name }}</option>
-                                                            @endforeach
-                                                        @endif
-                                                    </select>
                                                 </div>
                                                 <div class="form-group col-sm-2">
                                                     <label for="reporter">Reporter</label>
@@ -159,12 +147,10 @@
                                             <ul class="media-list media-list-divider m-0">
                                                 <li class="media">
                                                     <div class="media-body">
-                                                        <div class="font-13 font-weight-bold">To, {{ $row->city_name ?? '' }}</div>
+                                                        <div class="font-13 font-weight-bold">To,</div>
                                                         <div class="font-13 font-weight-bold">{{ $row->firstname ?? '' }} {{ $row->lastname ?? '' }}</div>
                                                         <div class="font-13 font-weight-bold">{{ $row->address ?? '' }}</div>
-
-                                                        <div class="font-13 font-weight-bold">{{ $row->city_name ?? '' }} - {{ $row->pincode ?? '' }}</div>
-                                                        <div class="font-13 font-weight-bold">{{ $row->state_name ?? '' }} {{ $row->country_name ?? '' }}</div>
+                                                        <div class="font-13 font-weight-bold"> - {{ $row->pincode ?? '' }}</div>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -185,7 +171,6 @@
 @section('scripts')
     <script>
         $(document).ready(function(){
-
             $("#pincode").keypress(function(e){
                 var keyCode = e.keyCode || e.which;
                 var $this = $(this);

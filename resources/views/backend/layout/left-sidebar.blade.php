@@ -38,40 +38,6 @@
                 </li>
             @endcanany
 
-            @canany(['country-create', 'country-edit', 'country-view', 'country-delete', 'state-create', 'state-edit', 'state-view', 'state-delete', 'city-create', 'city-edit', 'city-view', 'city-delete'])
-                <li class="{{ (Request::is('country*') || Request::is('state*') || Request::is('city*')) ? 'active' : '' }}">
-                    <a href="javascript:;"><i class="sidebar-item-icon fa fa-globe"></i>
-                        <span class="nav-label">Region</span><i class="fa fa-angle-left arrow"></i>
-                    </a>
-                    <ul class="nav-2-level collapse">
-                        @canany(['country-create', 'country-edit', 'country-view', 'country-delete'])
-                            <li>
-                                <a class="{{ Request::is('country*') ? 'active' : '' }}" href="{{ route('admin.country') }}">
-                                    <i class="sidebar-item-icon fa fa-globe"></i>
-                                    <span class="nav-label">Country</span>
-                                </a>
-                            </li>
-                        @endcanany
-                        @canany(['country-create', 'country-edit', 'country-view', 'country-delete', 'state-create', 'state-edit', 'state-view', 'state-delete'])
-                            <li>
-                                <a class="{{ Request::is('state*') ? 'active' : '' }}" href="{{ route('admin.state') }}">
-                                    <i class="sidebar-item-icon fa fa-globe"></i>
-                                    <span class="nav-label">State</span>
-                                </a>
-                            </li>
-                        @endcanany
-                        @canany(['city-create', 'city-edit', 'city-view', 'city-delete'])
-                            <li>
-                                <a class="{{ Request::is('city*') ? 'active' : '' }}" href="{{ route('admin.city') }}">
-                                    <i class="sidebar-item-icon fa fa-globe"></i>
-                                    <span class="nav-label">City</span>
-                                </a>
-                            </li>
-                        @endcanany
-                    </ul>
-                </li>
-            @endcanany
-
             @canany(['reporter-create', 'reporter-edit', 'reporter-view', 'reporter-delete'])
                 <li class="{{ Request::is('reporter*') ? 'active' : '' }}">
                     <a class="" href="{{ route('admin.reporter') }}">
@@ -80,6 +46,7 @@
                     </a>
                 </li>
             @endcanany
+
             @canany(['subscriber-create', 'subscriber-edit', 'subscriber-view', 'subscriber-delete'])
                 <li class="{{ Request::is('subscriber*') ? 'active' : '' }}">
                     <a  href="{{ route('admin.subscriber') }}"><i class="sidebar-item-icon fa fa-users"></i>

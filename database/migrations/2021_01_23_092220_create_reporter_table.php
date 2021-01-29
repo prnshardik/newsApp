@@ -19,9 +19,6 @@ class CreateReporterTable extends Migration
             $table->string('unique_id');
             $table->text('address');
             $table->string('phone_no');
-            $table->integer('country_id');
-            $table->integer('state_id');
-            $table->integer('city_id');
             $table->string('receipt_book_start_no');
             $table->string('receipt_book_end_no');
             $table->text('profile')->nullable();
