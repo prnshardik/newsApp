@@ -68,11 +68,6 @@
                                     <span class="kt-form__help error address"></span>
                                 </div>
                                 <div class="form-group col-sm-6">
-                                    <label for="pincode">Pincode</label>
-                                    <input type="text" name="pincode" id="pincode" class="form-control" placeholder="Plese enter pincode" value="{{ $data->pincode ?? '' }}" disabled>
-                                    <span class="kt-form__help error pincode"></span>
-                                </div>
-                                <div class="form-group col-sm-6">
                                     <label for="magazine">Magazine</label>
                                     <select name="magazine" id="magazine" class="form-control" disabled>
                                         <option value="" hidden>Select Magazine</option>
@@ -80,6 +75,47 @@
                                         <option value="arogya_sudha" @if(isset($data) && $data->magazine == 'arogya_sudha') selected @endif >Arogya Sudha</option>
                                     </select>
                                     <span class="kt-form__help error magazine"></span>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="district_id">District</label>
+                                    <select name="district_id" id="district_id" class="form-control" disabled>
+                                        <option value="" hidden>Select District</option>
+                                        @if(isset($districts) && $districts->isNotEmpty())
+                                            @foreach($districts AS $row)
+                                                <option value="{{ $row->id }}"  @if(isset($data) && $data->district_id == $row->id) selected @endif >{{ $row->name }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <span class="kt-form__help error district_id"></span>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="taluka_id">Taluka</label>
+                                    <select name="taluka_id" id="taluka_id" class="form-control" disabled>
+                                        <option value="" hidden>Select Taluka</option>
+                                        @if(isset($talukas) && !empty($talukas))
+                                            @foreach($talukas as $row)
+                                                <option value="{{ $row['id'] }}" @if(isset($data) && $data->taluka_id == $row['id']) selected @endif>{{ $row['name'] }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <span class="kt-form__help error taluka_id"></span>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="city_id">City</label>
+                                    <select name="city_id" id="city_id" class="form-control" disabled>
+                                        <option value="" hidden>Select City</option>
+                                        @if(isset($cities) && !empty($cities))
+                                            @foreach($cities as $row)
+                                                <option value="{{ $row['id'] }}" @if(isset($data) && $data->city_id == $row['id']) selected @endif>{{ $row['name'] }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <span class="kt-form__help error city_id"></span>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="pincode">Pincode</label>
+                                    <input type="text" name="pincode" id="pincode" class="form-control" placeholder="Plese enter pincode" value="{{ $data->pincode ?? '' }}" disabled>
+                                    <span class="kt-form__help error pincode"></span>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -94,65 +130,4 @@
 @endsection
 
 @section('scripts')
-    <script>
-        $(document).ready(function(){
-            $("#phone").keypress(function(e){
-                var keyCode = e.keyCode || e.which;
-                var $this = $(this);
-                //Regex for Valid Characters i.e. Numbers.
-                var regex = new RegExp("^[0-9\b]+$");
-
-                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
-                // for 10 digit number only
-                if ($this.val().length > 9) {
-                    e.preventDefault();
-                    return false;
-                }
-                if (e.charCode < 54 && e.charCode > 47) {
-                    if ($this.val().length == 0) {
-                        e.preventDefault();
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }
-                if (regex.test(str)) {
-                    return true;
-                }
-                e.preventDefault();
-                return false;
-            });
-        });
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            var form = $('#form');
-            $('.kt-form__help').html('');
-            form.submit(function(e) {
-                $('.help-block').html('');
-                $('.m-form__help').html('');
-                $.ajax({
-                    url : form.attr('action'),
-                    type : form.attr('method'),
-                    data : form.serialize(),
-                    dataType: 'json',
-                    async:false,
-                    success : function(json){
-                        return true;
-                    },
-                    error: function(json){
-                        if(json.status === 422) {
-                            e.preventDefault();
-                            var errors_ = json.responseJSON;
-                            $('.kt-form__help').html('');
-                            $.each(errors_.errors, function (key, value) {
-                                $('.'+key).html(value);
-                            });
-                        }
-                    }
-                });
-            });
-        });
-    </script>
 @endsection

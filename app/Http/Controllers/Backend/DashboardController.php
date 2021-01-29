@@ -43,8 +43,10 @@
 
             $subscribers_collections = DB::table('subscribers as s')
                                             ->select('s.id', 's.receipt_no', 's.phone', 's.pincode', 's.status',
-                                                        DB::Raw("CONCAT(".'u.firstname'.", ' ', ".'u.lastname'.") as name")
+                                                        DB::Raw("CONCAT(".'u.firstname'.", ' ', ".'u.lastname'.") as name"),
+                                                        'c.name as city_name'
                                                     )
+                                            ->join('cities as c', 'c.id', 's.city_id')
                                             ->join('users as u', 'u.id', 's.user_id');
 
             if(auth()->user()->role_id != 1)

@@ -94,6 +94,7 @@
                                     <th>Name</th>
                                     <th>Receipt No</th>
                                     <th>Phone</th>
+                                    <th>City</th>
                                     <th>Pincode</th>
                                     <th>Status</th>
                                     <th>Action</th>
@@ -133,7 +134,6 @@
         });
 
         var datatable;
-
 
         $(document).ready(function() {
             if($('#data-table').length > 0){
@@ -187,6 +187,10 @@
                         {
                             data: 'phone',
                             name: 'phone'
+                        },
+                        {
+                            data: 'city_name',
+                            name: 'city_name'
                         },
                         {
                             data: 'pincode',

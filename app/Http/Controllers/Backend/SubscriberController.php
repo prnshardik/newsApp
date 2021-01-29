@@ -6,6 +6,9 @@
     use Illuminate\Http\Request;
     use App\Models\Subscriber;
     use App\Models\User;
+    use App\Models\Districts;
+    use App\Models\Talukas;
+    use App\Models\Cities;
     use App\Http\Requests\SubscriberRequest;
     use DataTables, DB, PDF;
     use Spatie\Permission\Models\Role;
@@ -13,7 +16,6 @@
     use Maatwebsite\Excel\Facades\Excel;
 
     class SubscriberController extends Controller{
-
         public function __construct(){
             $this->middleware('permission:subscriber-create', ['only' => ['create', 'insert']]);
             $this->middleware('permission:subscriber-edit', ['only' => ['edit', 'update']]);
@@ -25,9 +27,11 @@
         	if($request->ajax()){
                 $collections = DB::table('subscribers as s')
                                     ->select('s.id', 's.receipt_no', 's.phone', 's.pincode', 's.status',
-                                                DB::Raw("CONCAT(".'u.firstname'.", ' ', ".'u.lastname'.") as name")
+                                                DB::Raw("CONCAT(".'u.firstname'.", ' ', ".'u.lastname'.") as name"),
+                                                'c.name as city_name'
                                             )
-                                    ->join('users as u', 'u.id', 's.user_id');
+                                    ->join('users as u', 'u.id', 's.user_id')
+                                    ->join('cities as c', 'c.id', 's.city_id');
 
                 if(auth()->user()->role_id != 1)
                     $collections->where(['s.created_by' => auth()->user()->id]);
@@ -96,6 +100,7 @@
         }
 
         public function create(Request $request){
+            $districts = Districts::where(['status' => 'active'])->get();
             $receipt_no = '';
 
             if(auth()->user()->id != 1){
@@ -125,7 +130,7 @@
                 }
             }
 
-            return view('backend.subscriber.create', ['receipt_no' => $receipt_no]);
+            return view('backend.subscriber.create', ['receipt_no' => $receipt_no, 'districts' => $districts]);
         }
 
         public function insert(SubscriberRequest $request){
@@ -154,6 +159,9 @@
                         'receipt_no' => $request->receipt_no,
                         'address' => $request->address,
                         'phone' => $request->phone,
+                        'district_id' => $request->district_id,
+                        'taluka_id' => $request->taluka_id,
+                        'city_id' => $request->city_id,
                         'pincode' => $request->pincode,
                         'magazine' => $request->magazine,
                         'end_date' => date('Y-m-d', strtotime('+1 year')),
@@ -186,17 +194,25 @@
         }
 
         public function edit(Request $request){
-        	$id = base64_decode($request->id);
+            $id = base64_decode($request->id);
+            $districts = Districts::where(['status' => 'active'])->get();
+            $talukas = [];
+            $cities = [];
 
             $data = DB::table('subscribers as s')
                             ->select('s.id', 's.receipt_no', 's.description', 's.address', 's.phone', 's.pincode', 's.status',
-                                        'u.firstname', 'u.lastname', 'u.email', 's.magazine'
+                                        'u.firstname', 'u.lastname', 'u.email', 's.magazine', 's.district_id', 's.taluka_id', 's.city_id',
                                     )
                             ->join('users as u', 'u.id', 's.user_id')
                             ->where(['s.id' => $id])
                             ->first();
 
-            return view('backend.subscriber.edit')->with(['data' => $data]);
+            if($data){
+                $talukas = Talukas::where(['status' => 'active', 'district_id' => $data->district_id])->get()->toArray();
+                $cities = Cities::where(['status' => 'active', 'taluka_id' => $data->taluka_id])->get()->toArray();
+            }
+
+            return view('backend.subscriber.edit')->with(['data' => $data, 'districts' => $districts, 'talukas' => $talukas, 'cities' => $cities]);
         }
 
         public function update(SubscriberRequest $request){
@@ -222,6 +238,9 @@
                         'receipt_no' => $request->receipt_no,
                         'address' => $request->address,
                         'phone' => $request->phone,
+                        'district_id' => $request->district_id,
+                        'taluka_id' => $request->taluka_id,
+                        'city_id' => $request->city_id,
                         'pincode' => $request->pincode,
                         'magazine' => $request->magazine,
                         'updated_at' => date('Y-m-d H:i:s'),
@@ -248,17 +267,25 @@
         }
 
         public function view(Request $request){
-        	$id = base64_decode($request->id);
+            $id = base64_decode($request->id);
+            $districts = Districts::where(['status' => 'active'])->get();
+            $talukas = [];
+            $cities = [];
 
             $data = DB::table('subscribers as s')
                             ->select('s.id', 's.receipt_no', 's.description', 's.address', 's.phone', 's.pincode', 's.status',
-                                        'u.firstname', 'u.lastname', 'u.email', 's.magazine'
+                                        'u.firstname', 'u.lastname', 'u.email', 's.magazine', 's.district_id', 's.taluka_id', 's.city_id',
                                     )
                             ->join('users as u', 'u.id', 's.user_id')
                             ->where(['s.id' => $id])
                             ->first();
 
-            return view('backend.subscriber.view')->with(['data' => $data]);
+            if($data){
+                $talukas = Talukas::where(['status' => 'active', 'district_id' => $data->district_id])->get()->toArray();
+                $cities = Cities::where(['status' => 'active', 'taluka_id' => $data->taluka_id])->get()->toArray();
+            }
+
+            return view('backend.subscriber.view')->with(['data' => $data, 'districts' => $districts, 'talukas' => $talukas, 'cities' => $cities]);
         }
 
         public function change_status(Request $request){
@@ -343,7 +370,6 @@
 
             return view('backend.subscriber.filter', ['data' => $data, 'reporters' => $reporters, 'pincode' => $pincode, 'reporter' => $reporter, 'date' => $date ,'magazine' => $magazine]);
         }
-
 
         public function excel(Request $request) {
             $pincode = $request->pincode ?? null;

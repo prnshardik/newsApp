@@ -74,11 +74,6 @@
                                     <span class="kt-form__help error address"></span>
                                 </div>
                                 <div class="form-group col-sm-6">
-                                    <label for="pincode">Pincode</label>
-                                    <input type="text" name="pincode" id="pincode" class="form-control" placeholder="Plese enter pincode" value="{{ $data->pincode ?? '' }}">
-                                    <span class="kt-form__help error pincode"></span>
-                                </div>
-                                <div class="form-group col-sm-6">
                                     <label for="magazine">Magazine</label>
                                     <select name="magazine" id="magazine" class="form-control">
                                         <option value="" hidden>Select Magazine</option>
@@ -86,6 +81,47 @@
                                         <option value="arogya_sudha" @if(isset($data) && $data->magazine == 'arogya_sudha') selected @endif >Arogya Sudha</option>
                                     </select>
                                     <span class="kt-form__help error magazine"></span>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="district_id">District</label>
+                                    <select name="district_id" id="district_id" class="form-control">
+                                        <option value="" hidden>Select District</option>
+                                        @if(isset($districts) && $districts->isNotEmpty())
+                                            @foreach($districts AS $row)
+                                                <option value="{{ $row->id }}"  @if(isset($data) && $data->district_id == $row->id) selected @endif >{{ $row->name }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <span class="kt-form__help error district_id"></span>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="taluka_id">Taluka</label>
+                                    <select name="taluka_id" id="taluka_id" class="form-control">
+                                        <option value="" hidden>Select Taluka</option>
+                                        @if(isset($talukas) && !empty($talukas))
+                                            @foreach($talukas as $row)
+                                                <option value="{{ $row['id'] }}" @if(isset($data) && $data->taluka_id == $row['id']) selected @endif>{{ $row['name'] }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <span class="kt-form__help error taluka_id"></span>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="city_id">City</label>
+                                    <select name="city_id" id="city_id" class="form-control">
+                                        <option value="" hidden>Select City</option>
+                                        @if(isset($cities) && !empty($cities))
+                                            @foreach($cities as $row)
+                                                <option value="{{ $row['id'] }}" @if(isset($data) && $data->city_id == $row['id']) selected @endif>{{ $row['name'] }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <span class="kt-form__help error city_id"></span>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="pincode">Pincode</label>
+                                    <input type="text" name="pincode" id="pincode" class="form-control" placeholder="Plese enter pincode" value="{{ $data->pincode ?? '' }}">
+                                    <span class="kt-form__help error pincode"></span>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -128,6 +164,90 @@
                 }
                 e.preventDefault();
                 return false;
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $('#district_id').select2({
+                multiple: false,
+            });
+
+            $('#taluka_id').select2({
+                multiple: false,
+            });
+
+            $('#city_id').select2({
+                multiple: false,
+            });
+
+            $('#district_id').change(function(){
+                var district_id = $(this).val();
+
+                if(district_id.length > 0){
+                    $.ajax({
+                        url : "{{ route('admin.city.get.talukas') }}",
+                        type : "post",
+                        data : {
+                            _token: "{{ csrf_token() }}",
+                            district_id: district_id
+                        },
+                        success : function(response){
+                            $('#taluka_id').html('');
+                            $('#city_id').html('');
+
+                            if(response.code == 200){
+                                $('#taluka_id').html(response.data);
+                                $('#city_id').html('<option value="">select City</option>');
+                            }else{
+                                $('#taluka_id').html('<option value="">select Taluka</option>');
+                                $('#city_id').html('<option value="">select City</option>');
+                            }
+                        },
+                        error: function(json){
+                            $('#taluka_id').html('');
+                            $('#city_id').html('');
+                            $('#taluka_id').html('<option value="">select Taluka</option>');
+                            $('#city_id').html('<option value="">select City</option>');
+                        }
+                    });
+                }else{
+                    $('#taluka_id').html('');
+                    $('#city_id').html('');
+                    $('#taluka_id').html('<option value="">select Taluka</option>');
+                    $('#city_id').html('<option value="">select City</option>');
+                }
+            });
+
+            $('#taluka_id').change(function(){
+                var taluka_id = $(this).val();
+
+                if(taluka_id.length > 0){
+                    $.ajax({
+                        url : "{{ route('admin.city.get.cities') }}",
+                        type : "post",
+                        data : {
+                            _token: "{{ csrf_token() }}",
+                            taluka_id: taluka_id
+                        },
+                        success : function(response){
+                            $('#city_id').html('');
+
+                            if(response.code == 200){
+                                $('#city_id').html(response.data);
+                            }else{
+                                $('#city_id').html('<option value="">select City</option>');
+                            }
+                        },
+                        error: function(json){
+                            $('#city_id').html('');
+                            $('#city_id').html('<option value="">select City</option>');
+                        }
+                    });
+                }else{
+                    $('#city_id').html('<option>Select City</option>');
+                }
             });
         });
     </script>

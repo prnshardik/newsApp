@@ -17,7 +17,6 @@
     use Auth, Hash, Validator, File, DB, Mail;
 
     class ReporterController extends Controller{
-
         public function __construct(){
             $this->middleware('permission:reporter-create', ['only' => ['create', 'insert']]);
             $this->middleware('permission:reporter-edit', ['only' => ['edit', 'update']]);

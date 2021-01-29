@@ -111,6 +111,7 @@
                                     <th>Name</th>
                                     <th>Receipt No</th>
                                     <th>Phone</th>
+                                    <th>City</th>
                                     <th>Pincode</th>
                                 </tr>
                             </thead>
@@ -123,6 +124,7 @@
                                             <td>{{ $row->name ?? '' }}</td>
                                             <td>{{ $row->receipt_no ?? '' }}</td>
                                             <td>{{ $row->phone ?? '' }}</td>
+                                            <td>{{ $row->city_name ?? '' }}</td>
                                             <td>{{ $row->pincode ?? '' }}</td>
                                             @php $i++; @endphp
                                         </tr>
