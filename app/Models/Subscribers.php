@@ -11,7 +11,7 @@
 
         protected $table = 'subscribers';
         protected $pincode;
-        protected $city;
+        protected $city_id;
         protected $reporter;
         protected $date;
 
@@ -19,6 +19,7 @@
 
         public function getData($filter){
             $pincode = $filter['pincode'];
+            $city_id = $filter['city_id'];
             $reporter = $filter['reporter'];
             $date = $filter['date'];
             $magazine = $filter['magazine'];
@@ -26,15 +27,17 @@
             $collection = DB::table('users as u')
                             ->select('u.firstname', 'u.lastname', 'u.email',
                                         's.address', 's.phone', 's.pincode',
-                                        'c.name as country_name', 'st.name as state_name', 'ct.name as city_name',
+                                        'd.name as district_name', 't.name as taluka_name', 'c.name as city_name'
                                     )
                             ->join('subscribers as s', 'u.id', 's.user_id')
-                            ->join('country as c', 'c.id', 's.country')
-                            ->join('state as st', 'st.id', 's.state')
-                            ->join('city as ct', 'ct.id', 's.city');
+                            ->join('districts as d', 'd.id', 's.district_id')
+                            ->join('talukas as t', 't.id', 's.taluka_id')
+                            ->join('cities as c', 'c.id', 's.city_id');
 
             if($pincode != '' && $pincode != null)
                 $collection->where(['s.pincode' => $pincode]);
+            elseif($city_id != '' && $city_id != null)
+                $collection->where(['s.city_id' => $city_id]);
             elseif($reporter != '' && $reporter != null)
                 $collection->where(['s.created_by' => $reporter]);
             elseif($date != '' && $date != null)

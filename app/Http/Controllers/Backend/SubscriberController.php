@@ -92,11 +92,12 @@
                         ->make(true);
             }
 
+            $cities = Cities::select(['id', 'name'])->get();
             $reporters = DB::table('reporter as r')->select(['u.id', 'u.firstname', 'u.lastname'])
                                 ->leftjoin('users as u', 'u.id', 'r.user_id')
                                 ->get();
 
-            return view('backend.subscriber.index', ['reporters' => $reporters]);
+            return view('backend.subscriber.index', ['reporters' => $reporters, 'cities' => $cities]);
         }
 
         public function create(Request $request){
@@ -338,12 +339,13 @@
         }
 
         public function filter(Request $request){
-            if(auth()->user()->role_id != 1){
-                return redirect()->back()->with(['error' => 'you don\'t have permission.']);
-            }
+            if(auth()->user()->role_id != 1){ return redirect()->back()->with(['error' => 'you don\'t have permission.']);}
+
+            $cities = Cities::select(['id', 'name'])->get();
 
             $pincode = $request->pincode ?? NULL;
             $reporter = $request->reporter ?? NULL;
+            $city_id = $request->city_id ?? NULL;
             $date = $request->date ?? NULL;
             $magazine = $request->magazine ?? NULL;
 
@@ -353,12 +355,18 @@
 
             $collection = DB::table('users as u')
                             ->select('u.firstname', 'u.lastname', 'u.email',
-                                        's.address', 's.phone', 's.pincode'
+                                        's.address', 's.phone', 's.pincode',
+                                        'd.name as district_name', 't.name as taluka_name', 'c.name as city_name',
                                     )
-                            ->join('subscribers as s', 'u.id', 's.user_id');
+                                ->join('subscribers as s', 'u.id', 's.user_id')
+                                ->join('districts as d', 'd.id', 's.district_id')
+                                ->join('talukas as t', 't.id', 's.taluka_id')
+                                ->join('cities as c', 'c.id', 's.city_id');
 
             if($pincode)
                 $collection->where(['s.pincode' => $pincode]);
+            elseif($city_id)
+                $collection->where(['s.city_id' => $city_id]);
             elseif($reporter)
                 $collection->where(['s.created_by' => $reporter]);
             elseif($date)
@@ -368,17 +376,19 @@
 
             $data = $collection->orderBy('u.firstname')->get();
 
-            return view('backend.subscriber.filter', ['data' => $data, 'reporters' => $reporters, 'pincode' => $pincode, 'reporter' => $reporter, 'date' => $date ,'magazine' => $magazine]);
+            return view('backend.subscriber.filter', ['data' => $data, 'cities' => $cities, 'reporters' => $reporters, 'pincode' => $pincode, 'city_id' => $city_id, 'reporter' => $reporter, 'date' => $date ,'magazine' => $magazine]);
         }
 
         public function excel(Request $request) {
             $pincode = $request->pincode ?? null;
+            $city_id = $request->city_id ?? null;
             $reporter = $request->reporter ?? null;
             $date = $request->date ?? null;
             $magazine = $request->magazine ?? null;
 
             $filter = [
                         'pincode' => $pincode,
+                        'city_id' => $city_id,
                         'reporter' => $reporter,
                         'date' => $date,
                         'magazine' => $magazine

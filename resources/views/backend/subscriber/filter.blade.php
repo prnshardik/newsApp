@@ -105,6 +105,17 @@
                                                     <input type="text" name="pincode" id="pincode" class="form-control" placeholder="Plese enter pincode" value="{{ $pincode ?? NULL }}">
                                                 </div>
                                                 <div class="form-group col-sm-2">
+                                                    <label for="city_id">City</label>
+                                                    <select name="city_id" id="city_id" class="form-control">
+                                                        <option value="">Select City</option>
+                                                        @if(isset($cities) && $cities->isNotEmpty())
+                                                            @foreach($cities as $row)
+                                                                <option value="{{ $row->id }}" @if($city_id != null && $city_id == $row->id) selected @endif>{{ $row->name }}</option>
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-sm-2">
                                                     <label for="reporter">Reporter</label>
                                                     <select name="reporter" id="reporter" class="form-control">
                                                         <option value="">Select Reporter</option>
@@ -119,7 +130,6 @@
                                                     <label for="date">Date</label>
                                                     <input type="text" name="date" id="date" class="form-control" placeholder="Plese enter date" autocomplete="off" value="{{ $date ?? NULL }}">
                                                 </div>
-
                                                 <div class="form-group col-sm-2">
                                                     <label for="date">Magazine</label>
                                                     <select name="magazine" class="form-control">
@@ -147,10 +157,11 @@
                                             <ul class="media-list media-list-divider m-0">
                                                 <li class="media">
                                                     <div class="media-body">
-                                                        <div class="font-13 font-weight-bold">To,</div>
+                                                        <div class="font-13 font-weight-bold">To, {{ $row->city_name ?? '' }}</div>
                                                         <div class="font-13 font-weight-bold">{{ $row->firstname ?? '' }} {{ $row->lastname ?? '' }}</div>
                                                         <div class="font-13 font-weight-bold">{{ $row->address ?? '' }}</div>
-                                                        <div class="font-13 font-weight-bold"> - {{ $row->pincode ?? '' }}</div>
+                                                        <div class="font-13 font-weight-bold">{{ $row->city_name ?? '' }} - {{ $row->pincode ?? '' }}</div>
+                                                        <div class="font-13 font-weight-bold">{{ $row->taluka_name ?? '' }} - {{ $row->district_name ?? '' }}</div>
                                                     </div>
                                                 </li>
                                             </ul>
