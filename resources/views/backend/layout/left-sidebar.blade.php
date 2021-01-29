@@ -38,6 +38,24 @@
                 </li>
             @endcanany
 
+            @canany(['city-create', 'city-edit', 'city-view', 'city-delete'])
+                <li class="{{ (Request::is('city*')) ? 'active' : '' }}">
+                    <a href="javascript:;"><i class="sidebar-item-icon fa fa-globe"></i>
+                        <span class="nav-label">Region</span><i class="fa fa-angle-left arrow"></i>
+                    </a>
+                    <ul class="nav-2-level collapse">
+                        @canany(['city-create', 'city-edit', 'city-view', 'city-delete'])
+                            <li>
+                                <a class="{{ Request::is('city*') ? 'active' : '' }}" href="{{ route('admin.city') }}">
+                                    <i class="sidebar-item-icon fa fa-globe"></i>
+                                    <span class="nav-label">Cities</span>
+                                </a>
+                            </li>
+                        @endcanany
+                    </ul>
+                </li>
+            @endcanany
+
             @canany(['reporter-create', 'reporter-edit', 'reporter-view', 'reporter-delete'])
                 <li class="{{ Request::is('reporter*') ? 'active' : '' }}">
                     <a class="" href="{{ route('admin.reporter') }}">

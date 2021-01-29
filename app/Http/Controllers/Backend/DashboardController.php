@@ -4,7 +4,6 @@
 
     use App\Http\Controllers\Controller;
     use Illuminate\Http\Request;
-    use Spatie\Permission\Models\Role;
     use App\Http\Requests\ProfileRequest;
     use App\Models\User;
     use DB, Auth, Hash;

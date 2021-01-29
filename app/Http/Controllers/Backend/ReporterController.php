@@ -5,9 +5,6 @@
     use App\Http\Controllers\Controller;
     use Illuminate\Http\Request;
     use App\Models\Reporter;
-    use App\Models\Country;
-    use App\Models\State;
-    use App\Models\City;
     use App\Models\User;
     use App\Http\Requests\ReporterRequest;
     use DataTables;

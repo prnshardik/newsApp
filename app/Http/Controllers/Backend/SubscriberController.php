@@ -6,9 +6,8 @@
     use Illuminate\Http\Request;
     use App\Models\Subscriber;
     use App\Models\User;
-    use App\Models\Country;
     use App\Http\Requests\SubscriberRequest;
-    use DataTables, DB ,PDF;
+    use DataTables, DB, PDF;
     use Spatie\Permission\Models\Role;
     use App\Exports\SubscriberExport;
     use Maatwebsite\Excel\Facades\Excel;

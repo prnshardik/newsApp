@@ -63,6 +63,15 @@
                 /** access control */
 
                 /** region */
+                    /** City */
+                        Route::any('city', 'CitiesController@index')->name('admin.city');
+                        Route::get('city/create', 'CitiesController@create')->name('admin.city.create');
+                        Route::post('city/insert', 'CitiesController@insert')->name('admin.city.insert');
+                        Route::get('city/edit', 'CitiesController@edit')->name('admin.city.edit');
+                        Route::patch('city/update/{id?}', 'CitiesController@update')->name('admin.city.update');
+                        Route::get('city/view', 'CitiesController@view')->name('admin.city.view');
+                        Route::post('city/change_status', 'CitiesController@change_status')->name('admin.city.change.status');
+                    /** City */
                 /** region */
 
                 /** Reporter */
