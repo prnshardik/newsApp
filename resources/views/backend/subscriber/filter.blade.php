@@ -84,10 +84,10 @@
                                 @endphp
                                 @if(isset($data) && $data->isNotEmpty())
                                     <a href="{{ route('admin.subscriber.excel', $filter) }}" class="btn btn-primary pull-right text-white" style="margin-top: 15px !important ;margin-bottom: 5px">Export To Excel</a>
-                                    <a href="{{ route('admin.subscriber.doc', $filter) }}" class="btn btn-primary pull-right text-white" style="margin-top: 15px !important ;margin-bottom: 5px">Export To Doc</a>
+                                    {{-- <a href="{{ route('admin.subscriber.doc', $filter) }}" class="btn btn-primary pull-right text-white" style="margin-top: 15px !important ;margin-bottom: 5px">Export To Doc</a> --}}
                                 @else
                                     <a href="javascript:void(0);" class="btn btn-primary pull-right text-white disabled" style="margin-top: 15px !important ;margin-bottom: 5px" disabled>Export To Excel</a>
-                                    <a href="javascript:void(0);" class="btn btn-primary pull-right text-white disabled" style="margin-top: 15px !important ;margin-bottom: 5px" disabled>Export To Doc</a>
+                                    {{-- <a href="javascript:void(0);" class="btn btn-primary pull-right text-white disabled" style="margin-top: 15px !important ;margin-bottom: 5px" disabled>Export To Doc</a> --}}
                                 @endif
                             @endif
                         </h1>

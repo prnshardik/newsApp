@@ -24,7 +24,7 @@
                 $i = 0;
                 $j = 1;
                 foreach($collections as $row){
-                    if($i == 0 || $i % 4 == 0){
+                    if($i == 0 || $i % 3 == 0){
                         $j++;
                         $data[$j][] = $row;
                     }else{
