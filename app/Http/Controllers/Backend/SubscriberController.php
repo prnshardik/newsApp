@@ -433,9 +433,8 @@
 
             $phpWord = new \PhpOffice\PhpWord\PhpWord();
             $section = $phpWord->addSection();
-            $section->setBreakType('nextColumn');
 
-            $sectionStyle = array('colsNum' => 3, 'colsSpace' => 0, 'gutter' => 1);
+            $sectionStyle = array('breakType' => 'nextColumn','colsNum' => 3, 'colsSpace' => 0);
             $section = $phpWord->addSection($sectionStyle);
 
             $tableStyle = array('afterSpacing' => 0, 'Spacing' => 0, 'cellMargin' => 0);
