@@ -12,15 +12,15 @@
         public function rules(){
             if($this->method() == 'PATCH'){
                 return [
-                    'name' => 'required|unique:cities,name,'.$this->id,
-                    'pincode' => 'required|unique:cities,pincode,'.$this->id,
+                    'name' => 'required',
+                    'pincode' => 'required',
                     'district_id' => 'required',
                     'taluka_id' => 'required'
                 ];
             }else{
                 return [
-                    'name' => 'required|unique:cities,name',
-                    'pincode' => 'required|unique:cities,pincode',
+                    'name' => 'required',
+                    'pincode' => 'required',
                     'district_id' => 'required',
                     'taluka_id' => 'required',
                 ];
@@ -30,11 +30,9 @@
         public function messages(){
             return [
                 'name.required' => 'Please enter name',
-                'name.unique' => 'Please enter unique name',
                 'pincode.required' => 'Please enter pincode',
-                'pincode.unique' => 'Please enter unique pincode',
                 'district_id.required' => 'Please select district',
-                'taluka_id.unique' => 'Please select taluka',
+                'taluka_id.required' => 'Please select taluka',
             ];
         }
     }
