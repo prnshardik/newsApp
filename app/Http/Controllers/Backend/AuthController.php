@@ -47,7 +47,11 @@
 
                     $reporter = DB::table('reporter As r')->select('u.email')->leftJoin('users AS u' ,'r.user_id' ,'u.id')->where(['r.unique_id' => $request->email])->first();
 
-                    $auth = auth()->attempt(['email' => $reporter->email, 'password' => $request->password]);
+                    if($reporter){
+                        $auth = auth()->attempt(['email' => $reporter->email, 'password' => $request->password]);
+                    }else{
+                        $auth = false;
+                    }
                     
                     if($auth != false){
                     $user = User::where(['email' => $reporter->email])->orderBy('id', 'desc')->first();
