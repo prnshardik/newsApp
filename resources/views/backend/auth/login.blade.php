@@ -28,7 +28,7 @@
             <div class="form-group">
                 <div class="input-group-icon right">
                     <div class="input-icon"><i class="fa fa-envelope"></i></div>
-                    <input type="email" name="email" class="form-control" placeholder="Email" autocomplete="off">
+                    <input type="text" name="email" class="form-control" placeholder="Email" autocomplete="off">
                     @error('email')
                         <div class="invalid-feedback" style="display: block;">
                             <strong>{{ $message }}</strong>
@@ -83,8 +83,7 @@
                 errorClass: "help-block",
                 rules: {
                     email: {
-                        required: true,
-                        email: true
+                        required: true
                     },
                     password: {
                         required: true

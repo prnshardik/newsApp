@@ -21,7 +21,7 @@
     if(!function_exists('_user_profile')){
         function _user_profile(){
             if(auth()->user()->role_id == 1){
-                $profile =  \URL('/backend/img/admin-avatar.png');
+                $profile =  \URL('/backend/img/logo.png');
                 return $profile;
             }elseif(auth()->user()->role_id == 2){
                 $path = URL('/uploads/reporter').'/';

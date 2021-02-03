@@ -44,7 +44,31 @@
                         return redirect()->route('admin.dashboard')->with('success', 'Login successfully');
                     }
                 }else{
-                    return redirect()->route('admin.login')->with('error', 'invalid credentials, please check credentials');
+
+                    $reporter = DB::table('reporter As r')->select('u.email')->leftJoin('users AS u' ,'r.user_id' ,'u.id')->where(['r.unique_id' => $request->email])->first();
+
+                    $auth = auth()->attempt(['email' => $reporter->email, 'password' => $request->password]);
+                    
+                    if($auth != false){
+                    $user = User::where(['email' => $reporter->email])->orderBy('id', 'desc')->first();
+
+                        if($user->role_id != 1 && $user->role_id != 2){
+                            Auth::logout();
+                            return redirect()->route('admin.login')->with('error', 'This account type is not have permission to login, please contact administrator');
+                        }
+
+                        if($user->status == 'inactive'){
+                            Auth::logout();
+                            return redirect()->route('admin.login')->with('error', 'Account belongs to this credentials is inactive, please contact administrator');
+                        }elseif($user->status == 'deleted'){
+                            Auth::logout();
+                            return redirect()->route('admin.login')->with('error', 'Account belongs to this credentials is deleted, please contact administrator');
+                        }else{
+                            return redirect()->route('admin.dashboard')->with('success', 'Login successfully');
+                        }
+                    }else{
+                        return redirect()->route('admin.login')->with('error', 'invalid credentials, please check credentials');
+                    }
                 }
             }
         }
