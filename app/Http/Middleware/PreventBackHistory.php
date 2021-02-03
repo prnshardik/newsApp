@@ -15,7 +15,6 @@
                         ->header('Pragma','no-cache')
                         ->header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, X-Requested-With, Application');
             }
-
             return $handle;
         }
     }
