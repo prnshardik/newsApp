@@ -27,9 +27,10 @@
         public function index(Request $request){
         	if($request->ajax()){
                 $collections = DB::table('subscribers as s')
-                                    ->select('s.end_date','s.id', 's.receipt_no', 's.phone', 's.pincode', 's.status',
+                                    ->select('s.id', 's.receipt_no', 's.phone', 's.pincode', 's.status',
                                                 DB::Raw("CONCAT(".'u.firstname'.", ' ', ".'u.lastname'.") as name"),
-                                                'c.name as city_name'
+                                                'c.name as city_name',
+                                                DB::Raw("DATE_FORMAT(".'s.end_date'.",'%d-%m-%Y') AS end_date")
                                             )
                                     ->join('users as u', 'u.id', 's.user_id')
                                     ->join('cities as c', 'c.id', 's.city_id');
@@ -155,7 +156,7 @@
             DB::beginTransaction();
             try {
                 $user = User::create($crud);
-                
+
                 if($user){
                     $subscriber_crud = [
                         'user_id' => $user->id,
