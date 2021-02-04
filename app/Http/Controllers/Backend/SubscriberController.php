@@ -27,7 +27,7 @@
         public function index(Request $request){
         	if($request->ajax()){
                 $collections = DB::table('subscribers as s')
-                                    ->select('s.id', 's.receipt_no', 's.phone', 's.pincode', 's.status',
+                                    ->select('s.end_date','s.id', 's.receipt_no', 's.phone', 's.pincode', 's.status',
                                                 DB::Raw("CONCAT(".'u.firstname'.", ' ', ".'u.lastname'.") as name"),
                                                 'c.name as city_name'
                                             )
@@ -69,6 +69,7 @@
                                                 <li><a class="dropdown-item" href="javascript:;" onclick="change_status(this);" data-status="deleted" data-old_status="'.$data->status.'" data-id="'.base64_encode($data->id).'">Delete</a></li>
                                             </ul>';
                             }
+
 
                             $return .= '</div>';
 
@@ -154,7 +155,7 @@
             DB::beginTransaction();
             try {
                 $user = User::create($crud);
-
+                
                 if($user){
                     $subscriber_crud = [
                         'user_id' => $user->id,

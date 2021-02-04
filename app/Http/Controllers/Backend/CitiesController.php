@@ -89,7 +89,7 @@
 
             $crud = [
                 'name' => ucfirst($request->name),
-                'pincode' => $request->pincode,
+                'pincode' => $request->pincode ?? null,
                 'district_id' => $request->district_id,
                 'taluka_id' => $request->taluka_id,
                 'status' => 'active',
@@ -127,7 +127,7 @@
 
             $crud = [
                 'name' => ucfirst($request->name),
-                'pincode' => $request->pincode,
+                'pincode' => $request->pincode ?? null,
                 'district_id' => $request->district_id,
                 'taluka_id' => $request->taluka_id,
                 'updated_at' => date('Y-m-d H:i:s'),

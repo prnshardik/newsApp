@@ -102,6 +102,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Name</th>
+                                    <th>Expire Date</th>
                                     <th>Receipt No</th>
                                     <th>Phone</th>
                                     <th>City</th>
@@ -189,6 +190,10 @@
                         {
                             data: 'name',
                             name: 'name'
+                        },
+                        {
+                            data: 'end_date',
+                            name: 'end_date'
                         },
                         {
                             data: 'receipt_no',

@@ -6,6 +6,7 @@
     use Illuminate\Http\Request;
     use App\Http\Requests\ProfileRequest;
     use App\Models\User;
+    use App\Models\Reporter;
     use DB, Auth, Hash;
 
     class DashboardController extends Controller{
@@ -67,13 +68,23 @@
         }
 
         public function profile_edit(Request $request){
-            $data = DB::table('users as u')->select('u.id', 'u.firstname', 'u.lastname', 'u.email')->where(['u.id' => auth()->user()->id])->first();
+            $path = URL('/uploads/reporter').'/';
+            $data = DB::table('users as u')
+                                    ->select('u.id', 'u.firstname', 'u.lastname', 'u.email',
+                                        DB::Raw("CASE
+                                                    WHEN ".'r.profile'." != '' THEN CONCAT("."'".$path."'".", ".'r.profile'.")
+                                                    ELSE CONCAT("."'".$path."'".", 'default.png')
+                                                END as profile")
+                                        )
+                                    ->leftJoin('reporter AS r' , 'u.id' , 'r.user_id')
+                                    ->where(['u.id' => auth()->user()->id])
+                                    ->first();
             return view('backend.profile.edit')->with(['data' => $data]);
         }
 
         public function profile_update(ProfileRequest $request){
             if($request->ajax()){ return true ;}
-
+            // dd($request->all());
             $crud = [
                 'firstname' => ucfirst($request->firstname),
                 'lastname' => ucfirst($request->lastname)
@@ -81,10 +92,33 @@
 
             $update = User::where(['id' => $request->id])->update($crud);
 
-            if($update)
+            if($update){
+                if(!empty($request->file('profile'))){
+                    $file = $request->file('profile');
+                    $filenameWithExtension = $request->file('profile')->getClientOriginalName();
+                    $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
+                    $extension = $request->file('profile')->getClientOriginalExtension();
+                    $filenameToStore = time()."_".$filename.'.'.$extension;
+
+                    $folder_to_upload = public_path().'/uploads/reporter/';
+
+                    if (!\File::exists($folder_to_upload)) {
+                        \File::makeDirectory($folder_to_upload, 0777, true, true);
+                    }
+
+                    $reporter_crud["profile"] = $filenameToStore;
+
+                    $reporter_update = Reporter::where(['user_id' => $request->id])->update($reporter_crud);
+
+                    if(!empty($request->file('profile')) && $reporter_update){
+                        $file->move($folder_to_upload, $filenameToStore);
+                    }
+                }
+
                 return redirect()->route('admin.profile')->with('success', 'Profile updated successfully.');
-            else
+            }else{
                 return redirect()->back()->with('error', 'Failed to updated record.')->withInput();
+            }
         }
 
         public function change_password(){

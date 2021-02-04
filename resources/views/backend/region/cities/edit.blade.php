@@ -50,7 +50,7 @@
                                     <span class="kt-form__help error district_id"></span>
                                 </div>
                                 <div class="form-group col-sm-6">
-                                    <label for="taluka_id">District</label>
+                                    <label for="taluka_id">Taluka</label>
                                     <select name="taluka_id" id="taluka_id" class="form-control">
                                         <option value="" hidden>Select Taluka</option>
                                         @if(isset($talukas) && !empty($talukas))
@@ -66,11 +66,11 @@
                                     <input type="text" name="name" id="name" class="form-control" value="{{ $data->name ?? '' }}" placeholder="Plese enter name" value="{{ @old('name') }}">
                                     <span class="kt-form__help error name"></span>
                                 </div>
-                                <div class="form-group col-sm-6">
+                                <!-- <div class="form-group col-sm-6">
                                     <label for="pincode">Pincode</label>
                                     <input type="text" name="pincode" id="pincode" class="form-control" value="{{ $data->pincode ?? '' }}" placeholder="Plese enter pincode" value="{{ @old('pincode') }}">
                                     <span class="kt-form__help error pincode"></span>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary">Submit</button>
