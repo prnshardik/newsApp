@@ -5,7 +5,7 @@
                 <img src="{{ _user_profile() }}" alt="{{ _site_name() }}" class="img-circle" height="45px" width="45px" />
             </div>
             <div class="admin-info">
-                <div class="font-strong">{{ auth()->user()->firstname.' '.auth()->user()->lastname }}</div><small>{{ _get_role_name() }}</small>
+                <div class="font-strong">{{ auth()->user()->firstname.' '.auth()->user()->lastname }}</div><small>{{ _get_role_name() }}  @if(auth()->user()->role_id == 2) - {{ _reporter_unique_id() }} @endif </small>
             </div>
         </div>
         <ul class="side-menu metismenu">

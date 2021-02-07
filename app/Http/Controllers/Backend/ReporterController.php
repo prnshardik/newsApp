@@ -32,8 +32,8 @@
                                 DB::Raw("CONCAT(".'r.receipt_book_start_no'.", ' - ', ".'r.receipt_book_end_no'.") as receipt_book_no"),
                                 'c.name as city_name'
                             )
-                            ->join('users as u', 'r.user_id' , 'u.id')
-                            ->join('cities as c', 'c.id' , 'r.city_id')
+                            ->leftjoin('users as u', 'r.user_id' , 'u.id')
+                            ->leftjoin('cities as c', 'c.id' , 'r.city_id')
                             ->orderBy('id', 'desc')
                             ->get();
 
@@ -91,7 +91,9 @@
 
         public function create(Request $request){
             $districts = Districts::where(['status' => 'active'])->get();
-            return view('backend.reporter.create', ['districts' => $districts]);
+            $talukas = Talukas::where(['status' => 'active'])->get();
+            $cities = Cities::where(['status' => 'active'])->get();
+            return view('backend.reporter.create', ['districts' => $districts, 'talukas' => $talukas, 'cities' => $cities]);
         }
 
         public function insert(ReporterRequest $request){
@@ -127,9 +129,9 @@
                         'phone_no' => $request->phone_no,
                         'receipt_book_start_no' => $request->receipt_book_start_no,
                         'receipt_book_end_no' => $request->receipt_book_end_no,
-                        'district_id' => $request->district_id,
-                        'taluka_id' => $request->taluka_id,
-                        'city_id' => $request->city_id,
+                        'district_id' => $request->district_id ?? NULL,
+                        'taluka_id' => $request->taluka_id ?? NULL,
+                        'city_id' => $request->city_id ?? NULL,
                         'status' => 'active',
                         'created_at' => date('Y-m-d H:i:s'),
                         'created_by' => auth()->user()->id,
@@ -187,8 +189,9 @@
         public function edit(Request $request){
             $id = base64_decode($request->id);
             $districts = Districts::where(['status' => 'active'])->get();
-            $talukas = [];
-            $cities = [];
+            $talukas = Talukas::where(['status' => 'active'])->get();
+            $cities = Cities::where(['status' => 'active'])->get();
+
             $path = URL('/uploads/reporter').'/';
 
             $data = DB::table('reporter as r')
@@ -202,11 +205,6 @@
                             ->join('users as u', 'u.id', 'r.user_id')
                             ->where(['r.id' => $id])
                             ->first();
-
-            if($data){
-                $talukas = Talukas::where(['status' => 'active', 'district_id' => $data->district_id])->get()->toArray();
-                $cities = Cities::where(['status' => 'active', 'taluka_id' => $data->taluka_id])->get()->toArray();
-            }
 
             return view('backend.reporter.edit')->with(['data' => $data, 'districts' => $districts, 'talukas' => $talukas, 'cities' => $cities]);
         }
@@ -236,9 +234,9 @@
                         'phone_no' => $request->phone_no,
                         'receipt_book_start_no' => $request->receipt_book_start_no,
                         'receipt_book_end_no' => $request->receipt_book_end_no,
-                        'district_id' => $request->district_id,
-                        'taluka_id' => $request->taluka_id,
-                        'city_id' => $request->city_id,
+                        'district_id' => $request->district_id ?? NULL,
+                        'taluka_id' => $request->taluka_id ?? NULL,
+                        'city_id' => $request->city_id ?? NULL,
                         'status' => 'active',
                         'updated_at' => date('Y-m-d H:i:s'),
                         'updated_by' => auth()->user()->id
@@ -288,8 +286,8 @@
         public function view(Request $request){
             $id = base64_decode($request->id);
             $districts = Districts::where(['status' => 'active'])->get();
-            $talukas = [];
-            $cities = [];
+            $talukas = Talukas::where(['status' => 'active'])->get();
+            $cities = Cities::where(['status' => 'active'])->get();
             $path = URL('/uploads/reporter').'/';
 
             $data = DB::table('reporter as r')
@@ -303,11 +301,6 @@
                             ->join('users as u', 'u.id', 'r.user_id')
                             ->where(['r.id' => $id])
                             ->first();
-
-            if($data){
-                $talukas = Talukas::where(['status' => 'active', 'district_id' => $data->district_id])->get()->toArray();
-                $cities = Cities::where(['status' => 'active', 'taluka_id' => $data->taluka_id])->get()->toArray();
-            }
 
             return view('backend.reporter.view')->with(['data' => $data, 'districts' => $districts, 'talukas' => $talukas, 'cities' => $cities]);
         }

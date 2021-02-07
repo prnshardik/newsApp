@@ -13,7 +13,7 @@
 @endsection
 
 @section('content')
-    <div class="page-heading mt-4">
+    {{-- <div class="page-heading mt-4">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('admin.dashboard') }}"><span class="text-dark font-weight-bold">Dashboard</span></a>
@@ -23,7 +23,7 @@
             </li>
             <li class="breadcrumb-item"><span class="text-dark font-weight-bold">Create</span></li>
         </ol>
-    </div>
+    </div> --}}
     <div class="page-content fade-in-up">
         <div class="row">
             <div class="col-md-12">
@@ -88,6 +88,11 @@
                                     <label for="taluka_id">Taluka</label>
                                     <select name="taluka_id" id="taluka_id" class="form-control">
                                         <option value="" hidden>Select Taluka</option>
+                                        @if(isset($talukas) && $talukas->isNotEmpty())
+                                            @foreach($talukas AS $row)
+                                                <option value="{{ $row->id }}">{{ $row->name }}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                     <span class="kt-form__help error taluka_id"></span>
                                 </div>
@@ -95,6 +100,11 @@
                                     <label for="city_id">City</label>
                                     <select name="city_id" id="city_id" class="form-control">
                                         <option value="" hidden>Select City</option>
+                                        @if(isset($cities) && $cities->isNotEmpty())
+                                            @foreach($cities AS $row)
+                                                <option value="{{ $row->id }}">{{ $row->name }}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                     <span class="kt-form__help error city_id"></span>
                                 </div>
@@ -145,73 +155,73 @@
                 multiple: false,
             });
 
-            $('#district_id').change(function(){
-                var district_id = $(this).val();
+            // $('#district_id').change(function(){
+            //     var district_id = $(this).val();
 
-                if(district_id.length > 0){
-                    $.ajax({
-                        url : "{{ route('admin.city.get.talukas') }}",
-                        type : "post",
-                        data : {
-                            _token: "{{ csrf_token() }}",
-                            district_id: district_id
-                        },
-                        success : function(response){
-                            $('#taluka_id').html('');
-                            $('#city_id').html('');
+            //     if(district_id.length > 0){
+            //         $.ajax({
+            //             url : "{{ route('admin.city.get.talukas') }}",
+            //             type : "post",
+            //             data : {
+            //                 _token: "{{ csrf_token() }}",
+            //                 district_id: district_id
+            //             },
+            //             success : function(response){
+            //                 $('#taluka_id').html('');
+            //                 $('#city_id').html('');
 
-                            if(response.code == 200){
-                                $('#taluka_id').html(response.data);
-                                $('#city_id').html('<option value="">select City</option>');
-                            }else{
-                                $('#taluka_id').html('<option value="">select Taluka</option>');
-                                $('#city_id').html('<option value="">select City</option>');
-                            }
-                        },
-                        error: function(json){
-                            $('#taluka_id').html('');
-                            $('#city_id').html('');
-                            $('#taluka_id').html('<option value="">select Taluka</option>');
-                            $('#city_id').html('<option value="">select City</option>');
-                        }
-                    });
-                }else{
-                    $('#taluka_id').html('');
-                    $('#city_id').html('');
-                    $('#taluka_id').html('<option value="">select Taluka</option>');
-                    $('#city_id').html('<option value="">select City</option>');
-                }
-            });
+            //                 if(response.code == 200){
+            //                     $('#taluka_id').html(response.data);
+            //                     $('#city_id').html('<option value="">select City</option>');
+            //                 }else{
+            //                     $('#taluka_id').html('<option value="">select Taluka</option>');
+            //                     $('#city_id').html('<option value="">select City</option>');
+            //                 }
+            //             },
+            //             error: function(json){
+            //                 $('#taluka_id').html('');
+            //                 $('#city_id').html('');
+            //                 $('#taluka_id').html('<option value="">select Taluka</option>');
+            //                 $('#city_id').html('<option value="">select City</option>');
+            //             }
+            //         });
+            //     }else{
+            //         $('#taluka_id').html('');
+            //         $('#city_id').html('');
+            //         $('#taluka_id').html('<option value="">select Taluka</option>');
+            //         $('#city_id').html('<option value="">select City</option>');
+            //     }
+            // });
 
-            $('#taluka_id').change(function(){
-                var taluka_id = $(this).val();
+            // $('#taluka_id').change(function(){
+            //     var taluka_id = $(this).val();
 
-                if(taluka_id.length > 0){
-                    $.ajax({
-                        url : "{{ route('admin.city.get.cities') }}",
-                        type : "post",
-                        data : {
-                            _token: "{{ csrf_token() }}",
-                            taluka_id: taluka_id
-                        },
-                        success : function(response){
-                            $('#city_id').html('');
+            //     if(taluka_id.length > 0){
+            //         $.ajax({
+            //             url : "{{ route('admin.city.get.cities') }}",
+            //             type : "post",
+            //             data : {
+            //                 _token: "{{ csrf_token() }}",
+            //                 taluka_id: taluka_id
+            //             },
+            //             success : function(response){
+            //                 $('#city_id').html('');
 
-                            if(response.code == 200){
-                                $('#city_id').html(response.data);
-                            }else{
-                                $('#city_id').html('<option value="">select City</option>');
-                            }
-                        },
-                        error: function(json){
-                            $('#city_id').html('');
-                            $('#city_id').html('<option value="">select City</option>');
-                        }
-                    });
-                }else{
-                    $('#city_id').html('<option>Select City</option>');
-                }
-            });
+            //                 if(response.code == 200){
+            //                     $('#city_id').html(response.data);
+            //                 }else{
+            //                     $('#city_id').html('<option value="">select City</option>');
+            //                 }
+            //             },
+            //             error: function(json){
+            //                 $('#city_id').html('');
+            //                 $('#city_id').html('<option value="">select City</option>');
+            //             }
+            //         });
+            //     }else{
+            //         $('#city_id').html('<option>Select City</option>');
+            //     }
+            // });
         });
     </script>
 

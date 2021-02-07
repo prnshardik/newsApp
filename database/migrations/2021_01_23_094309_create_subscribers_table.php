@@ -13,9 +13,9 @@
                 $table->string('description')->nullable();
                 $table->text('address')->nullable();
                 $table->string('phone')->nullable();
-                $table->string('district_id');
-                $table->string('taluka_id');
-                $table->string('city_id');
+                $table->string('district_id')->nullable();
+                $table->string('taluka_id')->nullable();
+                $table->string('city_id')->nullable();
                 $table->string('pincode')->nullable();
                 $table->string('magazine')->nullable();
                 $table->date('end_date')->nullable();

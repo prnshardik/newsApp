@@ -20,9 +20,9 @@
                     'phone' => 'required|digits:10',
                     'pincode' => 'required',
                     'magazine' => 'required',
-                    'district_id' => 'required',
-                    'taluka_id' => 'required',
-                    'city_id' => 'required'
+                    // 'district_id' => 'required',
+                    // 'taluka_id' => 'required',
+                    // 'city_id' => 'required'
                 ];
             }else{
                 return [
@@ -33,9 +33,9 @@
                     'phone' => 'required|digits:10',
                     'pincode' => 'required',
                     'magazine' => 'required',
-                    'district_id' => 'required',
-                    'taluka_id' => 'required',
-                    'city_id' => 'required'
+                    // 'district_id' => 'required',
+                    // 'taluka_id' => 'required',
+                    // 'city_id' => 'required'
                 ];
             }
         }
@@ -47,9 +47,9 @@
                 'phone.required' => 'Please enter phone',
                 'pincode.required' => 'Please enter pincode',
                 'magazine.required' => 'Please select magazine',
-                'district_id.required' => 'Please enter district',
-                'taluka_id.required' => 'Please enter taluka',
-                'city_id.required' => 'Please select city',
+                // 'district_id.required' => 'Please enter district',
+                // 'taluka_id.required' => 'Please enter taluka',
+                // 'city_id.required' => 'Please select city',
             ];
         }
     }

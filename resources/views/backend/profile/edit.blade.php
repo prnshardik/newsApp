@@ -13,7 +13,7 @@
 @endsection
 
 @section('content')
-    <div class="page-heading mt-4">
+    {{-- <div class="page-heading mt-4">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('admin.dashboard') }}"><span class="text-dark font-weight-bold">Dashboard</span></a>
@@ -23,14 +23,14 @@
             </li>
             <li class="breadcrumb-item"><span class="text-dark font-weight-bold">Edit</span></li>
         </ol>
-    </div>
+    </div> --}}
     <div class="page-content fade-in-up">
         <div class="row">
             <div class="col-md-12">
                 <div class="ibox">
                     <div class="ibox-head">
                         <div class="ibox-title">Profile Edit</div>
-                    </div> 
+                    </div>
                     <div class="ibox-body">
                         <form action="{{ route('admin.profile.update') }}" name="form" id="form" enctype="multipart/form-data" method="post">
                             @csrf

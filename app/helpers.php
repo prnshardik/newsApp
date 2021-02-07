@@ -42,12 +42,17 @@
         }
     }
 
-    // {{ asset('backend/img/admin-avatar.png') }}
-
     if(!function_exists('_get_role_name')){
         function _get_role_name(){
             $role = \DB::table('roles')->select('name')->where(['id' => auth()->user()->role_id])->first();
             return ucfirst($role->name);
+        }
+    }
+
+    if(!function_exists('_reporter_unique_id')){
+        function _reporter_unique_id(){
+            $data = \DB::table('reporter')->select('unique_id')->where(['user_id' => auth()->user()->id])->first();
+            return $data->unique_id;
         }
     }
 
