@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-    <div class="page-heading mt-4">
+    {{-- <div class="page-heading mt-4">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('admin.dashboard') }}"><span class="text-dark font-weight-bold">Dashboard</span></a>
@@ -21,6 +21,42 @@
             </li>
             <li class="breadcrumb-item"><span class="text-dark font-weight-bold">Edit</span></li>
         </ol>
+    </div> --}}
+    <div class="page-content fade-in-up">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="ibox">
+                    <div class="ibox-body">
+                        <form action="{{ route('admin.subscriber.update') }}" name="form" id="form" method="post">
+                            @csrf
+                            @method('PATCH')
+
+                            <div class="row">
+                                <div class="form-group col-sm-6">
+                                    <label for="receipt_no">Receipt No</label>
+                                    <input type="text" name="receipt_no_1" id="receipt_no_1" class="form-control" placeholder="Plese enter receipt_no" value="{{ $data->receipt_no ?? '' }}" disabled>
+                                    <input type="hidden" name="receipt_no" id="receipt_no" value="{{ $data->receipt_no ?? '' }}">
+                                    <span class="kt-form__help error receipt_no"></span>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="magazine">Magazine</label>
+                                    <div class="m-b-10">
+                                        <label class="ui-radio ui-radio-inline ui-radio-success">
+                                            <input type="radio" name="magazine" value="shixan_sudha" @if(isset($data) && $data->magazine == 'shixan_sudha') checked @endif>
+                                            <span class="input-span"></span>Shixan Sudha
+                                        </label>
+                                        <label class="ui-radio ui-radio-inline ui-radio-success">
+                                            <input type="radio" name="magazine" value="arogya_sudha" @if(isset($data) && $data->magazine == 'arogya_sudha') checked @endif>
+                                            <span class="input-span"></span>Arogya Sudha
+                                        </label>
+                                    </div>
+                                    <span class="kt-form__help error magazine"></span>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="page-content fade-in-up">
         <div class="row">
@@ -30,13 +66,33 @@
                         <div class="ibox-title">Subscriber Edit</div>
                     </div>
                     <div class="ibox-body">
-                        <form action="{{ route('admin.subscriber.update') }}" name="form" id="form" method="post">
+                        {{-- <form action="{{ route('admin.subscriber.update') }}" name="form" id="form" method="post">
                             @csrf
-                            @method('PATCH')
+                            @method('PATCH') --}}
 
                             <input type="hidden" name="id" value="{{ $data->id }}">
 
                             <div class="row">
+                                {{-- <div class="form-group col-sm-6">
+                                    <label for="receipt_no">Receipt No</label>
+                                    <input type="text" name="receipt_no_1" id="receipt_no_1" class="form-control" placeholder="Plese enter receipt_no" value="{{ $data->receipt_no ?? '' }}" disabled>
+                                    <input type="hidden" name="receipt_no" id="receipt_no" value="{{ $data->receipt_no ?? '' }}">
+                                    <span class="kt-form__help error receipt_no"></span>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="magazine">Magazine</label>
+                                    <div class="m-b-10">
+                                        <label class="ui-radio ui-radio-inline ui-radio-success">
+                                            <input type="radio" name="magazine" value="shixan_sudha" @if(isset($data) && $data->magazine == 'shixan_sudha') checked @endif>
+                                            <span class="input-span"></span>Shixan Sudha
+                                        </label>
+                                        <label class="ui-radio ui-radio-inline ui-radio-success">
+                                            <input type="radio" name="magazine" value="arogya_sudha" @if(isset($data) && $data->magazine == 'arogya_sudha') checked @endif>
+                                            <span class="input-span"></span>Arogya Sudha
+                                        </label>
+                                    </div>
+                                    <span class="kt-form__help error magazine"></span>
+                                </div> --}}
                                 <div class="form-group col-sm-6">
                                     <label for="firstname">First Name</label>
                                     <input type="text" name="firstname" id="firstname" class="form-control" placeholder="Plese enter firstname" value="{{ $data->firstname ?? '' }}">
@@ -47,42 +103,22 @@
                                     <input type="text" name="lastname" id="lastname" class="form-control" placeholder="Plese enter lastname" value="{{ $data->lastname ?? '' }}">
                                     <span class="kt-form__help error lastname"></span>
                                 </div>
-                                <div class="form-group col-sm-6">
-                                    <label for="receipt_no">Receipt No</label>
-                                    <input type="text" name="receipt_no_1" id="receipt_no_1" class="form-control" placeholder="Plese enter receipt_no" value="{{ $data->receipt_no ?? '' }}" disabled>
-                                    <input type="hidden" name="receipt_no" id="receipt_no" value="{{ $data->receipt_no ?? '' }}">
-                                    <span class="kt-form__help error receipt_no"></span>
-                                </div>
-                                <div class="form-group col-sm-6">
-                                    <label for="description">Description</label>
-                                    <input type="text" name="description" id="description" class="form-control" placeholder="Plese enter description" value="{{ $data->description ?? '' }}">
-                                    <span class="kt-form__help error description"></span>
-                                </div>
-                                <div class="form-group col-sm-6">
+                                <div class="form-group col-sm-12">
                                     <label for="email">Email</label>
                                     <input type="text" name="email" id="email" class="form-control" placeholder="Plese enter email" value="{{ $data->email ?? '' }}">
                                     <span class="kt-form__help error email"></span>
                                 </div>
-                                <div class="form-group col-sm-6">
+                                <div class="form-group col-sm-12">
                                     <label for="phone">Phone No</label>
                                     <input type="text" name="phone" id="phone" class="form-control" placeholder="Plese enter phone no" value="{{ $data->phone ?? '' }}">
                                     <span class="kt-form__help error phone"></span>
                                 </div>
-                                <div class="form-group col-sm-6">
+                                <div class="form-group col-sm-12">
                                     <label for="address">Address</label>
-                                    <input type="text" name="address" id="address" class="form-control" placeholder="Plese enter address" value="{{ $data->address ?? '' }}">
+                                    <textarea name="address" id="address" class="form-control" placeholder="Plese enter address" cols="30" rows="3">{{ $data->address ?? '' }}</textarea>
                                     <span class="kt-form__help error address"></span>
                                 </div>
-                                <div class="form-group col-sm-6">
-                                    <label for="magazine">Magazine</label>
-                                    <select name="magazine" id="magazine" class="form-control">
-                                        <option value="" hidden>Select Magazine</option>
-                                        <option value="shixan_sudha" @if(isset($data) && $data->magazine == 'shixan_sudha') selected @endif >Shixan Sudha</option>
-                                        <option value="arogya_sudha" @if(isset($data) && $data->magazine == 'arogya_sudha') selected @endif >Arogya Sudha</option>
-                                    </select>
-                                    <span class="kt-form__help error magazine"></span>
-                                </div>
-                                <div class="form-group col-sm-6">
+                                <div class="form-group col-sm-3">
                                     <label for="district_id">District</label>
                                     <select name="district_id" id="district_id" class="form-control">
                                         <option value="" hidden>Select District</option>
@@ -94,7 +130,7 @@
                                     </select>
                                     <span class="kt-form__help error district_id"></span>
                                 </div>
-                                <div class="form-group col-sm-6">
+                                <div class="form-group col-sm-3">
                                     <label for="taluka_id">Taluka</label>
                                     <select name="taluka_id" id="taluka_id" class="form-control">
                                         <option value="" hidden>Select Taluka</option>
@@ -106,7 +142,7 @@
                                     </select>
                                     <span class="kt-form__help error taluka_id"></span>
                                 </div>
-                                <div class="form-group col-sm-6">
+                                <div class="form-group col-sm-3">
                                     <label for="city_id">City</label>
                                     <select name="city_id" id="city_id" class="form-control">
                                         <option value="" hidden>Select City</option>
@@ -118,7 +154,7 @@
                                     </select>
                                     <span class="kt-form__help error city_id"></span>
                                 </div>
-                                <div class="form-group col-sm-6">
+                                <div class="form-group col-sm-3">
                                     <label for="pincode">Pincode</label>
                                     <input type="text" name="pincode" id="pincode" class="form-control" placeholder="Plese enter pincode" value="{{ $data->pincode ?? '' }}">
                                     <span class="kt-form__help error pincode"></span>

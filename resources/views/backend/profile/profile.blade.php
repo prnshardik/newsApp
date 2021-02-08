@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-    <div class="page-heading mt-4">
+    {{-- <div class="page-heading mt-4">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('admin.dashboard') }}"><span class="text-dark font-weight-bold">Dashboard</span></a>
@@ -20,7 +20,7 @@
                 <a href="{{ route('admin.profile') }}"><span class="text-dark font-weight-bold">Profile</span></a>
             </li>
         </ol>
-    </div>
+    </div> --}}
     <div class="page-content fade-in-up">
         <div class="row">
             <div class="col-sm-3"></div>
@@ -31,7 +31,7 @@
                             <img src="{{ _user_profile() }}" alt="{{ _site_name() }}" class="img-circle" height="80px" width="80px" />
                         </div>
                         <h5 class="font-strong m-b-10 m-t-10">{{ $data->firstname }} {{ $data->lastname }}</h5>
-                        <div class="m-b-20 text-muted">{{ _get_role_name(auth()->user()->role_id) }}</div>
+                        <div class="m-b-20 text-muted">{{ _get_role_name(auth()->user()->role_id) }} @if(auth()->user()->role_id == 2) - {{ _reporter_unique_id() }} @endif </div>
                         <div>
                             <a href="{{ route('admin.profile.edit') }}" class="btn btn-info btn-rounded m-b-5">Edit Profile</a>
                             <a href="{{ url()->previous() }}" class="btn btn-default btn-rounded m-b-5">Back</a>
