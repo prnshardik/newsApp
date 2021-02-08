@@ -203,12 +203,12 @@
             });
         });
 
-        $('#city_id').change(function(){
-            var pincode = $("#city_id option:selected").data('id');
-            if(pincode != ''){
-                $('#pincode').val(pincode);
-            }
-        });
+        // $('#city_id').change(function(){
+        //     var pincode = $("#city_id option:selected").data('id');
+        //     if(pincode != ''){
+        //         $('#pincode').val(pincode);
+        //     }
+        // });
     </script>
 
     <script>
@@ -225,73 +225,73 @@
                 multiple: false,
             });
 
-            $('#district_id').change(function(){
-                var district_id = $(this).val();
+            // $('#district_id').change(function(){
+            //     var district_id = $(this).val();
 
-                if(district_id.length > 0){
-                    $.ajax({
-                        url : "{{ route('admin.city.get.talukas') }}",
-                        type : "post",
-                        data : {
-                            _token: "{{ csrf_token() }}",
-                            district_id: district_id
-                        },
-                        success : function(response){
-                            $('#taluka_id').html('');
-                            $('#city_id').html('');
+            //     if(district_id.length > 0){
+            //         $.ajax({
+            //             url : "{{ route('admin.city.get.talukas') }}",
+            //             type : "post",
+            //             data : {
+            //                 _token: "{{ csrf_token() }}",
+            //                 district_id: district_id
+            //             },
+            //             success : function(response){
+            //                 $('#taluka_id').html('');
+            //                 $('#city_id').html('');
 
-                            if(response.code == 200){
-                                $('#taluka_id').html(response.data);
-                                $('#city_id').html('<option value="">select City</option>');
-                            }else{
-                                $('#taluka_id').html('<option value="">select Taluka</option>');
-                                $('#city_id').html('<option value="">select City</option>');
-                            }
-                        },
-                        error: function(json){
-                            $('#taluka_id').html('');
-                            $('#city_id').html('');
-                            $('#taluka_id').html('<option value="">select Taluka</option>');
-                            $('#city_id').html('<option value="">select City</option>');
-                        }
-                    });
-                }else{
-                    $('#taluka_id').html('');
-                    $('#city_id').html('');
-                    $('#taluka_id').html('<option value="">select Taluka</option>');
-                    $('#city_id').html('<option value="">select City</option>');
-                }
-            });
+            //                 if(response.code == 200){
+            //                     $('#taluka_id').html(response.data);
+            //                     $('#city_id').html('<option value="">select City</option>');
+            //                 }else{
+            //                     $('#taluka_id').html('<option value="">select Taluka</option>');
+            //                     $('#city_id').html('<option value="">select City</option>');
+            //                 }
+            //             },
+            //             error: function(json){
+            //                 $('#taluka_id').html('');
+            //                 $('#city_id').html('');
+            //                 $('#taluka_id').html('<option value="">select Taluka</option>');
+            //                 $('#city_id').html('<option value="">select City</option>');
+            //             }
+            //         });
+            //     }else{
+            //         $('#taluka_id').html('');
+            //         $('#city_id').html('');
+            //         $('#taluka_id').html('<option value="">select Taluka</option>');
+            //         $('#city_id').html('<option value="">select City</option>');
+            //     }
+            // });
 
-            $('#taluka_id').change(function(){
-                var taluka_id = $(this).val();
+            // $('#taluka_id').change(function(){
+            //     var taluka_id = $(this).val();
 
-                if(taluka_id.length > 0){
-                    $.ajax({
-                        url : "{{ route('admin.city.get.cities') }}",
-                        type : "post",
-                        data : {
-                            _token: "{{ csrf_token() }}",
-                            taluka_id: taluka_id
-                        },
-                        success : function(response){
-                            $('#city_id').html('');
+            //     if(taluka_id.length > 0){
+            //         $.ajax({
+            //             url : "{{ route('admin.city.get.cities') }}",
+            //             type : "post",
+            //             data : {
+            //                 _token: "{{ csrf_token() }}",
+            //                 taluka_id: taluka_id
+            //             },
+            //             success : function(response){
+            //                 $('#city_id').html('');
 
-                            if(response.code == 200){
-                                $('#city_id').html(response.data);
-                            }else{
-                                $('#city_id').html('<option value="">select City</option>');
-                            }
-                        },
-                        error: function(json){
-                            $('#city_id').html('');
-                            $('#city_id').html('<option value="">select City</option>');
-                        }
-                    });
-                }else{
-                    $('#city_id').html('<option>Select City</option>');
-                }
-            });
+            //                 if(response.code == 200){
+            //                     $('#city_id').html(response.data);
+            //                 }else{
+            //                     $('#city_id').html('<option value="">select City</option>');
+            //                 }
+            //             },
+            //             error: function(json){
+            //                 $('#city_id').html('');
+            //                 $('#city_id').html('<option value="">select City</option>');
+            //             }
+            //         });
+            //     }else{
+            //         $('#city_id').html('<option>Select City</option>');
+            //     }
+            // });
         });
     </script>
 
