@@ -29,7 +29,7 @@
                                         's.address', 's.phone', 's.pincode',
                                         'd.name as district_name', 't.name as taluka_name', 'c.name as city_name'
                                     )
-                            ->leftjoin('subscribers as s', 'u.id', 's.user_id')
+                            ->join('subscribers as s', 'u.id', 's.user_id')
                             ->leftjoin('districts as d', 'd.id', 's.district_id')
                             ->leftjoin('talukas as t', 't.id', 's.taluka_id')
                             ->leftjoin('cities as c', 'c.id', 's.city_id');
