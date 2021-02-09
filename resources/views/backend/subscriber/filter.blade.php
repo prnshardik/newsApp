@@ -162,8 +162,8 @@
                                                         <div class="font-13 font-weight-bold">To, {{ $row->city_name ?? '' }}</div>
                                                         <div class="font-13 font-weight-bold">{{ $row->firstname ?? '' }} {{ $row->lastname ?? '' }}</div>
                                                         <div class="font-13 font-weight-bold">{{ $row->address ?? '' }}</div>
-                                                        <div class="font-13 font-weight-bold">{{ $row->city_name ?? '' }} - {{ $row->pincode ?? '' }}</div>
                                                         <div class="font-13 font-weight-bold">{{ $row->taluka_name ?? '' }} - {{ $row->district_name ?? '' }}</div>
+                                                        <div class="font-13 font-weight-bold">{{ $row->city_name ?? '' }} - {{ $row->pincode ?? '' }}</div>
                                                     </div>
                                                 </li>
                                             </ul>

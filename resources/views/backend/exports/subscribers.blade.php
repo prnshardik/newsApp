@@ -8,8 +8,10 @@
                             <div style="margin-bottom:20px"><b>To, {{ strtoupper($row->city_name) ?? '' }}</b></div><br/>
                             <div><b>{{ strtoupper($row->firstname) ?? '' }} {{ strtoupper($row->lastname) ?? '' }}</b></div><br/>
                             <div><b>{{ strtoupper($row->address) ?? '' }}</b></div><br/>
+                            <?php if(isset($row->taluka_name) && isset($row->district_name)){ ?>
+                                <div><b>{{ isset($row->taluka_name) ? 'TAL. '.strtoupper($row->taluka_name) : '' }} {{ isset($row->district_name) ? ' - DIST. '.strtoupper($row->district_name): '' }}</b></div><br/>
+                            <?php } ?>
                             <div><b>{{ strtoupper($row->city_name) ?? '' }} - {{ $row->pincode ?? '' }}</b></div><br/>
-                            <div><b>{{ isset($row->taluka_name) ? 'TAL. '.strtoupper($row->taluka_name) : '' }} {{ isset($row->district_name) ? ' - DIST. '.strtoupper($row->district_name): '' }}</b></div><br/>
                         </td>
                     @endforeach
                 </tr>
