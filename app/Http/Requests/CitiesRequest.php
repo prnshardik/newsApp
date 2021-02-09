@@ -13,14 +13,14 @@
             if($this->method() == 'PATCH'){
                 return [
                     'name' => 'required',
-                    'pincode' => 'required',
+                    // 'pincode' => 'required',
                     'district_id' => 'required',
                     'taluka_id' => 'required'
                 ];
             }else{
                 return [
                     'name' => 'required',
-                    'pincode' => 'required',
+                    // 'pincode' => 'required',
                     'district_id' => 'required',
                     'taluka_id' => 'required',
                 ];
@@ -30,7 +30,7 @@
         public function messages(){
             return [
                 'name.required' => 'Please enter name',
-                'pincode.required' => 'Please enter pincode',
+                // 'pincode.required' => 'Please enter pincode',
                 'district_id.required' => 'Please select district',
                 'taluka_id.required' => 'Please select taluka',
             ];
