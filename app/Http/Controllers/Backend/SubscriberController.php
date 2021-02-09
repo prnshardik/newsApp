@@ -95,7 +95,7 @@
                         ->make(true);
             }
 
-            $cities = Cities::select(['id', 'name'])->get();
+            $cities = Cities::select(['id', 'name'])->orderBy('name')->get();
             $reporters = DB::table('reporter as r')->select(['u.id', 'u.firstname', 'u.lastname'])
                                 ->leftjoin('users as u', 'u.id', 'r.user_id')
                                 ->get();
@@ -104,9 +104,9 @@
         }
 
         public function create(Request $request){
-            $districts = Districts::where(['status' => 'active'])->get();
-            $talukas = Talukas::where(['status' => 'active'])->get();
-            $cities = Cities::where(['status' => 'active'])->get();
+            $districts = Districts::where(['status' => 'active'])->orderBy('name')->get();
+            $talukas = Talukas::where(['status' => 'active'])->orderBy('name')->get();
+            $cities = Cities::where(['status' => 'active'])->orderBy('name')->get();
 
             $receipt_no = '';
 
@@ -202,9 +202,9 @@
 
         public function edit(Request $request){
             $id = base64_decode($request->id);
-            $districts = Districts::where(['status' => 'active'])->get();
-            $talukas = Talukas::where(['status' => 'active'])->get();
-            $cities = Cities::where(['status' => 'active'])->get();
+            $districts = Districts::where(['status' => 'active'])->orderBy('name')->get();
+            $talukas = Talukas::where(['status' => 'active'])->orderBy('name')->get();
+            $cities = Cities::where(['status' => 'active'])->orderBy('name')->get();
 
             $data = DB::table('subscribers as s')
                             ->select('s.id', 's.receipt_no', 's.description', 's.address', 's.phone', 's.pincode', 's.status',
@@ -337,7 +337,7 @@
         public function filter(Request $request){
             if(auth()->user()->role_id != 1){ return redirect()->back()->with(['error' => 'you don\'t have permission.']);}
 
-            $cities = Cities::select(['id', 'name'])->get();
+            $cities = Cities::select(['id', 'name'])->orderBy('name')->get();
 
             $pincode = $request->pincode ?? NULL;
             $reporter = $request->reporter ?? NULL;

@@ -90,9 +90,9 @@
         }
 
         public function create(Request $request){
-            $districts = Districts::where(['status' => 'active'])->get();
-            $talukas = Talukas::where(['status' => 'active'])->get();
-            $cities = Cities::where(['status' => 'active'])->get();
+            $districts = Districts::where(['status' => 'active'])->orderBy('name')->get();
+            $talukas = Talukas::where(['status' => 'active'])->orderBy('name')->get();
+            $cities = Cities::where(['status' => 'active'])->orderBy('name')->get();
             return view('backend.reporter.create', ['districts' => $districts, 'talukas' => $talukas, 'cities' => $cities]);
         }
 
@@ -188,9 +188,9 @@
 
         public function edit(Request $request){
             $id = base64_decode($request->id);
-            $districts = Districts::where(['status' => 'active'])->get();
-            $talukas = Talukas::where(['status' => 'active'])->get();
-            $cities = Cities::where(['status' => 'active'])->get();
+            $districts = Districts::where(['status' => 'active'])->orderBy('name')->get();
+            $talukas = Talukas::where(['status' => 'active'])->orderBy('name')->get();
+            $cities = Cities::where(['status' => 'active'])->orderBy('name')->get();
 
             $path = URL('/uploads/reporter').'/';
 
